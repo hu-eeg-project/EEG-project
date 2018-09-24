@@ -138,18 +138,18 @@ De minimale eisen voor de EEG zijn:
 Voor dit onderzoek zijn er een aantal deelvragen opgesteld welke moeten leiden tot een antwoord op de hoofdvraag. Elke deelvraag heeft weer enkele onder-deelvragen welke moeten leiden tot antwoord op de deelvraag.
 De deelvragen zijn:
 1. Welke hardware is nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
- a. Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
- b. Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen en de kosten (totaal maximaal 250 euro)?
- c. Wat voor typen ruis zijn er in het ontvangen signaal?
- d. Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe?
+   1. Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
+   2. Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen en de kosten (totaal maximaal 250 euro)?
+   3. Wat voor typen ruis zijn er in het ontvangen signaal?
+   4. Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe?
 2. Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)?
- a. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
- b. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
- c. Welk algoritme is het beste voor de signaalverwerking van de analoge data uit de elektroden?
- d. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
+   1. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
+   2. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
+   3. Welk algoritme is het beste voor de signaalverwerking van de analoge data uit de elektroden?
+   4. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
 3. Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)?
- a. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
- b. Doet onze EEG het significant beter dan …. (star wars bijv.)
+   1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
+   2. Doet onze EEG het significant beter dan …. (star wars bijv.)
 4. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
 
 * Methode en Aanpak
