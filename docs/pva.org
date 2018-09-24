@@ -1,0 +1,307 @@
+#+TITLE: PvA
+#+OPTIONS: toc:nil
+#+LATEX_HEADER: \pagenumbering{gobble}
+
+#+LATEX: \begin{titlepage}
+#+LATEX: \end{titlepage}
+#+LATEX: \newpage
+#+LATEX: \pagenumbering{roman}
+
+#+LATEX: \renewcommand{\contentsname}{Inhoudsopgave}
+#+LATEX: \tableofcontents
+#+LATEX: \newpage
+
+#+LATEX: \pagenumbering{arabic}
+
+* Begrippen
+#+ATTR_LATEX: :environment longtable :align |l|p{10cm}|
+|-------------------+---------------------------------------------------------------------|
+| Begrip            | Betekenis                                                           |
+|-------------------+---------------------------------------------------------------------|
+|                   | <67>                                                                |
+| ADC               | Analog Digital Converter. Zet een analoge stroom om in een digitale waarde. |
+| Op-Amp            | Operational Amplifier. Een chip die een analoog signaal kan versterken. |
+| Elektrode         | Component wat elektronisch contact maakt met het lichaam om stroom van hersenen te meten. |
+| EEG               | Elektro-encefalografie is een methode om hersenactiviteit te meten door de kleine elektrische stromen die de hersenen maken te meten. |
+| Channel           | In context met elektrode: een enkele elektrode met daarbij behoorende hardware om hersenactiviteit te meten op een plek. In context met ADC: een input van de ADC waarop het de stroom kan omzetten in een digitale waarde. |
+| Hardwaredeel      | Een categorie van hardwarecomponenten zoals bijvoorbeeld een ADC of Op-Amp. |
+| Hardwarecomponent | Meer specifiek dan hardware deel bijvoorbeeld een specifieke chip.  |
+| PoC               | Proof of Concept.                                                   |
+|-------------------+---------------------------------------------------------------------|
+
+* Inleiding
+* Aanleiding en Context
+Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de
+opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe
+EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een
+goedkoop EEG-systeem is die van NeuroSky (NeuroSky, z.d.) welke maar 99,99 dollar kost, maar
+het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten
+heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten,
+voorbeelden hiervan is zijn de systemen van Cognionics welke van 4500 tot 50,000 euro kunnen
+kosten (Cognionics, z.d.). Het voordeel van deze systemen is dat ze meerdere channels hebben,
+zo heeft de dev-kit van cognionics welke 4500 euro kost 8 channels. Met het maken van een eigen
+EEG kan ook veel geleerd worden en kan ook voor toekomstige studenten leerzaam zijn om hier op
+voort te bouwen. Ook kan deze dan gebruikt worden voor nieuwe lesstof indien nodig. En is het
+een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten
+zien wat er allemaal mogelijk is te doen.
+
+** Use case
+Een voorbeeld van een use case waar een EEG-systeem als deze voor gebruikt kan worden is een
+P300-toetsenbord. Via een P300-toetsenbord kan door naar een toets van een toetsenbord op een
+scherm te kijken deze toets getyped worden. Dit werkt doordat als deze toets flitst met een
+andere kleur terwijl er naar gekeken wordt het brein een P300 golf maakt, deze kan gedetecteerd
+worden en zo weet de computer dat deze letter bedoeld wordt. Zo een toetsenbord kan goed
+gebruikt worden door ALS-patiënten die problemen hebben om te praten of te typen doordat ze
+weinig tot geen controle hebben over de benodigde spieren. Vaak is er dan nog wel controle
+over de spieren om de ogen te besturen waardoor deze mensen nog wel kunnen praten via een
+P300-toetsenbord welke aangesloten is aan tekst-naar-spraak computer.
+
+** De Organisatie
+De organisatie waarvoor het EEG systeem onderzocht wordt is het Turing Lab. Dit is een werkplaats voor Technische Informatica studenten aan de Hogeschool Utrecht. Hier staan verschillende apparatuur rond zoals soldeerapparaten.
+
+** Opdrachtgever
+De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Technische Informatica. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen. Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd zoals bijvoorbeeld het EEG systeem.
+
+* Theoretisch kader
+
+** Hersengolven
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen. Hij is ook de persoon die eerste EEG gemaakt heeft.
+Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0.5 tot 100 µV (Teplan, 2002).
+hersengolven zijn te verdelen in 5 categorieën (Teplan, 2002), deze zijn:
+Delta golven: 0.5 tot 4 Hz
+Theta golven: 4 Hz tot 8 Hz
+Alpha golven: 8 Hz tot 13 Hz
+Beta golven: 13 Hz to 40 Hz
+Gamma golven: >40 Hz
+
+De bekendste hersengolf is de p300 hersengolf deze valt in de . P300 is een hersengolf welke 2 vormen kent, namelijk de p3a en de p3b. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht eisen, zoals een lichtflits. De p3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steed meer op een p3b gaan lijken waarbij de hersenen data uit de het geheugen verwerken (Polich, z.d.).
+
+** Signaalmeting
+In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te
+kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te
+meten. Uit vooronderzoek is gebleken dat voor het meten van hersengolven een elektrode en een
+analoog-digitaal converter (ADC) nodig is. Echter is nog niet duidelijk wat de precieze eisen
+zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal
+elk elektrode en ADC kort worden uitgelegd:
+
+*** Elektrode
+Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd om
+hersengolven te meten. Hierbij is het nodig een goede elektrische verbinding te maken om ruis
+te verminderen bij het versterken van het elektronische signaal om dit meetbaar te maken. Voor
+het verbeteren van het contact kan een gel gebruikt worden. Tussen elektrodes zit ook nog een
+verschil op verschillende attributen, zo hebben ze verschillende groottes en zijn sommige
+herbruikbaar en andere maar te gebruiken voor een keer.
+
+*** ADC
+De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is
+zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld
+een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden
+gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 10 tot 100 µV, zal deze
+eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sample
+frequentie hoeft niet heel snel te zijn en kan met zo een
+
+** Signaalverwerking
+Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven.
+
+** Gerelateerde werk
+De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
+Lafuente, V., Gorriz, J. M., Ramirez, J., & Gonzales, E. (2017, 15 mei). P300 brainwave extraction from EEG signals: An unsupervised approach. Geraadpleegd op 21 september 2018, van https://www.sciencedirect.com/science/article/pii/S0957417416307205
+Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf
+OpenBCI. (z.d.). OpenBCI Cyton. Geraadpleegd op 21 september 2018, van http://docs.openbci.com/Hardware/02-Cyton
+Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf
+
+* Doelstelling
+De uiteindelijke doelstelling van dit project is het maken van een EEG-systeem waar andere
+studenten op voort kunnen bouwen. Dit EEG-systeem zou tenminste een P300-signaal bij de
+onderzoekers kunnen detecteren. Het EEG-systeem is bedoeld om te kunnen worden gebruikt voor
+studenten. Hiervoor moet het prototype dus goed gedocumenteerd worden en uitbreidbaar zijn.
+Aangezien het systeem voor het onderwijs is bedoeld mag het niet te duur zijn dus wordt de
+prijs gelimiteerd tot onder de 250 euro.
+
+* Probleemanalyse / Probleemstelling
+Op de Hogeschool Utrecht is het nodig up to date te blijven met nieuw ontwikkelende
+technologieën. In dit geval gaat het om een Brain-computer interfacing (BCI) systeem waarop
+ook in de toekomst verder aan gewerkt kan worden door nieuwe studenten. Daarvoor zal er dus
+onderzoek gedaan moeten worden naar hoe een EEG systeem in elkaar zit en hoe er een gemaakt
+kan worden voor een redelijke prijs aangezien de meeste op de markt op dit moment zeer duur
+zijn.
+
+* Vraagstelling
+Dit hoofdstuk benoemd en omschrijft de vragen die tijdens dit onderzoek zullen worden beantwoord. Als eerst wordt de hoofdvraag toegelicht en daarna zullen de deelvragen aan de pas komen.
+Na het stellen van het probleem is er de volgende opgesteld:
+*Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?*
+De minimale eisen voor de EEG zijn:
++ Het kan minimaal het P300 signaal detecteren bij de onderzoekers. Er is voor dit signaal gekozen omdat dit het meeste duidelijke signaal is, ook is het brein makkelijk te activeren om dit signaal te genereren.
++ De kosten voor de hardware die nodig zijn voor de EEG zijn niet meer dan 250 euro. Dit maximalen budget is ontvangen van de opdrachtgever
++ Het is makkelijk uitbreidbaar en kan makkelijk worden gebruikt voor bij andere projecten. Het idee is dat de EEG door andere studenten kan worden gebruikt voor andere projecten, daarom is het dus nodig dat er een duidelijke API is en documentatie.
+
+Voor dit onderzoek zijn er een aantal deelvragen opgesteld welke moeten leiden tot een antwoord op de hoofdvraag. Elke deelvraag heeft weer enkele onder-deelvragen welke moeten leiden tot antwoord op de deelvraag.
+De deelvragen zijn:
+1. Welke hardware is nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
+ a. Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
+ b. Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen en de kosten (totaal maximaal 250 euro)?
+ c. Wat voor typen ruis zijn er in het ontvangen signaal?
+ d. Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe?
+2. Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)?
+ a. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
+ b. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
+ c. Welk algoritme is het beste voor de signaalverwerking van de analoge data uit de elektroden?
+ d. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
+3. Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)?
+ a. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
+ b. Doet onze EEG het significant beter dan …. (star wars bijv.)
+4. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
+
+* Methode en Aanpak
+Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
+te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
+gebruikt gaan worden staat in bijlage A.Dit hoofdstuk beschrijft deze tabel in meer detail.
+
+#+ATTR_LATEX: :environment longtable :align |l|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{3cm}|
+|---+-----------------+-----------------+-----------------+-----------------+------------------------------------------------|
+| # | deelvraag       | type deelvraag  | methode dataverzameling | Methode analyse | Resultaat                                      |
+|---+-----------------+-----------------+-----------------+-----------------+------------------------------------------------|
+|   | <15>            | <15>            | <15>            | <15>            |                                                |
+| 1 | Welke hardware is nodig om een EEG te maken tenminste voldoet aan de gestelde eisen? | Ontwerpend      | Workshop        | prototyping     | PoC                                            |
+| a | Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen? | Beschrijvend    | Library         | Literature-study | MoSCoW-lijst                                   |
+| b | Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen? | Vergelijken, evaluerend | Lab of Field    | data analytics of observation | Componentenlijst                               |
+| c | Wat voor typen ruis zijn er in het ontvangen signaal? | Evaluerend, verklarend | Lab             | Data analytics  | lijst van bekende ruis-soorten                 |
+| d | Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe? | Ontwerpend      | Workshop, Field | prototypes, observation | Eventueel aangepast PoC met hardware filtering |
+| 2 | Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)? | Ontwerpend      | Workshop        | Prototyping     | Functioneel ontwerp                            |
+| a | Is er nog overgebleven ruis na de hardware filtering? Zo ja, hoe kan dit softwarematig weg gefilterd worden? | Beschrijvend    | Bieb, Workshop  | Literature study, Prototyping | Oplossing tegen ruis in het PoC                |
+| b | Wat voor algoritmes zijn nodig om de benodigde hersengolven te detecteren? | Beschrijvend    | Bieb            | Literature study | Lijst van benodigde soorten algoritmes         |
+| c | Welk algoritmes zijn het beste voor de signaalverwerking van de analoge data uit de elektroden? | Vergelijkend    | Workplace, Lab  | Prototyping, Data analytics | Aanbeveling voor een algoritme                 |
+| d | Welke C++/Python libraries zijn er om deze algoritmes toe te passen en welke is het beste, denkend aan performance? | Vergelijkend    | Showroom        | Benchmark test  | Aanbeveling voor gekozen libraries             |
+| 3 | Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport                                    |
+| 4 | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Field           | Survey          | Testrapport                                    |
+| a | Moet de EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? | Evaluerend      | Field           | Observatie      |                                                |
+|---+-----------------+-----------------+-----------------+-----------------+------------------------------------------------|
+
+** Benodigde Hardware EEG
+Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot
+de benodigde kennis te komen welke hardwaredelen nodig zijn zal literature study toegepast
+worden. Zo zal naar papers gezocht worden waarin onderzoek gedaan worden naar EEG’s en de
+werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat
+van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende hardware functionaliteiten
+van een EEG en wat daarvoor nodig is.
+
+Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke
+hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke
+benodigd hardwaredeel een vergelijkingslijst worden gemaakt waarin de specificaties van de
+componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende
+componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier
+wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.
+
+** Ruisfiltering
+Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk
+onderdeel is (Olkkonen, Pesola, Olkkonen, Valljakka, & Tuomisto, 2002). Daarom zal worden
+onderzocht welke typen ruis er in het gemeten signaal zijn en hoe deze eruit kunnen worden
+gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier
+wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum
+worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd
+door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd.
+Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe
+deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen.
+Om achter de oplossing te komen zal literature study worden gebruikt om te kijken hoe andere
+mensen dit gedaan hebben.
+
+** De EEG-firmware
+Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware
+geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien.
+Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer
+Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste
+deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en
+hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum
+van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is
+zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit
+kan zal literature study worden gebruikt.
+
+
+* #aantekening#
+benodigde methoden voor eerste deelvraag (hardware):
+Beschrijvend: Welke hardware onderdelen zijn nodig? Doen we in het vooronderzoek
+Vergelijkend: Een deelvraag om onze hardware te vergelijken met een andere EEG band? Deelvragen om hardwarecomponenten te vergelijken?
+Definiërend: Een deelvraag om specificaties over onze EEG te meten?
+Evaluerend: Deze komt samen met de deelvragen van ontwerpend
+Verklarend: Volgens les zal er iets van Verklarend voor de ontwerpend vragen moeten komen? Misschien een vraag over waarom onze EEG beter of slechter is dan de andere?
+Ontwerpend: De hoofdvraag? miss ook een deelvraag?
+
+Als bij vooronderzoek al duidelijke is welke hardware nodig is moet deze hardware dan ook niet in de hoofdvraag komen?
+
+benodigde methoden voor tweede deelvraag (firmware):
+Beschrijvend: Wat moet de firmware gaan doen? Vooronderzoek (functioneel ontwerp/ MoSCoW-analyse?) Welke libraries zijn hiervoor? (wel in onderzoek denk ik?) Welke algoritmes zijn nodig?
+Vergelijkend: Kan misschien samengevoegd worden met beschrijvend?
+Definiërend: Specificaties van onze EEG in combinatie met de firmware?
+Evaluerend: Vooronderzoek?
+Verklarend: ?
+Ontwerpend: De hoofdvraag?
+
+Deelvraag of er al hardware matig gefilterd kan worden
+
+#aantekening#
+
+* Randvoorwaarden
+** Apparatuur en Tools
+In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit project en of deze al aanwezig is.
+
+#+ATTR_LATEX: :environment longtable :align |l|l|p{4cm}|p{3cm}|
+|-------------------+--------+------------------------------------------+----------------|
+| Tool              | Aantal | Toelichting                              | Aanwezig       |
+|-------------------+--------+------------------------------------------+----------------|
+|                   |        | <40>                                     | <14>           |
+| Ontwikkelomgeving |      2 | Dit is nodig om de code te schrijven en te compileren. | Ja             |
+| Meetapparatuur    |      1 | Apparatuur als een oscilloscoop en Multimeter. | ja, in het turing lab. Ook hebben beide onderzoekers beide apparatuur in bezit. |
+| EEG-Hardware      | n.v.t. | De hardware benodigd voor het maken van het PoC. | Nee            |
+| Bestaand EEG      |      1 | Een bestaand EEG systeem om het eigen gemaakte EEG mee te kunnen vergelijken. | Nee            |
+|-------------------+--------+------------------------------------------+----------------|
+
+** Risico’s
+In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen met daarbij een maatregel hoe dit risico kan worden beperkt of helemaal kan worden voorkomen.
+
+#+ATTR_LATEX: :environment longtable :align |p{6cm}|p{6cm}|
+|--------------------------------+----------------------------------------------------|
+| Risico                         | Maatregel                                          |
+|--------------------------------+----------------------------------------------------|
+| <30>                           | <50>                                               |
+| Lange levertijd van hardware   | Op tijd de hardware bestellen.                     |
+|                                | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
+|                                | Planning herevalueren.                             |
+| Defecte hardware               | Nieuwe of alternatieve hardware met gelijke werking bestellen/gebruiken. |
+|                                | Planning herevalueren.                             |
+| Hardware niet leverbaar        | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
+| Voor benodigde literatuur moet worden betaald | Aan de begeleider vragen of hij hier toegang tot kan krijgen. |
+|--------------------------------+----------------------------------------------------|
+
+* Bronnen
+NeuroSky. (z.d.). NeuroSky MindWave Mobile 2: Brainwave Starter Kit. Geraadpleegd op 10 september 2018, van https://www.amazon.com/NeuroSky-MindWave-Mobile-Brainwave-Starter/dp/B07CXN8NKX/
+
+Cognionics. (z.d.). Cognionics Dry EEG Headsets and Dry Electrode Sensors. Geraadpleegd op 10 september 2018, van https://www.cognionics.net/us-price
+
+Polich, J. (z.d.). Updating P300: An Integrative Theory of P3a and P3b. Geraadpleegd op 10 september 2018, van https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2715154/
+
+Olkkonen, H., Pesola, P., Olkkonen, J., Valljakka, A., & Tuomisto, L. (2002, 21 november). EEG noise cancellation by a subspace method based on wavelet decomposition. Geraadpleegd op 20 september 2018, van https://www.medscimonit.com/abstract/index/idArt/4828/act/2
+
+Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf
+handige links:
+https://www.researchgate.net/profile/Norhashimah_Mohd_Saad/publication/296058954_Development_of_an_EEG_Amplifier_for_Real-Time_Acquisition/links/56d1cadd08ae85c8234acb1e/Development-of-an-EEG-Amplifier-for-Real-Time-Acquisition.pdf?origin=publication_detail
+https://www.sciencedirect.com/science/article/pii/S0167876006000213?via%3Dihub
+
+uitleg van hersengolfen:
+http://quickscience.e-monsite.com/pages/synthesis-of-most-commonly-studied-erps.html
+
+EEG Artifact Removal:
+https://sccn.ucsd.edu/~jung/Site/EEG_artifact_removal.html
+
+OpenBCI Schematics
+http://docs.openbci.com/Hardware/02-Cyton
+
+Over p300:
+https://reader.elsevier.com/reader/sd/pii/S0957417416307205?token=2B45FD6FF8BA829DB72D993E03466D670C10ABA1234BA1E69D964FA5D010D95B7E5DA2C84CA55F93F5033DCD662354D8
+
+Geen onderzoek maar wel interessant:
+https://eeghacker.blogspot.com/2013/11/homemade-passive-electrodes.html
+
+.
+geen toegang tot:
+http://science.sciencemag.org/content/150/3700/1187/tab-pdf
+https://www.tandfonline.com/doi/abs/10.1080/21646821.2014.11079932
