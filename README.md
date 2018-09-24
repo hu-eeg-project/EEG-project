@@ -1,2 +1,1 @@
-# EEG-project
-The repository for the EEG project
+repo for EEG-project
