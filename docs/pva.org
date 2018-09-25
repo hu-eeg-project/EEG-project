@@ -29,9 +29,17 @@
 | Op-Amp            | Operationele Amplifier. Een chip die een analoog signaal kan versterken. |
 | PoC               | Proof of Concept.                                                   |
 |-------------------+---------------------------------------------------------------------|
-
+#+LATEX: \newpage
 * Inleiding
-Brein Computer Interfaces is een opkomende manier om de computer te kunnen besturen. Volgens de Hype Cycle van Gartner is een Brein Computer Interface op dit moment "On the Rise", dat houdt in dat het een opkomende techniek is. Hierdoor is het dus een interessant onderwerp om onderzoek over te doen. Ook is het een leerzaam iets voor huidige en toekomstige studenten. Hiervoor is het Turing Lab van de Hogeschool Utrecht dus ook geïnteresseerd om een betaalbare Brein Computer Interface te hebben. Tijdens dit onderzoek zullen we specifiek op een EEG focussen wat de hersengolven meet. Dit zal gedaan worden door middel van elektrodes die op het hoofd worden geplaatst waarvan de stroom wordt gemeten.
+Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren. 
+Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG op de basis van BCI ligt. Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm te bewegen
+
+#+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset 
+#+NAME: fig:bci_headset
+#+ATTR_LATEX: :width 250px
+#+ATTR_LATEX: :height 250px
+[[./images/bci_headset.jpg]]
+#+LATEX: \newpage
 
 * Aanleiding en Context
 Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. Met het maken van een eigen EEG kan ook veel geleerd worden en kan ook voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Ook kan deze dan gebruikt worden voor nieuwe lesstof indien nodig. En is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen.
