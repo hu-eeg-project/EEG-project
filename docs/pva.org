@@ -153,30 +153,6 @@ Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een be
 ** De EEG-firmware
 Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
 
-
-* #aantekening#
-benodigde methoden voor eerste deelvraag (hardware):
-Beschrijvend: Welke hardware onderdelen zijn nodig? Doen we in het vooronderzoek
-Vergelijkend: Een deelvraag om onze hardware te vergelijken met een andere EEG band? Deelvragen om hardwarecomponenten te vergelijken?
-Definiërend: Een deelvraag om specificaties over onze EEG te meten?
-Evaluerend: Deze komt samen met de deelvragen van ontwerpend
-Verklarend: Volgens les zal er iets van Verklarend voor de ontwerpend vragen moeten komen? Misschien een vraag over waarom onze EEG beter of slechter is dan de andere?
-Ontwerpend: De hoofdvraag? miss ook een deelvraag?
-
-Als bij vooronderzoek al duidelijke is welke hardware nodig is moet deze hardware dan ook niet in de hoofdvraag komen?
-
-benodigde methoden voor tweede deelvraag (firmware):
-Beschrijvend: Wat moet de firmware gaan doen? Vooronderzoek (functioneel ontwerp/ MoSCoW-analyse?) Welke libraries zijn hiervoor? (wel in onderzoek denk ik?) Welke algoritmes zijn nodig?
-Vergelijkend: Kan misschien samengevoegd worden met beschrijvend?
-Definiërend: Specificaties van onze EEG in combinatie met de firmware?
-Evaluerend: Vooronderzoek?
-Verklarend: ?
-Ontwerpend: De hoofdvraag?
-
-Deelvraag of er al hardware matig gefilterd kan worden
-
-#aantekening#
-
 * Randvoorwaarden
 ** Apparatuur en Tools
 In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit project en of deze al aanwezig is.
