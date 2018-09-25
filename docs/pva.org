@@ -49,10 +49,15 @@ Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon he
 - Delta golven: 0.5 tot 4 Hz
 - Theta golven: 4 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
-- Beta golven: 13 Hz to 40 Hz
+- Beta golven: 13 Hz tot 40 Hz
 - Gamma golven: >40 Hz
 
-De bekendste hersengolf is de p300 hersengolf deze valt in de. P300 is een hersengolf welke 2 vormen kent, namelijk de p3a en de p3b. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht eisen, zoals een lichtflits. De p3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steed meer op een p3b gaan lijken waarbij de hersenen data uit de het geheugen verwerken (Polich, z.d.).
+De bekendste hersengolf is de p300 hersengolf deze valt in de. P300 is een hersengolf welke 2 vormen kent, namelijk de p3a en de p3b. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht eisen, zoals een lichtflits. De p3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een p3b gaan lijken waarbij de hersenen data uit de het geheugen verwerken (Polich, z.d.).
+
+#+CAPTION: p3a en p3b golf
+#+NAME: fig:P300GOLF
+#+ATTR_LATEX: :width 200px
+[[./images/p3ab.png]]
 
 ** Signaalmeting
 In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te meten. Uit vooronderzoek is gebleken dat voor het meten van hersengolven een elektrode en een analoog-digitaal converter (ADC) nodig is. Echter is nog niet duidelijk wat de precieze eisen zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal elk elektrode en ADC kort worden uitgelegd:
@@ -188,9 +193,12 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 | Lange levertijd van hardware   | Op tijd de hardware bestellen.                     |
 |                                | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
 |                                | Planning herevalueren.                             |
+|--------------------------------+----------------------------------------------------|
 | Defecte hardware               | Nieuwe of alternatieve hardware met gelijke werking bestellen/gebruiken. |
 |                                | Planning herevalueren.                             |
+|--------------------------------+----------------------------------------------------|
 | Hardware niet leverbaar        | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
+|--------------------------------+----------------------------------------------------|
 | Voor benodigde literatuur moet worden betaald | Aan de begeleider vragen of hij hier toegang tot kan krijgen. |
 |--------------------------------+----------------------------------------------------|
 
