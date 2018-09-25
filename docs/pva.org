@@ -28,11 +28,11 @@
 | Hardwarecomponent | Meer specifiek dan hardware deel bijvoorbeeld een specifieke chip.  |
 | PoC               | Proof of Concept.                                                   |
 |-------------------+---------------------------------------------------------------------|
-|                   |                                                                     |
 
 * Inleiding
+
 * Aanleiding en Context
-  Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky (NeuroSky, z.d.) welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4500 tot 50,000 euro kunnen kosten (Cognionics, z.d.). Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4500 euro kost 8 channels. Met het maken van een eigen EEG kan ook veel geleerd worden en kan ook voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Ook kan deze dan gebruikt worden voor nieuwe lesstof indien nodig. En is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen.
+Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4500 tot 50,000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4500 euro kost 8 channels. Met het maken van een eigen EEG kan ook veel geleerd worden en kan ook voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Ook kan deze dan gebruikt worden voor nieuwe lesstof indien nodig. En is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen.
 
 ** Use case
 Een voorbeeld van een use case waar een EEG-systeem als deze voor gebruikt kan worden is een P300-toetsenbord. Via een P300-toetsenbord kan door naar een toets van een toetsenbord op een scherm te kijken deze toets getypt worden. Dit werkt doordat als deze toets flitst met een andere kleur terwijl er naar gekeken wordt het brein een P300 golf maakt, deze kan gedetecteerd worden en zo weet de computer dat deze letter bedoeld wordt. Zo een toetsenbord kan goed gebruikt worden door ALS-patiënten die problemen hebben om te praten of te typen doordat ze weinig tot geen controle hebben over de benodigde spieren. Vaak is er dan nog wel controle over de spieren om de ogen te besturen waardoor deze mensen nog wel kunnen praten via een P300-toetsenbord welke aangesloten is aan tekst-naar-spraak computer.
@@ -44,21 +44,15 @@ De organisatie waarvoor het EEG systeem onderzocht wordt is het Turing Lab. Dit 
 De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Technische Informatica. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen. Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd zoals bijvoorbeeld het EEG systeem.
 
 * Theoretisch kader
-
 ** Hersengolven
-Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen. Hij is ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0.5 tot 100 µV (Teplan, 2002). Hersengolven zijn te verdelen in 5 categorieën (Teplan, 2002), deze zijn:
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen. Hij is ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0.5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn te verdelen in 5 categorieën cite:EEG_fundamenental, deze zijn:
 - Delta golven: 0.5 tot 4 Hz
 - Theta golven: 4 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
 - Beta golven: 13 Hz tot 40 Hz
 - Gamma golven: >40 Hz
 
-De bekendste hersengolf is de p300 hersengolf deze valt in de. P300 is een hersengolf welke 2 vormen kent, namelijk de p3a en de p3b. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht eisen, zoals een lichtflits. De p3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een p3b gaan lijken waarbij de hersenen data uit de het geheugen verwerken (Polich, z.d.).
-
-#+CAPTION: p3a en p3b golf
-#+NAME: fig:P300GOLF
-#+ATTR_LATEX: :width 200px
-[[./images/p3ab.png]]
+De bekendste hersengolf is de p300 hersengolf deze valt in de. P300 is een hersengolf welke 2 vormen kent, namelijk de p3a en de p3b. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht eisen, zoals een lichtflits. De p3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een p3b gaan lijken waarbij de hersenen data uit de het geheugen verwerken cite:polich07_updat_p300.
 
 ** Signaalmeting
 In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te meten. Uit vooronderzoek is gebleken dat voor het meten van hersengolven een elektrode en een analoog-digitaal converter (ADC) nodig is. Echter is nog niet duidelijk wat de precieze eisen zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal elk elektrode en ADC kort worden uitgelegd:
@@ -70,7 +64,7 @@ Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met 
 De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 10 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sample frequentie hoeft niet heel snel te zijn en kan met zo een
 
 ** Signaalverwerking
-   Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven.
+Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven.
 
 ** Gerelateerde werk
 De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
@@ -178,8 +172,8 @@ In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit p
 |-------------------+--------+------------------------------------------+----------------|
 |                   |        | <40>                                     | <14>           |
 | Ontwikkelomgeving |      2 | Dit is nodig om de code te schrijven en te compileren. | Ja             |
-| Meetapparatuur    |      1 | Apparatuur als een oscilloscoop en Multimeter. | ja, in het turing lab. Ook hebben beide onderzoekers beide apparatuur in bezit. |
-| EEG-Hardware      | n.v.t. | De hardware benodigd voor het maken van het PoC. | Nee            |
+| Meetapparatuur    |      1 | Apparatuur als een oscilloscoop en multimeter. | ja, in het Turing lab. Ook hebben beide onderzoekers beide apparatuur in bezit. |
+| EEG-hardware      | n.v.t. | De hardware benodigd voor het maken van het PoC. | Nee            |
 | Bestaand EEG      |      1 | Een bestaand EEG systeem om het eigen gemaakte EEG mee te kunnen vergelijken. | Nee            |
 |-------------------+--------+------------------------------------------+----------------|
 
@@ -194,12 +188,9 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 | Lange levertijd van hardware   | Op tijd de hardware bestellen.                     |
 |                                | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
 |                                | Planning herevalueren.                             |
-|--------------------------------+----------------------------------------------------|
 | Defecte hardware               | Nieuwe of alternatieve hardware met gelijke werking bestellen/gebruiken. |
 |                                | Planning herevalueren.                             |
-|--------------------------------+----------------------------------------------------|
 | Hardware niet leverbaar        | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
-|--------------------------------+----------------------------------------------------|
 | Voor benodigde literatuur moet worden betaald | Aan de begeleider vragen of hij hier toegang tot kan krijgen. |
 |--------------------------------+----------------------------------------------------|
 
@@ -208,15 +199,7 @@ bibliographystyle:apalike
 bibliography:sources.bib
 
 #+LATEX: \newpage
-NeuroSky. (z.d.). NeuroSky MindWave Mobile 2: Brainwave Starter Kit. Geraadpleegd op 10 september 2018, van https://www.amazon.com/NeuroSky-MindWave-Mobile-Brainwave-Starter/dp/B07CXN8NKX/
 
-Cognionics. (z.d.). Cognionics Dry EEG Headsets and Dry Electrode Sensors. Geraadpleegd op 10 september 2018, van https://www.cognionics.net/us-price
-
-Polich, J. (z.d.). Updating P300: An Integrative Theory of P3a and P3b. Geraadpleegd op 10 september 2018, van https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2715154/
-
-Olkkonen, H., Pesola, P., Olkkonen, J., Valljakka, A., & Tuomisto, L. (2002, 21 november). EEG noise cancellation by a subspace method based on wavelet decomposition. Geraadpleegd op 20 september 2018, van https://www.medscimonit.com/abstract/index/idArt/4828/act/2
-
-Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf
 handige links:
 https://www.researchgate.net/profile/Norhashimah_Mohd_Saad/publication/296058954_Development_of_an_EEG_Amplifier_for_Real-Time_Acquisition/links/56d1cadd08ae85c8234acb1e/Development-of-an-EEG-Amplifier-for-Real-Time-Acquisition.pdf?origin=publication_detail
 https://www.sciencedirect.com/science/article/pii/S0167876006000213?via%3Dihub
