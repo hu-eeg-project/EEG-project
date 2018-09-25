@@ -20,12 +20,13 @@
 |-------------------+---------------------------------------------------------------------|
 |                   | <67>                                                                |
 | ADC               | Analog Digital Converter. Zet een analoge stroom om in een digitale waarde. |
-| Op-Amp            | Operationele Amplifier. Een chip die een analoog signaal kan versterken. |
-| Elektrode         | Component wat elektronisch contact maakt met het lichaam om stroom van hersenen te meten. |
-| EEG               | Elektro-encefalografie is een methode om hersenactiviteit te meten door de kleine elektrische stromen die de hersenen maken te meten. |
+| BCI               | Brein Computer Interface.                                           |
 | Channel           | In context met elektrode: een enkele elektrode met daarbij behorende hardware om hersenactiviteit te meten op een plek. In context met ADC: een input van de ADC waarop het de stroom kan omzetten in een digitale waarde. |
-| Hardwaredeel      | Een categorie van hardwarecomponenten zoals bijvoorbeeld een ADC of Op-Amp. |
+| EEG               | Elektro-encefalografie is een methode om hersenactiviteit te meten door de kleine elektrische stromen die de hersenen maken te meten. |
+| Elektrode         | Component wat elektronisch contact maakt met het lichaam om stroom van hersenen te meten. |
 | Hardwarecomponent | Meer specifiek dan hardware deel bijvoorbeeld een specifieke chip.  |
+| Hardwaredeel      | Een categorie van hardwarecomponenten zoals bijvoorbeeld een ADC of Op-Amp. |
+| Op-Amp            | Operationele Amplifier. Een chip die een analoog signaal kan versterken. |
 | PoC               | Proof of Concept.                                                   |
 |-------------------+---------------------------------------------------------------------|
 
