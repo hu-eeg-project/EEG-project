@@ -17,7 +17,7 @@
 
 #+LATEX: \begin{minipage}{0.4\textwidth}
 #+LATEX: \begin{flushleft} \large
-#+LATEX: \emph{Project Begeleider:}\\
+#+LATEX: \emph{Projectbegeleider:}\\
 #+LATEX: Jorn Bunk\\
 #+LATEX: \end{flushleft}
 #+LATEX: \end{minipage}~

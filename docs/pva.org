@@ -13,8 +13,8 @@
 
 #+LATEX: \renewcommand{\contentsname}{Inhoudsopgave}
 #+LATEX: \tableofcontents
-#+LATEX: \newpage
 
+#+LATEX: \newpage
 #+LATEX: \pagenumbering{arabic}
 
 * Begrippen
@@ -37,14 +37,12 @@
 * Inleiding
 Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren.
 Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG op de basis van BCI ligt. Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm te bewegen
-
 #+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset
 #+NAME: fig:bci_headset
 #+ATTR_LATEX: :width 250px
 #+ATTR_LATEX: :height 250px
 [[./images/bci_headset.jpg]]
 #+LATEX: \newpage
-
 * Aanleiding en Context
 Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. Met het maken van een eigen EEG kan ook veel geleerd worden en kan ook voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Ook kan deze dan gebruikt worden voor nieuwe lesstof indien nodig. En is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen.
 
@@ -58,7 +56,6 @@ De organisatie waarvoor het EEG systeem onderzocht wordt is het Turing Lab. Dit 
 De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Technische Informatica. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen. Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd zoals bijvoorbeeld het EEG systeem.
 
 #+LATEX: \newpage
-
 * Theoretisch kader
 ** Hersengolven
 Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen. Hij is ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0.5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn te verdelen in 5 categorieën cite:EEG_fundamenental, deze zijn:
@@ -100,13 +97,12 @@ OpenBCI. (z.d.). OpenBCI Cyton. Geraadpleegd op 21 september 2018, van http://do
 Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf
 
 #+LATEX: \newpage
-
 * Doelstelling
 De uiteindelijke doelstelling van dit project is het maken van een EEG-systeem waar andere studenten op voort kunnen bouwen. Dit EEG-systeem zou tenminste een P300-signaal bij de onderzoekers kunnen detecteren. Het EEG-systeem is bedoeld om te kunnen worden gebruikt voor studenten. Hiervoor moet het prototype dus goed gedocumenteerd worden en uitbreidbaar zijn. Aangezien het systeem voor het onderwijs is bedoeld mag het niet te duur zijn dus wordt de prijs gelimiteerd tot onder de 250 euro.
-
+#+LATEX: \newpage
 * Probleemanalyse / Probleemstelling
 Op de Hogeschool Utrecht is het nodig up to date te blijven met nieuw ontwikkelende technologieën. In dit geval gaat het om een Brain-computer interfacing (BCI) systeem waarop ook in de toekomst verder aan gewerkt kan worden door nieuwe studenten. Daarvoor zal er dus onderzoek gedaan moeten worden naar hoe een EEG systeem in elkaar zit en hoe er een gemaakt kan worden voor een redelijke prijs aangezien de meeste op de markt op dit moment zeer duur zijn.
-
+#+LATEX: \newpage
 * Vraagstelling
 Dit hoofdstuk benoemd en omschrijft de vragen die tijdens dit onderzoek zullen worden beantwoord. Als eerst wordt de hoofdvraag toegelicht en daarna zullen de deelvragen aan de pas komen. Na het stellen van het probleem is er de volgende opgesteld: *Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?* De minimale eisen voor de EEG zijn:
 + Het kan minimaal het P300 signaal detecteren bij de onderzoekers. Er is voor dit signaal gekozen omdat dit het meeste duidelijke signaal is, ook is het brein makkelijk te activeren om dit signaal te genereren.
@@ -121,13 +117,14 @@ De deelvragen zijn:
    3. Wat voor typen ruis zijn er in het ontvangen signaal?
    4. Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe?
 2. Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)?
-   1. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
-   2. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
-   3. Welk algoritme is het beste voor de signaalverwerking van de analoge data uit de elektroden?
+   1. Welk algoritme is het beste voor de signaalverwerking van de analoge data uit de elektroden?
+   2. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
+   3. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
    4. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
-3. Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)?
+   5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
+4. Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)?
    1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
-   2. Doet onze EEG het significant beter dan …. (star wars bijv.)
+   2. Doet onze EEG het significant beter dan de Starwars-EEG.
 4. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
 
 ** MoSCoW
@@ -151,7 +148,6 @@ Could Have:
 
 Won't Have:
 
-
 * Methode en Aanpak
 Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
 te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
@@ -163,9 +159,9 @@ gebruikt gaan worden staat in bijlage A.Dit hoofdstuk beschrijft deze tabel in m
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 |   | <15>            | <15>            | <15>            | <15>            | <15>            |
 | 1 | Welke hardware is nodig om een EEG te maken tenminste voldoet aan de gestelde eisen? | Ontwerpend      | Workshop        | prototyping     | PoC             |
-| a | Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen? | Beschrijvend    | Library         | Literature-study | MoSCoW-lijst    |
+| a | Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen? | Beschrijvend    | Library         | Literatuurstudie | MoSCoW-lijst    |
 | b | Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen? | Vergelijken, evaluerend | Lab of Field    | data analytics of observation | Componentenlijst |
-| c | Wat voor typen ruis zijn er in het ontvangen signaal? | Evaluerend, verklarend | Lab             | Data analytics  | lijst van bekende ruis-soorten |
+| c | Wat voor typen ruis zijn er in het ontvangen signaal? | Evaluerend, verklarend | Lab             | Data analytics  | lijst van bekende ruissoorten  |
 | d | Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe? | Ontwerpend      | Workshop, Field | prototypes, observation | Eventueel aangepast PoC met hardware filtering |
 | 2 | Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)? | Ontwerpend      | Workshop        | Prototyping     | Functioneel ontwerp |
 | a | Is er nog overgebleven ruis na de hardware filtering? Zo ja, hoe kan dit softwarematig weg gefilterd worden? | Beschrijvend    | Bieb, Workshop  | Literature study, Prototyping | Oplossing tegen ruis in het PoC |
@@ -189,7 +185,6 @@ Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een be
 Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
 
 #+LATEX: \newpage
-
 * Randvoorwaarden
 ** Apparatuur en Tools
 In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit project en of deze al aanwezig is.
@@ -223,33 +218,18 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 |--------------------------------+----------------------------------------------------|
 
 #+LATEX: \newpage
+* Planning
+In dit hoofdstuk zal de planning voor dit onderzoek worden neergezet.
+In de onderstaande tabel kan de globale planning worden gevonden.
+#+LATEX: \newpage
 
 * Bronnen
 bibliographystyle:apalike
 bibliography:sources.bib
-
 #+LATEX: \newpage
-
-handige links:
-https://www.researchgate.net/profile/Norhashimah_Mohd_Saad/publication/296058954_Development_of_an_EEG_Amplifier_for_Real-Time_Acquisition/links/56d1cadd08ae85c8234acb1e/Development-of-an-EEG-Amplifier-for-Real-Time-Acquisition.pdf?origin=publication_detail
-https://www.sciencedirect.com/science/article/pii/S0167876006000213?via%3Dihub
-
-uitleg van hersengolfen:
-http://quickscience.e-monsite.com/pages/synthesis-of-most-commonly-studied-erps.html
-
-EEG Artifact Removal:
-https://sccn.ucsd.edu/~jung/Site/EEG_artifact_removal.html
-
-OpenBCI Schematics
-http://docs.openbci.com/Hardware/02-Cyton
-
-Over p300:
-https://reader.elsevier.com/reader/sd/pii/S0957417416307205?token=2B45FD6FF8BA829DB72D993E03466D670C10ABA1234BA1E69D964FA5D010D95B7E5DA2C84CA55F93F5033DCD662354D8
-
-Geen onderzoek maar wel interessant:
-https://eeghacker.blogspot.com/2013/11/homemade-passive-electrodes.html
-
-.
-geen toegang tot:
-http://science.sciencemag.org/content/150/3700/1187/tab-pdf
-https://www.tandfonline.com/doi/abs/10.1080/21646821.2014.11079932
+* Bijlage
+** Bijlage A
+#+LATEX_ATTR: :width 100px
+[[./images/planning.png]]
+#+LATEX: \newpage
+** bijlage B
