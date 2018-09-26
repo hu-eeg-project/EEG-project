@@ -11,6 +11,23 @@
 #+LATEX: \newpage
 #+LATEX: \pagenumbering{roman}
 
+* Algemene informatie
+*Opleiding*: Technische Informatica \\
+*Organisatie*: Hogeschool Utrecht \\
+*Begeleider*: J. Bunk \\
+\\
+*auteur 1:*
+- *Naam:* Stefan de Beer
+- *Telefoonnummer:* 0611873666
+- *E-mail:* stefan.debeer@student.hu.nl
+- *Studentennummer:* 1684137
+*auteur 2:*
+- *naam*
+- *Telefoonnummer:*
+- *E-mail:*
+- *Studentennummer:* 1677247
+
+#+LATEX: \newpage
 #+LATEX: \renewcommand{\contentsname}{Inhoudsopgave}
 #+LATEX: \tableofcontents
 
@@ -36,7 +53,8 @@
 #+LATEX: \newpage
 * Inleiding
 Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren.
-Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG op de basis van BCI ligt. Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm te bewegen
+Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG op de basis van BCI ligt. Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm te bewegen. \\
+Dit onderzoek wordt gedaan door 2 studenten van technische Informatica aan de hogeschool Utrecht, voor het onderzoekssemester.
 #+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset
 #+NAME: fig:bci_headset
 #+ATTR_LATEX: :width 250px
@@ -44,13 +62,13 @@ Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersen
 [[./images/bci_headset.jpg]]
 #+LATEX: \newpage
 * Aanleiding en Context
-Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. Met het maken van een eigen EEG kan ook veel geleerd worden en kan ook voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Ook kan deze dan gebruikt worden voor nieuwe lesstof indien nodig. En is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen.
+Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. Met het maken van een eigen EEG kan ook veel geleerd worden en kan ook voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. En is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen.
 
 ** Use case
 Een voorbeeld van een use case waar een EEG-systeem als deze voor gebruikt kan worden is een P300-toetsenbord. Via een P300-toetsenbord kan door naar een toets van een toetsenbord op een scherm te kijken deze toets getypt worden. Dit werkt doordat als deze toets flitst met een andere kleur terwijl er naar gekeken wordt het brein een P300 golf maakt, deze kan gedetecteerd worden en zo weet de computer dat deze letter bedoeld wordt. Zo een toetsenbord kan goed gebruikt worden door ALS-patiënten die problemen hebben om te praten of te typen doordat ze weinig tot geen controle hebben over de benodigde spieren. Vaak is er dan nog wel controle over de spieren om de ogen te besturen waardoor deze mensen nog wel kunnen praten via een P300-toetsenbord welke aangesloten is aan tekst-naar-spraak computer.
 
 ** De Organisatie
-De organisatie waarvoor het EEG systeem onderzocht wordt is het Turing Lab. Dit is een werkplaats voor Technische Informatica studenten aan de Hogeschool Utrecht. Hier staan verschillende apparatuur rond zoals soldeerapparaten.
+De organisatie waarvoor het EEG systeem onderzocht wordt is het Turing Lab. Het Turing Lab is een werkplek voor studenten en docenten op de Hogeschool Utrecht. Dit lab is vooral gericht op studenten en docenten van de opleiding Technische Informatica.
 
 ** Opdrachtgever
 De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Technische Informatica. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen. Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd zoals bijvoorbeeld het EEG systeem.
@@ -149,7 +167,7 @@ Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware n
 #+LATEX: \newpage
 * Randvoorwaarden
 ** Scope
-Om de scope van dit onderzoek aan te geven is de onderstaande MoSCoW-lijst opgesteld:
+Om de scope van dit onderzoek aan te geven is de onderstaande MoSCoW-lijst opgesteld: \\
 Must Have:
 - 1 Elektrode waarvan het signaal gemeten kan worden.
 - P300 golf detecteren.

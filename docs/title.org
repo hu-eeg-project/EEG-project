@@ -25,8 +25,8 @@
 
 #+LATEX: \begin{flushright} \large
 #+LATEX: \emph{Gemaakt Door:} \\
-#+LATEX: Stefan de Beer - 1684137\\
-#+LATEX: Paul Ettema - 1677247\\
+#+LATEX: Stefan de Beer\\
+#+LATEX: Paul Ettema\\
 #+LATEX: \end{flushright}
 
 #+LATEX: \end{minipage}\\[2 cm]
