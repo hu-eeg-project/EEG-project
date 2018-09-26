@@ -1,9 +1,13 @@
 #+TITLE: PvA
-#+OPTIONS: toc:nil
+#+OPTIONS: title:nil toc:nil
 #+LATEX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[margin=3cm]{geometry}
+#+LATEX_HEADER: \usepackage{pdfpages}
+#+LATEX_HEADER: \usepackage[dutch]{babel}
+#+LATEX_HEADER: \setlength{\parindent}{0em}
 
-#+LATEX: \begin{titlepage}
-#+LATEX: \end{titlepage}
+#+INCLUDE: title.org
+
 #+LATEX: \newpage
 #+LATEX: \pagenumbering{roman}
 
@@ -31,10 +35,10 @@
 |-------------------+---------------------------------------------------------------------|
 #+LATEX: \newpage
 * Inleiding
-Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren. 
+Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren.
 Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG op de basis van BCI ligt. Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm te bewegen
 
-#+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset 
+#+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset
 #+NAME: fig:bci_headset
 #+ATTR_LATEX: :width 250px
 #+ATTR_LATEX: :height 250px
@@ -52,6 +56,8 @@ De organisatie waarvoor het EEG systeem onderzocht wordt is het Turing Lab. Dit 
 
 ** Opdrachtgever
 De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Technische Informatica. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen. Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd zoals bijvoorbeeld het EEG systeem.
+
+#+LATEX: \newpage
 
 * Theoretisch kader
 ** Hersengolven
@@ -75,6 +81,11 @@ In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om de
 *** Elektrode
 Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd om hersengolven te meten. Hierbij is het nodig een goede elektrische verbinding te maken om ruis te verminderen bij het versterken van het elektronische signaal om dit meetbaar te maken. Voor het verbeteren van het contact kan een gel gebruikt worden. Tussen elektrodes zit ook nog een verschil op verschillende attributen, zo hebben ze verschillende groottes en zijn sommige herbruikbaar en andere maar te gebruiken voor een keer.
 
+#+CAPTION: Elektrode cite:EEG_Elektrode
+#+NAME: fig:ELEKTRODE
+#+ATTR_LATEX: :width 200px
+[[./images/grass_silver_cup_electrodes_single.jpg]]
+
 *** ADC
 De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 10 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sample frequentie hoeft niet heel snel te zijn en kan met zo een
 
@@ -87,6 +98,8 @@ Lafuente, V., Gorriz, J. M., Ramirez, J., & Gonzales, E. (2017, 15 mei). P300 br
 Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf
 OpenBCI. (z.d.). OpenBCI Cyton. Geraadpleegd op 21 september 2018, van http://docs.openbci.com/Hardware/02-Cyton
 Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf
+
+#+LATEX: \newpage
 
 * Doelstelling
 De uiteindelijke doelstelling van dit project is het maken van een EEG-systeem waar andere studenten op voort kunnen bouwen. Dit EEG-systeem zou tenminste een P300-signaal bij de onderzoekers kunnen detecteren. Het EEG-systeem is bedoeld om te kunnen worden gebruikt voor studenten. Hiervoor moet het prototype dus goed gedocumenteerd worden en uitbreidbaar zijn. Aangezien het systeem voor het onderwijs is bedoeld mag het niet te duur zijn dus wordt de prijs gelimiteerd tot onder de 250 euro.
@@ -117,6 +130,28 @@ De deelvragen zijn:
    2. Doet onze EEG het significant beter dan …. (star wars bijv.)
 4. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
 
+** MoSCoW
+Must Have:
+- 1 Elektrode waarvan het signaal gemeten kan worden.
+- P300 golf detecteren.
+- Hardware lijst van benodigde componenten.
+- Ruis filtering
+- Functioneel ontwerp
+- Test Rapport
+
+Should Have:
+- Meerdere Elektrodes waarvan het signaal gemeten kan worden.
+- P300-speller demo.
+- Logging van de EEG data.
+- Kwantitatief onderzoek naar ons EEG ten opzichte van de star wars EEG.
+
+Could Have:
+- Automatisch kalibreren indien nodig.
+- Bluetooth / WiFi connectie.
+
+Won't Have:
+
+
 * Methode en Aanpak
 Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
 te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
@@ -143,7 +178,7 @@ gebruikt gaan worden staat in bijlage A.Dit hoofdstuk beschrijft deze tabel in m
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 
 ** Benodigde Hardware EEG
-Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literature study toegepast worden. Zo zal naar papers gezocht worden waarin onderzoek gedaan worden naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende hardware functionaliteiten van een EEG en wat daarvoor nodig is.
+Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literature study toegepast worden. Zo zal naar papers gezocht worden waarin onderzoek gedaan worden naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende hardware functionaliteiten van een EEG en wat daarvoor nodig is. \\
 
 Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingslijst worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.
 
@@ -153,11 +188,13 @@ Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een be
 ** De EEG-firmware
 Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
 
+#+LATEX: \newpage
+
 * Randvoorwaarden
 ** Apparatuur en Tools
 In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit project en of deze al aanwezig is.
 
-#+ATTR_LATEX: :environment longtable :align |l|l|p{4cm}|p{3cm}|
+#+ATTR_LATEX: :align |l|l|p{4cm}|p{3cm}|
 |-------------------+--------+------------------------------------------+----------------|
 | Tool              | Aantal | Toelichting                              | Aanwezig       |
 |-------------------+--------+------------------------------------------+----------------|
@@ -171,7 +208,7 @@ In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit p
 ** Risico’s
 In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen met daarbij een maatregel hoe dit risico kan worden beperkt of helemaal kan worden voorkomen.
 
-#+ATTR_LATEX: :environment longtable :align |p{6cm}|p{6cm}|
+#+ATTR_LATEX: :align |p{6cm}|p{6cm}|
 |--------------------------------+----------------------------------------------------|
 | Risico                         | Maatregel                                          |
 |--------------------------------+----------------------------------------------------|
@@ -184,6 +221,8 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 | Hardware niet leverbaar        | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
 | Voor benodigde literatuur moet worden betaald | Aan de begeleider vragen of hij hier toegang tot kan krijgen. |
 |--------------------------------+----------------------------------------------------|
+
+#+LATEX: \newpage
 
 * Bronnen
 bibliographystyle:apalike

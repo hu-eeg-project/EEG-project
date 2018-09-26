@@ -1,0 +1,33 @@
+#+LATEX: \pagestyle{fancy}
+#+LATEX: \fancyhf{}
+#+LATEX: \rhead{\theauthor}
+#+LATEX: \lhead{\thetitle}
+#+LATEX: \cfoot{\thepage}
+
+#+LATEX: \begin{document}
+
+#+LATEX: \begin{titlepage}
+#+LATEX: \centering
+#+LATEX: \vspace*{0.5 cm}
+#+LATEX: \includegraphics[scale = 0.2]{./images/hu-logo.jpg}\\[1.0 cm]
+#+LATEX: \textsc{\LARGE Hogeschool Utrecht\newline\newline Technische Informatica}\\[1.0 cm]
+#+LATEX: \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+#+LATEX: { \huge \bfseries PvA EEG-Systeem}\\
+#+LATEX: \rule{\linewidth}{0.2 mm} \\[1.5 cm]
+
+#+LATEX: \begin{minipage}{0.4\textwidth}
+#+LATEX: \begin{flushleft} \large
+#+LATEX: \emph{Project Begeleider:}\\
+#+LATEX: Jorn Bunk\\
+#+LATEX: \end{flushleft}
+#+LATEX: \end{minipage}~
+#+LATEX: \begin{minipage}{0.4\textwidth}
+
+#+LATEX: \begin{flushright} \large
+#+LATEX: \emph{Gemaakt Door:} \\
+#+LATEX: Stefan de Beer - 1684137\\
+#+LATEX: Paul Ettema - 1677247\\
+#+LATEX: \end{flushright}
+
+#+LATEX: \end{minipage}\\[2 cm]
+#+LATEX: \end{titlepage}
