@@ -128,6 +128,28 @@ De deelvragen zijn:
 4. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
 
 ** MoSCoW
+#+LATEX: \newpage
+
+* Methode en Aanpak
+Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
+te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
+gebruikt gaan worden staat in bijlage A.Dit hoofdstuk beschrijft deze tabel in meer detail.
+
+** Benodigde Hardware EEG
+Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literature study toegepast worden. Zo zal naar papers gezocht worden waarin onderzoek gedaan worden naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende hardware functionaliteiten van een EEG en wat daarvoor nodig is. \\
+
+Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingslijst worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.
+
+** Ruisfiltering
+Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is cite:EEG_nois_canc. Daarom zal worden onderzocht welke typen ruis er in het gemeten signaal zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literature study worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
+
+** De EEG-firmware
+Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
+
+#+LATEX: \newpage
+* Randvoorwaarden
+** Scope
+Om de scope van dit onderzoek aan te geven is de onderstaande MoSCoW-lijst opgesteld:
 Must Have:
 - 1 Elektrode waarvan het signaal gemeten kan worden.
 - P300 golf detecteren.
@@ -148,44 +170,7 @@ Could Have:
 
 Won't Have:
 
-* Methode en Aanpak
-Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
-te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
-gebruikt gaan worden staat in bijlage A.Dit hoofdstuk beschrijft deze tabel in meer detail.
 
-#+ATTR_LATEX: :environment longtable :align |l|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{3cm}|
-|---+-----------------+-----------------+-----------------+-----------------+-----------------|
-| # | deelvraag       | type deelvraag  | methode dataverzameling | Methode analyse | Resultaat       |
-|---+-----------------+-----------------+-----------------+-----------------+-----------------|
-|   | <15>            | <15>            | <15>            | <15>            | <15>            |
-| 1 | Welke hardware is nodig om een EEG te maken tenminste voldoet aan de gestelde eisen? | Ontwerpend      | Workshop        | prototyping     | PoC             |
-| a | Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen? | Beschrijvend    | Library         | Literatuurstudie | MoSCoW-lijst    |
-| b | Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen? | Vergelijken, evaluerend | Lab of Field    | data analytics of observation | Componentenlijst |
-| c | Wat voor typen ruis zijn er in het ontvangen signaal? | Evaluerend, verklarend | Lab             | Data analytics  | lijst van bekende ruissoorten  |
-| d | Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe? | Ontwerpend      | Workshop, Field | prototypes, observation | Eventueel aangepast PoC met hardware filtering |
-| 2 | Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)? | Ontwerpend      | Workshop        | Prototyping     | Functioneel ontwerp |
-| a | Is er nog overgebleven ruis na de hardware filtering? Zo ja, hoe kan dit softwarematig weg gefilterd worden? | Beschrijvend    | Bieb, Workshop  | Literature study, Prototyping | Oplossing tegen ruis in het PoC |
-| b | Wat voor algoritmes zijn nodig om de benodigde hersengolven te detecteren? | Beschrijvend    | Bieb            | Literature study | Lijst van benodigde soorten algoritmes |
-| c | Welk algoritmes zijn het beste voor de signaalverwerking van de analoge data uit de elektroden? | Vergelijkend    | Workplace, Lab  | Prototyping, Data analytics | Aanbeveling voor een algoritme |
-| d | Welke C++/Python libraries zijn er om deze algoritmes toe te passen en welke is het beste, denkend aan performance? | Vergelijkend    | Showroom        | Benchmark test  | Aanbeveling voor gekozen libraries |
-| 3 | Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
-| 4 | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Field           | Survey          | Testrapport     |
-| a | Moet de EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? | Evaluerend      | Field           | Observatie      |                 |
-|---+-----------------+-----------------+-----------------+-----------------+-----------------|
-
-** Benodigde Hardware EEG
-Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literature study toegepast worden. Zo zal naar papers gezocht worden waarin onderzoek gedaan worden naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende hardware functionaliteiten van een EEG en wat daarvoor nodig is. \\
-
-Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingslijst worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.
-
-** Ruisfiltering
-Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is (Olkkonen, Pesola, Olkkonen, Valljakka, & Tuomisto, 2002). Daarom zal worden onderzocht welke typen ruis er in het gemeten signaal zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literature study worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
-
-** De EEG-firmware
-Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
-
-#+LATEX: \newpage
-* Randvoorwaarden
 ** Apparatuur en Tools
 In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit project en of deze al aanwezig is.
 
@@ -219,8 +204,7 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 
 #+LATEX: \newpage
 * Planning
-In dit hoofdstuk zal de planning voor dit onderzoek worden neergezet.
-In de onderstaande tabel kan de globale planning worden gevonden.
+De planning voor dit project kan worden gevonden in bijlage A.
 #+LATEX: \newpage
 
 * Bronnen
@@ -233,3 +217,22 @@ bibliography:sources.bib
 [[./images/planning.png]]
 #+LATEX: \newpage
 ** bijlage B
+#+ATTR_LATEX: :environment longtable :align |l|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{3cm}|
+|---+-----------------+-----------------+-----------------+-----------------+-----------------|
+| # | deelvraag       | type deelvraag  | methode dataverzameling | Methode analyse | Resultaat       |
+|---+-----------------+-----------------+-----------------+-----------------+-----------------|
+|   | <15>            | <15>            | <15>            | <15>            | <15>            |
+| 1 | Welke hardware is nodig om een EEG te maken tenminste voldoet aan de gestelde eisen? | Ontwerpend      | Workshop        | prototyping     | PoC             |
+| a | Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen? | Beschrijvend    | Library         | Literatuurstudie | MoSCoW-lijst    |
+| b | Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen? | Vergelijken, evaluerend | Lab of Field    | data analytics of observation | Componentenlijst |
+| c | Wat voor typen ruis zijn er in het ontvangen signaal? | Evaluerend, verklarend | Lab             | Data analytics  | lijst van bekende ruissoorten  |
+| d | Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe? | Ontwerpend      | Workshop, Field | prototypes, observation | Eventueel aangepast PoC met hardware filtering |
+| 2 | Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)? | Ontwerpend      | Workshop        | Prototyping     | Functioneel ontwerp |
+| a | Is er nog overgebleven ruis na de hardware filtering? Zo ja, hoe kan dit softwarematig weg gefilterd worden? | Beschrijvend    | Bieb, Workshop  | Literature study, Prototyping | Oplossing tegen ruis in het PoC |
+| b | Wat voor algoritmes zijn nodig om de benodigde hersengolven te detecteren? | Beschrijvend    | Bieb            | Literature study | Lijst van benodigde soorten algoritmes |
+| c | Welk algoritmes zijn het beste voor de signaalverwerking van de analoge data uit de elektroden? | Vergelijkend    | Workplace, Lab  | Prototyping, Data analytics | Aanbeveling voor een algoritme |
+| d | Welke C++/Python libraries zijn er om deze algoritmes toe te passen en welke is het beste, denkend aan performance? | Vergelijkend    | Showroom        | Benchmark test  | Aanbeveling voor gekozen libraries |
+| 3 | Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
+| 4 | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Field           | Survey          | Testrapport     |
+| a | Moet de EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? | Evaluerend      | Field           | Observatie      |                 |
+|---+-----------------+-----------------+-----------------+-----------------+-----------------|
