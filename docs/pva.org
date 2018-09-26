@@ -22,9 +22,9 @@
 - *E-mail:* stefan.debeer@student.hu.nl
 - *Studentennummer:* 1684137
 *auteur 2:*
-- *naam*
-- *Telefoonnummer:*
-- *E-mail:*
+- *Naam:* Paul Ettema
+- *Telefoonnummer:* 0630763224
+- *E-mail:* paul.ettema@student.hu.nl
 - *Studentennummer:* 1677247
 
 #+LATEX: \newpage
