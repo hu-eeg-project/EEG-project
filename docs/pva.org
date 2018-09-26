@@ -156,7 +156,6 @@ Must Have:
 - Hardware lijst van benodigde componenten.
 - Ruis filtering
 - Functioneel ontwerp
-- Test Rapport
 
 Should Have:
 - Meerdere Elektrodes waarvan het signaal gemeten kan worden.
@@ -169,7 +168,7 @@ Could Have:
 - Bluetooth / WiFi connectie.
 
 Won't Have:
-
+- Encryptie van data.
 
 ** Apparatuur en Tools
 In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit project en of deze al aanwezig is.
@@ -217,22 +216,25 @@ bibliography:sources.bib
 [[./images/planning.png]]
 #+LATEX: \newpage
 ** bijlage B
-#+ATTR_LATEX: :environment longtable :align |l|p{3cm}|p{2cm}|p{2cm}|p{2cm}|p{3cm}|
+#+ATTR_LATEX: :environment longtable :align |l|p{3.7cm}|p{2cm}|p{2cm}|p{2.7cm}|p{3cm}|
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 | # | deelvraag       | type deelvraag  | methode dataverzameling | Methode analyse | Resultaat       |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 |   | <15>            | <15>            | <15>            | <15>            | <15>            |
 | 1 | Welke hardware is nodig om een EEG te maken tenminste voldoet aan de gestelde eisen? | Ontwerpend      | Workshop        | prototyping     | PoC             |
 | a | Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen? | Beschrijvend    | Library         | Literatuurstudie | MoSCoW-lijst    |
-| b | Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen? | Vergelijken, evaluerend | Lab of Field    | data analytics of observation | Componentenlijst |
-| c | Wat voor typen ruis zijn er in het ontvangen signaal? | Evaluerend, verklarend | Lab             | Data analytics  | lijst van bekende ruissoorten  |
+| b | Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen en de kosten (totaal maximaal 250 euro)? | Vergelijken, evaluerend | Lab of Field    | data analytics of observation | Componentenlijst |
+| c | Wat voor typen ruis zijn er in het ontvangen signaal? | Evaluerend, verklarend | Lab             | Data analytics  | lijst van bekende ruissoorten |
 | d | Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe? | Ontwerpend      | Workshop, Field | prototypes, observation | Eventueel aangepast PoC met hardware filtering |
+|---+-----------------+-----------------+-----------------+-----------------+-----------------|
 | 2 | Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)? | Ontwerpend      | Workshop        | Prototyping     | Functioneel ontwerp |
-| a | Is er nog overgebleven ruis na de hardware filtering? Zo ja, hoe kan dit softwarematig weg gefilterd worden? | Beschrijvend    | Bieb, Workshop  | Literature study, Prototyping | Oplossing tegen ruis in het PoC |
-| b | Wat voor algoritmes zijn nodig om de benodigde hersengolven te detecteren? | Beschrijvend    | Bieb            | Literature study | Lijst van benodigde soorten algoritmes |
-| c | Welk algoritmes zijn het beste voor de signaalverwerking van de analoge data uit de elektroden? | Vergelijkend    | Workplace, Lab  | Prototyping, Data analytics | Aanbeveling voor een algoritme |
+| a | Welk algoritmes zijn het beste voor de signaalverwerking van de analoge data uit de elektroden? | Vergelijkend    | Workplace, Lab  | Prototyping, Data analytics | Aanbeveling voor een algoritme |
+| b | Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe? | Beschrijvend    | Bieb, Workshop  | Literature study, Prototyping | Oplossing tegen ruis in het PoC |
+| c | Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren? | Beschrijvend    | Bieb            | Literature study | Lijst van benodigde soorten algoritmes |
 | d | Welke C++/Python libraries zijn er om deze algoritmes toe te passen en welke is het beste, denkend aan performance? | Vergelijkend    | Showroom        | Benchmark test  | Aanbeveling voor gekozen libraries |
-| 3 | Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
-| 4 | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Field           | Survey          | Testrapport     |
-| a | Moet de EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? | Evaluerend      | Field           | Observatie      |                 |
+| e | Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? | Evaluerend      | Field           | Observatie      |                 |
+|---+-----------------+-----------------+-----------------+-----------------+-----------------|
+| 3 | Hoe vergelijkt onze EEG met de Starwars-EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
+| a | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Field           | Survey          | Testrapport     |
+| b | Doet onze EEG het significant beter dan de Starwars-EEG | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
