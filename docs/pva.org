@@ -1,4 +1,4 @@
-#+TITLE: PvA
+#+TITLE: Mens-machine interactie door middel van EEG
 #+OPTIONS: title:nil toc:nil
 #+LATEX_HEADER: \pagenumbering{gobble}
 #+LATEX_HEADER: \usepackage[margin=3cm]{geometry}

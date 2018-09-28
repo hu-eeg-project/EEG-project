@@ -12,7 +12,8 @@
 #+LATEX: \includegraphics[scale = 0.2]{./images/hu-logo.jpg}\\[1.0 cm]
 #+LATEX: \textsc{\LARGE Hogeschool Utrecht\newline\newline Technische Informatica}\\[1.0 cm]
 #+LATEX: \rule{\linewidth}{0.2 mm} \\[0.4 cm]
-#+LATEX: { \huge \bfseries PvA EEG-Systeem}\\
+#+LATEX: { \LARGE \bfseries Mens-machine interactie door middel van EEG}\\
+#+LATEX: { \large \bfseries PvA}\\
 #+LATEX: \rule{\linewidth}{0.2 mm} \\[1.5 cm]
 
 #+LATEX: \begin{minipage}{0.4\textwidth}
