@@ -75,8 +75,10 @@ De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Techn
 
 #+LATEX: \newpage
 * Theoretisch kader
+** Brain Computer Interfacing
+
 ** Hersengolven
-Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen. Hij is ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0.5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn te verdelen in 5 categorieën cite:EEG_fundamenental, deze zijn:
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0.5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn te verdelen in 5 categorieën cite:EEG_fundamenental, deze zijn:
 - Delta golven: 0.5 tot 4 Hz
 - Theta golven: 4 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
@@ -106,6 +108,12 @@ De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signa
 
 ** Signaalverwerking
 Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven.
+
+** Belangrijke bronnen
+Voor dit onderzoek zijn er een aantal bronnen die belangrijk zijn. Deze zullen hieronder worden beschreven hoe deze relevant zijn en waarom ze betrouwbaar zijn.\\
+Onderstaande zijn de bronnen die kunnen worden gebruikt om het juiste algoritme te vinden voor het detecteren van het P300-signaal uit het EEG-signaal. De keywords die gebruikt zijn voor het vinden van deze bronnen zijn: EEG, P300 en Algorithm.
+- /A review of classification algorithms for EEG-based brain–computer interfaces: a 10 year update/ cite:Lotte2018: Dit is en artikel uit het "Journal of Neural Engineering". Volgens ResearchGate heeft dit journal heeft een impact factor van 4,84 in 2015. Dit artikel is relevant voor dit onderzoek omdat het verschillende recent gevonden (2007-2017) algoritmes voor het detecteren van features uit het EEG-signaal bespreekt. Ook is dit artikel uit 2017, dus nog recent. In dit artikel worden ook bronnen gegeven naar andere onderzoeken waar deze algoritmes worden voorgesteld, deze kunnen goed van pas komen voor het onderzoek.
+- /Adaptive Methods in BCI Research - An Introductory Tutorial/ cite:Schlgl2009: Het eerste artikel beschrijft dat adaptieve classificatie algoritmes goed zijn en geeft dit artikel als referentie hiervoor, daarom is artikel dus ook relevant voor het onderzoek.
 
 ** Gerelateerde werk
 De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
@@ -144,8 +152,6 @@ De deelvragen zijn:
    1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
    2. Doet onze EEG het significant beter dan de Starwars-EEG.
 4. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
-
-** MoSCoW
 #+LATEX: \newpage
 
 * Methode en Aanpak
@@ -253,6 +259,6 @@ bibliography:sources.bib
 | e | Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? | Evaluerend      | Field           | Observatie      |                 |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 | 3 | Hoe vergelijkt onze EEG met de Starwars-EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
-| a | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Field           | Survey          | Testrapport     |
+| a | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Showroom        | Benchmark test  | Testrapport     |
 | b | Doet onze EEG het significant beter dan de Starwars-EEG | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
