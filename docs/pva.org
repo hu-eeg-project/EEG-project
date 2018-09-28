@@ -5,6 +5,7 @@
 #+LATEX_HEADER: \usepackage{pdfpages}
 #+LATEX_HEADER: \usepackage[dutch]{babel}
 #+LATEX_HEADER: \setlength{\parindent}{0em}
+#+LATEX_HEADER: \usepackage{etoolbox}
 
 #+INCLUDE: title.org
 
@@ -245,6 +246,7 @@ De planning voor dit project kan worden gevonden in bijlage A.
 #+LATEX: \newpage
 
 * Bronnen
+#+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 bibliographystyle:apalike
 bibliography:sources.bib
 #+LATEX: \newpage
