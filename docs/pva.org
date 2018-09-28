@@ -78,8 +78,8 @@ De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Techn
 ** Brain Computer Interfacing
 
 ** Hersengolven
-Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0.5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn te verdelen in 5 categorieën cite:EEG_fundamenental, deze zijn:
-- Delta golven: 0.5 tot 4 Hz
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn te verdelen in 5 categorieën cite:EEG_fundamenental, deze zijn:
+- Delta golven: 0,5 tot 4 Hz
 - Theta golven: 4 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
 - Beta golven: 13 Hz tot 40 Hz
