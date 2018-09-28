@@ -112,8 +112,10 @@ Signaalverwerking is het analyseren of verwerken van signalen om nuttige operati
 ** Belangrijke bronnen
 Voor dit onderzoek zijn er een aantal bronnen die belangrijk zijn. Deze zullen hieronder worden beschreven hoe deze relevant zijn en waarom ze betrouwbaar zijn.\\
 Onderstaande zijn de bronnen die kunnen worden gebruikt om het juiste algoritme te vinden voor het detecteren van het P300-signaal uit het EEG-signaal. De keywords die gebruikt zijn voor het vinden van deze bronnen zijn: EEG, P300 en Algorithm.
-- /A review of classification algorithms for EEG-based brain–computer interfaces: a 10 year update/ cite:Lotte2018: Dit is en artikel uit het "Journal of Neural Engineering". Volgens ResearchGate heeft dit journal heeft een impact factor van 4,84 in 2015. Dit artikel is relevant voor dit onderzoek omdat het verschillende recent gevonden (2007-2017) algoritmes voor het detecteren van features uit het EEG-signaal bespreekt. Ook is dit artikel uit 2017, dus nog recent. In dit artikel worden ook bronnen gegeven naar andere onderzoeken waar deze algoritmes worden voorgesteld, deze kunnen goed van pas komen voor het onderzoek.
+- /A review of classification algorithms for EEG-based brain–computer interfaces: a 10 year update/ cite:lotte18_review_class_algor_eeg_inter: Dit is en artikel uit het "Journal of Neural Engineering". Volgens ResearchGate heeft dit journal heeft een impact factor van 4,84 in 2015. Dit artikel is relevant voor dit onderzoek omdat het verschillende recent gevonden (2007-2017) algoritmes voor het detecteren van features uit het EEG-signaal bespreekt. Ook is dit artikel uit 2017, dus nog recent. In dit artikel worden ook bronnen gegeven naar andere onderzoeken waar deze algoritmes worden voorgesteld, deze kunnen goed van pas komen voor het onderzoek.
 - /Adaptive Methods in BCI Research - An Introductory Tutorial/ cite:Schlgl2009: Het eerste artikel beschrijft dat adaptieve classificatie algoritmes goed zijn en geeft dit artikel als referentie hiervoor, daarom is artikel dus ook relevant voor het onderzoek.
+- /Updating P300: An integrative theory of P3a and P3b/ cite:polich07_updat_p300 uit "Clinical Neurophysiology". Volgens Elsevier heeft dit journal een impact factor van 3,614. Dit is relevant doordat in dit onderzoek erop ingaat wat het P300 signaal is en hoe deze eruitziet.
+- /A 160 \textmu{}W 8-Channel Active Electrode System for EEG Monitoring/ cite:xu2011160 uit "IEEE TRANSACTIONS ON BIOMEDICAL CIRCUITS AND SYSTEMS". Volgens IEEE heeft dit journal een impact factor van 3,5. Dit is relevant want hier gaat het om de hardware setup van een EEG om signalen te meten.
 
 ** Gerelateerde werk
 De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
@@ -121,6 +123,7 @@ Lafuente, V., Gorriz, J. M., Ramirez, J., & Gonzales, E. (2017, 15 mei). P300 br
 Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf
 OpenBCI. (z.d.). OpenBCI Cyton. Geraadpleegd op 21 september 2018, van http://docs.openbci.com/Hardware/02-Cyton
 Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf
+Bang, J. W., Choi, J. S., & Park, K. R. (2013). Noise reduction in brainwaves by using both EEG signals and frontal viewing camera images. Sensors, 13(5), 6272-6294.
 
 #+LATEX: \newpage
 * Doelstelling
