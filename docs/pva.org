@@ -78,14 +78,16 @@ De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Techn
 ** Brain Computer Interfacing
 
 ** Hersengolven
-Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn te verdelen in 5 categorieën cite:EEG_fundamenental, deze zijn:
-- Delta golven: 0,5 tot 4 Hz
-- Theta golven: 4 Hz tot 8 Hz
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste EEG gemaakt heeft. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental.
+Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties.
+ Bij dit onderzoek gebruiken wij de volgende frequenties cite:Extraordinary_EEG:
+- Delta golven: 0,5 tot 3,5 Hz
+- Theta golven: 3,5 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
-- Beta golven: 13 Hz tot 40 Hz
+- Beta golven: 13 Hz tot 13 Hz
 - Gamma golven: >40 Hz
 
-De bekendste hersengolf is de p300 hersengolf deze valt in de. P300 is een hersengolf welke 2 vormen kent, namelijk de p3a en de p3b. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht eisen, zoals een lichtflits. De p3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een p3b gaan lijken waarbij de hersenen data uit de het geheugen verwerken cite:polich07_updat_p300.
+De bekendste hersengolf is de p300 hersengolf. P300 is een hersengolf welke 2 vormen kent, namelijk de p3a en de p3b. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht eisen, zoals een lichtflits. De p3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een p3b gaan lijken waarbij de hersenen data uit de het geheugen verwerken cite:polich07_updat_p300.
 
 #+CAPTION: p3a en p3b golf cite:EEG_synthesis
 #+NAME: fig:P300GOLF
@@ -107,15 +109,18 @@ Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met 
 De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 10 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sample frequentie hoeft niet heel snel te zijn en kan met zo een
 
 ** Signaalverwerking
-Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven.
+Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven. Hierbij zal vooral worden gefocust op het vinden van het P300-signaal uit de hersenen.
 
 ** Belangrijke bronnen
 Voor dit onderzoek zijn er een aantal bronnen die belangrijk zijn. Deze zullen hieronder worden beschreven hoe deze relevant zijn en waarom ze betrouwbaar zijn.\\
-Onderstaande zijn de bronnen die kunnen worden gebruikt om het juiste algoritme te vinden voor het detecteren van het P300-signaal uit het EEG-signaal. De keywords die gebruikt zijn voor het vinden van deze bronnen zijn: EEG, P300 en Algorithm.
+Onderstaande zijn de bronnen die kunnen worden gebruikt om het juiste algoritme te vinden voor het detecteren van het P300-signaal uit het EEG-signaal. De keywords die gebruikt zijn voor het vinden van deze bronnen zijn: EEG, P300, en Algorithm.
 - /A review of classification algorithms for EEG-based brain–computer interfaces: a 10 year update/ cite:lotte18_review_class_algor_eeg_inter: Dit is en artikel uit het "Journal of Neural Engineering". Volgens ResearchGate heeft dit journal heeft een impact factor van 4,84 in 2015. Dit artikel is relevant voor dit onderzoek omdat het verschillende recent gevonden (2007-2017) algoritmes voor het detecteren van features uit het EEG-signaal bespreekt. Ook is dit artikel uit 2017, dus nog recent. In dit artikel worden ook bronnen gegeven naar andere onderzoeken waar deze algoritmes worden voorgesteld, deze kunnen goed van pas komen voor het onderzoek.
 - /Adaptive Methods in BCI Research - An Introductory Tutorial/ cite:Schlgl2009: Het eerste artikel beschrijft dat adaptieve classificatie algoritmes goed zijn en geeft dit artikel als referentie hiervoor, daarom is artikel dus ook relevant voor het onderzoek.
-- /Updating P300: An integrative theory of P3a and P3b/ cite:polich07_updat_p300 uit "Clinical Neurophysiology". Volgens Elsevier heeft dit journal een impact factor van 3,614. Dit is relevant doordat in dit onderzoek erop ingaat wat het P300 signaal is en hoe deze eruitziet.
-- /A 160 \textmu{}W 8-Channel Active Electrode System for EEG Monitoring/ cite:xu2011160 uit "IEEE TRANSACTIONS ON BIOMEDICAL CIRCUITS AND SYSTEMS". Volgens IEEE heeft dit journal een impact factor van 3,5. Dit is relevant want hier gaat het om de hardware setup van een EEG om signalen te meten.
+- /Updating P300: An integrative theory of P3a and P3b/ cite:polich07_updat_p300 uit "Clinical Neurophysiology". Volgens Elsevier heeft dit journal een impact factor van 3,614. Dit is relevant doordat in dit onderzoek erop ingaat wat het P300 signaal is en hoe deze eruitziet, wat benodigde informatie is voor het detecteren van een P300-signaal.\\
+
+Hier onder volgt een bron die kan worden gebruikt voor het onderzoeken naar de benodigde hardware:
+- /A 160 \textmu{}W 8-Channel Active Electrode System for EEG Monitoring/ cite:xu2011160 uit "IEEE TRANSACTIONS ON BIOMEDICAL CIRCUITS AND SYSTEMS". Volgens IEEE heeft dit journal een impact factor van 3,5. Dit is relevant want hier gaat het om de hardware setup van een EEG om signalen te meten. Wat nodig voor de eerste deelvraag. Ook komt deze bron uit 2011 wat het nog redelijk recent maakt.
+
 
 ** Gerelateerde werk
 De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
