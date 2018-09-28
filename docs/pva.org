@@ -75,6 +75,7 @@ De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Techn
 
 #+LATEX: \newpage
 * Theoretisch kader
+In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als worden er een aantal centrale begrippen over het onderwerp toe gelicht. Daarna worden er een aantal belangrijke bronnen neergezet. En als laatste worden gerelateerde werken genoemd.
 ** Brain Computer Interfacing
 Een Brain Computer Interface is een alternatieve manier om een computer te besturen dan bijvoorbeeld de veelgebruikte muis en toetsenbord. Bij een Brain Computer Interface wordt de computer door middel neuronen activiteit in de hersenen bestuurt. Bij deze techniek bestaan er invasive en noninvasive manieren. Bij invasive manieren moet er iets in het lichaam geplaatst worden om de activiteit te meten en bij de noninvasive manier wordt de hersen activiteit van de buitenkant van het lichaam gemeten door bijvoorbeeld gebruik te maken van elektroden cite:vallabhaneni2005brain.
 
@@ -121,8 +122,6 @@ Onderstaande zijn de bronnen die kunnen worden gebruikt om het juiste algoritme 
 
 Hier onder volgt een bron die kan worden gebruikt voor het onderzoeken naar de benodigde hardware:
 - /A 160 \textmu{}W 8-Channel Active Electrode System for EEG Monitoring/ cite:xu2011160 uit "IEEE TRANSACTIONS ON BIOMEDICAL CIRCUITS AND SYSTEMS". Volgens IEEE heeft dit journal een impact factor van 3,5. Dit is relevant want hier gaat het om de hardware setup van een EEG om signalen te meten. Wat nodig voor de eerste deelvraag. Ook komt deze bron uit 2011 wat het nog redelijk recent maakt.
-
-
 ** Gerelateerde werk
 De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
 Lafuente, V., Gorriz, J. M., Ramirez, J., & Gonzales, E. (2017, 15 mei). P300 brainwave extraction from EEG signals: An unsupervised approach. Geraadpleegd op 21 september 2018, van https://www.sciencedirect.com/science/article/pii/S0957417416307205 \\
@@ -183,6 +182,9 @@ Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een be
 Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
 
 #+LATEX: \newpage
+* Ethisch
+Dit onderzoek kan worden gezien als ethisch verantwoord. Dit omdat het EEG-systeem dat gemaakt wordt tijdens dit onderzoek voor het Turing Lab bedoelt is. Hier wordt het dan weer gebruikt om andere studenten iets te laten leren over deze techniek of het wordt gebruikt als voorbeeld van wat er op de opleiding gemaakt wordt.\\
+Ook zullen de belangen van de mensen waarop het systeem getest wordt niet worden geschaad, doordat vooraf om toestemming wordt gevraagd.
 * Randvoorwaarden
 ** Scope
 Om de scope van dit onderzoek aan te geven is de onderstaande MoSCoW-lijst opgesteld: \\
