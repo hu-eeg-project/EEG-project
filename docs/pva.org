@@ -15,6 +15,8 @@
 *Opleiding*: Technische Informatica \\
 *Organisatie*: Hogeschool Utrecht \\
 *Begeleider*: J. Bunk \\
+*Document status*: concept \\
+*Datum*: \today
 \\
 *auteur 1:*
 - *Naam:* Stefan de Beer
@@ -125,17 +127,13 @@ Onderstaande zijn de bronnen die kunnen worden gebruikt om het juiste algoritme 
 Hier onder volgt een bron die kan worden gebruikt voor het onderzoeken naar de benodigde hardware:
 - /A 160 \textmu{}W 8-Channel Active Electrode System for EEG Monitoring/ cite:xu2011160 uit "IEEE TRANSACTIONS ON BIOMEDICAL CIRCUITS AND SYSTEMS". Volgens IEEE heeft dit journal een impact factor van 3,5. Dit is relevant want hier gaat het om de hardware setup van een EEG om signalen te meten. Wat nodig voor de eerste deelvraag. Ook komt deze bron uit 2011 wat het nog redelijk recent maakt.
 ** Gerelateerde werk
-De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
-Lafuente, V., Gorriz, J. M., Ramirez, J., & Gonzales, E. (2017, 15 mei). P300 brainwave extraction from EEG signals: An unsupervised approach. Geraadpleegd op 21 september 2018, van https://www.sciencedirect.com/science/article/pii/S0957417416307205 \\
-\\
-Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf \\
-\\
-OpenBCI. (z.d.). OpenBCI Cyton. Geraadpleegd op 21 september 2018, van http://docs.openbci.com/Hardware/02-Cyton \\
-\\
-Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf \\
-\\
-Bang, J. W., Choi, J. S., & Park, K. R. (2013). Noise reduction in brainwaves by using both EEG signals and frontal viewing camera images. Sensors, 13(5), 6272-6294.
-
+Hieronder volgen bronnen die gerelateerd zijn aan dit onderzoek:
+- Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf \\
+  Dit is het eerste onderzoek naar EEG-metingen op de mens van Hans Berger.
+- Bang, J. W., Choi, J. S., & Park, K. R. (2013). Noise reduction in brainwaves by using both EEG signals and frontal viewing camera images. Sensors, 13(5), 6272-6294.\\
+  Bij dit onderzoek gebruiken ze een EEG in combinatie met een camera voor een P300-speller.
+- Abootaleb, V., Moradi, M. H., & Khalilzadeh, M. A. (2009, april). A new approach for EEG feature extraction in P300-based lie detection. Geraadpleegd op 28 september 2018, van https://linkinghub.elsevier.com/retrieve/pii/S0169260708002484\\
+  Hier wordt het P300-signaal gebruikt om leugens te detecteren.
 #+LATEX: \newpage
 * Doelstelling
 De uiteindelijke doelstelling van dit project is het maken van een EEG-systeem waar andere studenten op voort kunnen bouwen. Dit EEG-systeem zou tenminste een P300-signaal bij de onderzoekers kunnen detecteren. Het EEG-systeem is bedoeld om te kunnen worden gebruikt voor studenten. Hiervoor moet het prototype dus goed gedocumenteerd worden en uitbreidbaar zijn. Aangezien het systeem voor het onderwijs is bedoeld mag het niet te duur zijn dus wordt de prijs gelimiteerd tot onder de 250 euro.
