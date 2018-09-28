@@ -160,8 +160,8 @@ De deelvragen zijn:
    2. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
    3. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
    4. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
-   5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
-3. Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)?
+   5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? Zo ja, hoe?
+3. Hoe vergelijkt onze EEG met de Starwars-EEG?
    1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
    2. Doet onze EEG het significant beter dan de Starwars-EEG.
 #+LATEX: \newpage
@@ -169,7 +169,7 @@ De deelvragen zijn:
 * Methode en Aanpak
 Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
 te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
-gebruikt gaan worden staat in bijlage A.Dit hoofdstuk beschrijft deze tabel in meer detail.
+gebruikt gaan worden staat in bijlage B ([[#BijlageB]]). Dit hoofdstuk beschrijft deze tabel in meer detail.
 
 ** Benodigde Hardware EEG
 Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literature study toegepast worden. Zo zal naar papers gezocht worden waarin onderzoek gedaan worden naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende hardware functionaliteiten van een EEG en wat daarvoor nodig is. \\
@@ -218,8 +218,11 @@ In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit p
 |-------------------+--------+------------------------------------------+----------------|
 |                   |        | <40>                                     | <14>           |
 | Ontwikkelomgeving |      2 | Dit is nodig om de code te schrijven en te compileren. | Ja             |
+|-------------------+--------+------------------------------------------+----------------|
 | Meetapparatuur    |      1 | Apparatuur als een oscilloscoop en multimeter. | ja, in het Turing lab. Ook hebben beide onderzoekers beide apparatuur in bezit. |
+|-------------------+--------+------------------------------------------+----------------|
 | EEG-hardware      | n.v.t. | De hardware benodigd voor het maken van het PoC. | Nee            |
+|-------------------+--------+------------------------------------------+----------------|
 | Bestaand EEG      |      1 | Een bestaand EEG systeem om het eigen gemaakte EEG mee te kunnen vergelijken. | Nee            |
 |-------------------+--------+------------------------------------------+----------------|
 
@@ -234,15 +237,18 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 | Lange levertijd van hardware   | Op tijd de hardware bestellen.                     |
 |                                | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
 |                                | Planning herevalueren.                             |
+|--------------------------------+----------------------------------------------------|
 | Defecte hardware               | Nieuwe of alternatieve hardware met gelijke werking bestellen/gebruiken. |
 |                                | Planning herevalueren.                             |
+|--------------------------------+----------------------------------------------------|
 | Hardware niet leverbaar        | Alternatieve hardware met gelijke werking bestellen/gebruiken. |
+|--------------------------------+----------------------------------------------------|
 | Voor benodigde literatuur moet worden betaald | Aan de begeleider vragen of hij hier toegang tot kan krijgen. |
 |--------------------------------+----------------------------------------------------|
 
 #+LATEX: \newpage
 * Planning
-De planning voor dit project kan worden gevonden in bijlage A.
+De planning voor dit project kan worden gevonden in bijlage A ([[#BijlageA]]).
 #+LATEX: \newpage
 
 * Bronnen
@@ -252,10 +258,16 @@ bibliography:sources.bib
 #+LATEX: \newpage
 * Bijlage
 ** Bijlage A
+:PROPERTIES:
+:CUSTOM_ID: BijlageA
+:END:
 #+LATEX_ATTR: :width 100px
 [[./images/planning.png]]
 #+LATEX: \newpage
-** bijlage B
+** Bijlage B
+:PROPERTIES:
+:CUSTOM_ID: BijlageB
+:END:
 #+ATTR_LATEX: :environment longtable :align |l|p{3.7cm}|p{2cm}|p{2cm}|p{2.7cm}|p{3cm}|
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 | # | deelvraag       | type deelvraag  | methode dataverzameling | Methode analyse | Resultaat       |
@@ -272,7 +284,7 @@ bibliography:sources.bib
 | b | Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe? | Beschrijvend    | Bieb, Workshop  | Literature study, Prototyping | Oplossing tegen ruis in het PoC |
 | c | Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren? | Beschrijvend    | Bieb            | Literature study | Lijst van benodigde soorten algoritmes |
 | d | Welke C++/Python libraries zijn er om deze algoritmes toe te passen en welke is het beste, denkend aan performance? | Vergelijkend    | Showroom        | Benchmark test  | Aanbeveling voor gekozen libraries |
-| e | Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? | Evaluerend      | Field           | Observatie      |                 |
+| e | Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? Zo ja, hoe? | Evaluerend      | Field           | Observatie      | Oplossing voor potentiële kalibratie EEG. |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 | 3 | Hoe vergelijkt onze EEG met de Starwars-EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
 | a | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Showroom        | Benchmark test  | Testrapport     |
