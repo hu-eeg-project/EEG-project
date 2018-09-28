@@ -124,10 +124,14 @@ Hier onder volgt een bron die kan worden gebruikt voor het onderzoeken naar de b
 
 ** Gerelateerde werk
 De volgende bronnen behoren tot het theoretisch kader van dit onderzoek:
-Lafuente, V., Gorriz, J. M., Ramirez, J., & Gonzales, E. (2017, 15 mei). P300 brainwave extraction from EEG signals: An unsupervised approach. Geraadpleegd op 21 september 2018, van https://www.sciencedirect.com/science/article/pii/S0957417416307205
-Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf
-OpenBCI. (z.d.). OpenBCI Cyton. Geraadpleegd op 21 september 2018, van http://docs.openbci.com/Hardware/02-Cyton
-Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf
+Lafuente, V., Gorriz, J. M., Ramirez, J., & Gonzales, E. (2017, 15 mei). P300 brainwave extraction from EEG signals: An unsupervised approach. Geraadpleegd op 21 september 2018, van https://www.sciencedirect.com/science/article/pii/S0957417416307205 \\
+\\
+Teplan, M. (2002). Fundamentals of EEG measurement. Geraadpleegd op 21 september 2018, van http://www.edumed.org.br/cursos/neurociencia/MethodsEEGMeasurement.pdf \\
+\\
+OpenBCI. (z.d.). OpenBCI Cyton. Geraadpleegd op 21 september 2018, van http://docs.openbci.com/Hardware/02-Cyton \\
+\\
+Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf \\
+\\
 Bang, J. W., Choi, J. S., & Park, K. R. (2013). Noise reduction in brainwaves by using both EEG signals and frontal viewing camera images. Sensors, 13(5), 6272-6294.
 
 #+LATEX: \newpage
@@ -156,10 +160,9 @@ De deelvragen zijn:
    3. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
    4. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
    5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
-4. Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)?
+3. Hoe vergelijkt onze EEG met andere (welke andere moet nog bepaald worden)?
    1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
    2. Doet onze EEG het significant beter dan de Starwars-EEG.
-4. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen?
 #+LATEX: \newpage
 
 * Methode en Aanpak
