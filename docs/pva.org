@@ -195,14 +195,15 @@ Ook zullen de belangen van de mensen waarop het systeem getest wordt niet worden
 Om de scope van dit onderzoek aan te geven is de onderstaande MoSCoW-lijst opgesteld: \\
 Must Have:
 - 1 Elektrode waarvan het signaal gemeten kan worden.
-- P300 golf detecteren.
 - Hardware lijst van benodigde componenten.
 - Ruis filtering
 - Functioneel ontwerp
+- Elektrode(s) moeten op het hoofd geplaatst kunnen worden (met een soort cap bijvoorbeeld).
+- P300 golf detecteren.
+- P300-speller demo.
 
 Should Have:
 - Meerdere Elektrodes waarvan het signaal gemeten kan worden.
-- P300-speller demo.
 - Logging van de EEG data.
 - Kwantitatief onderzoek naar ons EEG ten opzichte van de star wars EEG.
 
