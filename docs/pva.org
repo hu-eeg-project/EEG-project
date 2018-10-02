@@ -87,7 +87,7 @@ Een Brain Computer Interface is een alternatieve manier om een computer te bestu
 ** Hersengolven
 Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental.
 Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. Tijdens het zoeken naar deze frequenties is tot de conclusie gekomen dat veel bronnen andere frequenties zeggen.
- Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG:
+ Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG. Er is voor dit artikel gekozen aangezien het een recent document is (2015) en 51 geciteerd is tijdens het schrijven van dit document.
 - Delta golven: 0,5 tot 3,5 Hz
 - Theta golven: 3,5 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
@@ -185,8 +185,11 @@ Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware n
 
 #+LATEX: \newpage
 * Ethisch
+Bij een EEG-systeem worden hersengolven gemeten. Aangezien hersengolven persoonlijk zijn kan dit voor een aantal ethische problemen zorgen. Een EEG kan onder anderen gebruikt worden om iemand te identificeren cite:ashby2011low. Hierdoor is het dus ook een vraag of je de data van een EEG zo zou mogen opslaan aangezien het vergelijkbaar met bijvoorbeeld een vingerafdruk is. \\
+\\
 Dit onderzoek kan worden gezien als ethisch verantwoord. Dit omdat het EEG-systeem dat gemaakt wordt tijdens dit onderzoek voor het Turing Lab bedoelt is. Hier wordt het dan weer gebruikt om andere studenten iets te laten leren over deze techniek of het wordt gebruikt als voorbeeld van wat er op de opleiding gemaakt wordt.\\
 Ook zullen de belangen van de mensen waarop het systeem getest wordt niet worden geschaad, doordat vooraf om toestemming wordt gevraagd.
+
 * Randvoorwaarden
 ** Scope
 Om de scope van dit onderzoek aan te geven is de onderstaande MoSCoW-lijst opgesteld: \\
@@ -250,6 +253,10 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 #+LATEX: \newpage
 * Planning
 De planning voor dit project kan worden gevonden in bijlage A ([[#BijlageA]]).
+
+** Wijzigingen
+Aangezien sommige delen van het onderzoek van levertijden afhankelijk zijn kan het zijn dat hier aanpassingen voor moeten komen. Als er gewacht moet worden voor een hardware component zal aan het volgende in de planning waarvoor de hardware niet nodig is gewerkt worden totdat het geleverd wordt. Zo kan er al aan het software analyse gedeelte gewerkt worden met een gesimuleerd signaal terwijl er op hardware gewacht wordt.
+
 #+LATEX: \newpage
 
 * Bronnen
