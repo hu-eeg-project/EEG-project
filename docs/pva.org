@@ -57,7 +57,7 @@
 * Inleiding
 Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren. \\
 Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG op de basis van BCI ligt. Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm bewegen. \\
-Dit onderzoek wordt gedaan door 2 studenten van technische Informatica aan de hogeschool Utrecht, voor het onderzoekssemester.
+Dit onderzoek wordt gedaan door twee studenten van technische Informatica aan de hogeschool Utrecht, voor het onderzoekssemester.
 #+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset
 #+NAME: fig:bci_headset
 #+ATTR_LATEX: :width 250px
@@ -65,37 +65,34 @@ Dit onderzoek wordt gedaan door 2 studenten van technische Informatica aan de ho
 [[./images/bci_headset.jpg]]
 #+LATEX: \newpage
 * Aanleiding en Context
-Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen zeer duur kunnen zijn is het goedkoper zelf een te maken. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar weinig meetpunten heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. \\
-Met het maken van een eigen EEG kan daarnaast ook veel geleerd worden in het ontwerpen van de hardware en in het programmeren hiervan. Ook kan het voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Daarnaast is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen op de opleiding Technische Informatica.
+Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen die goed zijn zeer duur kunnen zijn is het goedkoper zelf een te maken. Er zijn wel goedkopere EEG-systemen alleen is de kwaliteit hiervan slechter. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar één meetpunt heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. Met het maken van een eigen EEG kan daarnaast ook veel geleerd worden in het ontwerpen van de hardware en in het programmeren hiervan. Ook kan het voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Daarnaast is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen op de opleiding Technische Informatica.
 
 ** Use case
 Een voorbeeld van een use case waar een EEG-systeem als deze voor gebruikt kan worden is een P300-speller. Via een P300-speller kan door naar een toets van een toetsenbord op een scherm te kijken deze toets getypt worden. Dit werkt doordat als deze toets flitst met een andere kleur (zwart naar wit bijvoorbeeld) terwijl er naar gekeken wordt het brein een P300-golf maakt, deze kan worden gedetecteerd door de EEG en zo weet de computer dat deze letter bedoeld wordt.\\
 Zo een speller kan goed gebruikt worden door ALS-patiënten die problemen hebben om te praten of te typen doordat ze weinig tot geen controle hebben over de benodigde spieren, maar nog wel de ogen kunnen bewegen. Als een P300-speller wordt aangesloten aan tekst-naar-spraak computer zou zo een ALS-patient weer een soort van kunnen praten en zo dus weer makkelijker kunnen communiceren met andere mensen.
 
 ** De Organisatie
-de Organisatie waar dit onderzoek voor gedaan wordt is De Hogeschool Utrecht. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen: Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd waaronder het EEG-systeem zal vallen. \\
+de Organisatie waar dit onderzoek voor gedaan wordt is de Hogeschool Utrecht. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen: Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd waaronder het EEG-systeem zal vallen. \\
 Specifiek wordt het onderzoek gedaan voor het Turing Lab. Het Turing Lab is vooral een werkplek voor studenten en docenten van de opleiding Technische Informatica op de Hogeschool Utrecht.
 
 ** Opdrachtgever
-De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij geeft les aan Technische Informatica en zal tevens de begeleider voor dit onderzoek zijn.
+De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij is hogeschooldocent bij HBO-ICT en verzorgd onderwijs voor Technische Informatica en Applied AI. Hij zal de begeleider zijn voor dit onderzoek.
+
 #+LATEX: \newpage
 * Theoretisch kader
 In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als eerste worden er een aantal centrale begrippen over het onderwerp toegelicht. Daarna worden er een aantal belangrijke bronnen neergezet. En als laatste worden gerelateerde werken genoemd.
 ** Brain Computer Interfacing
-Een Brain Computer Interface is een alternatieve manier om een computer te besturen dan bijvoorbeeld de veelgebruikte muis en toetsenbord. Bij een Brain Computer Interface wordt de computer door middel van neuronen activiteit in de hersenen bestuurt. Bij deze techniek bestaan er invasive en noninvasive manieren. Bij invasive manieren moet er iets in het lichaam geplaatst worden om de activiteit te meten en bij de noninvasive manier wordt de hersen activiteit van de buitenkant van het lichaam gemeten door bijvoorbeeld gebruik te maken van elektroden cite:vallabhaneni2005brain. Een voorbeeld van een noninvasive-BCI welke gebruik maakt van de elektrodes is de EEG.
+Een Brain Computer Interface is een alternatieve manier om een computer te besturen ten opzichte van bijvoorbeeld de veelgebruikte muis en toetsenbord. Bij een Brain Computer Interface wordt de computer door middel van neuronen activiteit in de hersenen bestuurt. Bij deze techniek bestaan er invasive en noninvasive manieren. Bij invasive manieren moet er iets in het lichaam geplaatst worden om de activiteit te meten en bij de noninvasive manier wordt de hersen activiteit van de buitenkant van het lichaam gemeten door bijvoorbeeld gebruik te maken van elektroden cite:vallabhaneni2005brain. Een voorbeeld van een noninvasive-BCI welke gebruik maakt van de elektrodes is de EEG. Een voorbeeld van een invasive-BCI is door zogenoemde "Depth electrodes" in de hersenen te steken. De meeste van deze elektrodes hebben 4 tot en met 12 contact punten die tussen de 5 en 10 mm van elkaar af staan cite:zumsteg2000presurgical.
 
 ** Hersengolven
-Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental.
-Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. Tijdens het zoeken naar deze frequenties is tot de conclusie gekomen dat veel bronnen andere frequenties zeggen.
- Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG. Er is voor dit artikel gekozen aangezien het een recent document is (2015) en 51 geciteerd is tijdens het schrijven van dit document.
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. In de literatuur blijkt dat er verschillende frequenties voor de categorieën gebruikt worden. Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG. Er is voor dit artikel gekozen aangezien het een recent document is (2015) en 51 geciteerd is tijdens het schrijven van dit document.
 - Delta golven: 0,5 tot 3,5 Hz
 - Theta golven: 3,5 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
 - Beta golven: 13 Hz tot 13 Hz
 - Gamma golven: >40 Hz
 
-Een van de meest voorkomende hersengolven is de P300-hersengolf. De P300 is een hersengolf welke voorkomt tussen de 0,5 Hz en de 15 Hz cite:Lafuente2017. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht trekken, zoals een lichtflits. Daarnaast kent de P300 2 vormen, namelijk de P3a en de P3b. De P3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een P3b gaan lijken waarbij de hersenen meer data uit de het geheugen gaan verwerken dan bij de P3a cite:polich07_updat_p300. Het verschil in uiterlijk tussen de P3a en de P3b is dat de P3a een hogere piek in amplitude heeft dan de P3b.\\
-Omdat deze hersengolf vaak voorkomt en relatief makkelijk te meten is, wordt deze golf bij dit onderzoek gebruikt als minimale eis aan het EEG-systeem dat gemaakt wordt.
+Een van de meest bekende hersengolven is de P300-hersengolf. De P300 is een hersengolf welke voorkomt tussen de 0,5 Hz en de 15 Hz cite:Lafuente2017. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht trekken, zoals een lichtflits. Daarnaast kent de P300 2 vormen, namelijk de P3a en de P3b. De P3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een P3b gaan lijken waarbij de hersenen meer data uit de het geheugen gaan verwerken dan bij de P3a cite:polich07_updat_p300. Het verschil in uiterlijk tussen de P3a en de P3b is dat de P3a een hogere piek in amplitude heeft dan de P3b. Omdat deze hersengolf vaak voorkomt en relatief makkelijk te meten is, wordt deze golf bij dit onderzoek gebruikt als minimale eis aan het EEG-systeem dat gemaakt wordt.
 
 #+CAPTION: p3a en p3b golf cite:EEG_synthesis
 #+NAME: fig:P300GOLF
@@ -106,7 +103,7 @@ Omdat deze hersengolf vaak voorkomt en relatief makkelijk te meten is, wordt dez
 In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te meten. Uit vooronderzoek cite:xu2011160 is gebleken dat voor het meten van hersengolven een elektrode en een analoog-digitaal converter (ADC) nodig is. Echter is nog niet duidelijk wat de precieze eisen zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal elektrode en ADC kort worden uitgelegd:
 
 *** Elektrode
-Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd om hersengolven te meten. Hierbij is het nodig een goede elektrische verbinding te maken om potentiele ruis te verminderen. Voor het verbeteren van dit contact kan een gel gebruikt worden. Tussen elektrodes zit ook nog een verschil op verschillende attributen, zo hebben ze verschillende groottes en zijn sommige herbruikbaar en andere maar te gebruiken voor een keer.
+Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd. Doordat elektroden contact maken met het hoofd kunnen hersengolven gemeten worden door de schedel heen. Hierbij is het nodig een goede elektrische verbinding te maken tussen de elektrode en het hoofd om potentiële ruis te verminderen. Voor het verbeteren van dit contact kan een gel gebruikt worden cite:usakli2010improvement. Elektrodes verschillen onder elkaar ook nog op meerdere attributen. Zo zijn ze verkrijgbaar in verschillende maten. Sommige elektrodes zijn herbruikbaar en anderen zijn maar één keer te gebruiken.
 
 #+CAPTION: Elektrode cite:EEG_Elektrode
 #+NAME: fig:ELEKTRODE
@@ -164,7 +161,7 @@ De deelvragen zijn:
    5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? Zo ja, hoe?
 3. Hoe vergelijkt onze EEG met de Starwars-EEG?
    1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
-   2. Doet onze EEG het significant beter dan de Starwars-EEG.
+   2. Doet onze EEG het significant beter dan de Starwars-EEG?
 #+LATEX: \newpage
 
 * Methode en Aanpak
@@ -297,5 +294,5 @@ bibliography:sources.bib
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
 | 3 | Hoe vergelijkt onze EEG met de Starwars-EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
 | a | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Showroom        | Benchmark test  | Testrapport     |
-| b | Doet onze EEG het significant beter dan de Starwars-EEG | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
+| b | Doet onze EEG het significant beter dan de Starwars-EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
