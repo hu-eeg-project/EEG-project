@@ -1,5 +1,5 @@
 #+TITLE: Mens-machine interactie door middel van EEG
-#+OPTIONS: title:nil toc:nil
+#+OPTIONS: title:nil toc:nil H:4
 #+LATEX_HEADER: \pagenumbering{gobble}
 #+LATEX_HEADER: \usepackage[margin=3cm]{geometry}
 #+LATEX_HEADER: \usepackage{pdfpages}
@@ -81,10 +81,11 @@ De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij is hogeschooldocent
 #+LATEX: \newpage
 * Theoretisch kader
 In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als eerste worden er een aantal centrale begrippen over het onderwerp toegelicht. Daarna worden er een aantal belangrijke bronnen neergezet. En als laatste worden gerelateerde werken genoemd.
-** Brain Computer Interfacing
+** Core Concepts
+*** Brain Computer Interfacing
 Een Brain Computer Interface is een alternatieve manier om een computer te besturen ten opzichte van bijvoorbeeld de veelgebruikte muis en toetsenbord. Bij een Brain Computer Interface wordt de computer door middel van neuronen activiteit in de hersenen bestuurt. Bij deze techniek bestaan er invasive en noninvasive manieren. Bij invasive manieren moet er iets in het lichaam geplaatst worden om de activiteit te meten en bij de noninvasive manier wordt de hersen activiteit van de buitenkant van het lichaam gemeten door bijvoorbeeld gebruik te maken van elektroden cite:vallabhaneni2005brain. Een voorbeeld van een noninvasive-BCI welke gebruik maakt van de elektrodes is de EEG. Een voorbeeld van een invasive-BCI is door zogenoemde "Depth electrodes" in de hersenen te steken. De meeste van deze elektrodes hebben 4 tot en met 12 contact punten die tussen de 5 en 10 mm van elkaar af staan cite:zumsteg2000presurgical.
 
-** Hersengolven
+*** Hersengolven
 Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. In de literatuur blijkt dat er verschillende frequenties voor de categorieën gebruikt worden. Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG. Er is voor dit artikel gekozen aangezien het een recent document is (2015) en 51 geciteerd is tijdens het schrijven van dit document.
 - Delta golven: 0,5 tot 3,5 Hz
 - Theta golven: 3,5 Hz tot 8 Hz
@@ -99,10 +100,10 @@ Een van de meest bekende hersengolven is de P300-hersengolf. De P300 is een hers
 #+ATTR_LATEX: :width 200px
 [[./images/p3ab.png]]
 
-** Signaalmeting
+*** Signaalmeting
 In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te meten. Uit vooronderzoek cite:xu2011160 is gebleken dat voor het meten van hersengolven een elektrode en een analoog-digitaal converter (ADC) nodig is. Echter is nog niet duidelijk wat de precieze eisen zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal elektrode en ADC kort worden uitgelegd:
 
-*** Elektrode
+**** Elektrode
 Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd. Doordat elektroden contact maken met het hoofd kunnen hersengolven gemeten worden door de schedel heen. Hierbij is het nodig een goede elektrische verbinding te maken tussen de elektrode en het hoofd om potentiële ruis te verminderen. Voor het verbeteren van dit contact kan een gel gebruikt worden cite:usakli2010improvement. Elektrodes verschillen onder elkaar ook nog op meerdere attributen. Zo zijn ze verkrijgbaar in verschillende maten. Sommige elektrodes zijn herbruikbaar en anderen zijn maar één keer te gebruiken.
 
 #+CAPTION: Elektrode cite:EEG_Elektrode
@@ -110,11 +111,14 @@ Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met 
 #+ATTR_LATEX: :width 200px
 [[./images/grass_silver_cup_electrodes_single.jpg]]
 
-*** ADC
-De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn.
+**** ADC
+Een ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn.
 
-** Signaalverwerking
+*** Signaalverwerking
 Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven. Hierbij zal vooral worden gefocust op het vinden van het P300-signaal uit de hersenen, waarvoor het signaal eerst van ruis moeten worden vrij gemaakt.
+
+*** Signaalruis
+Bij een EEG-systeem zijn er verschillende soorten ruis. Voor het meten van het signaal kan dit worden verdeeld in Thermal Noise, Channel Noise, Synaptic Noise en overige. Bij Thermal Noise wat ook bekend is als /Johnson noise/ gaat het om voltage veranderingen door de invloed van temperatuur. Dit kan worden verminderd door de temperatuur of de frequentie te verminderen. Channel Noise wordt veroorzaakt door stochastic ionic channels op de membraan van cellen. Deze channels openen en sluiten toevallig en hebben invloed op het geleiden van stroom. Dit is dus ook een mogelijke bron van ruis. Naast channels die openen en sluiten gaat het bij Synaptic Noise om neurotransmitter moleculen die vrijgelaten worden door cellen. Dit beïnvloed ook de geleiding van stroom waardoor het ruis kan veroorzaken cite:manwani1999detecting. Als laatste zijn er ook nog overige vormen van ruis. Zo kunnen signalen voor spieren van bijvoorbeeld de ogen ruis genereren cite:woestenburg1983removal.
 
 ** Belangrijke bronnen
 Voor dit onderzoek zijn er een aantal bronnen die belangrijk zijn. Deze zullen hieronder worden beschreven hoe deze relevant zijn en waarom ze betrouwbaar zijn.\\
@@ -175,10 +179,10 @@ Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzo
 Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingslijst worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.
 
 ** Ruisfiltering
-Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is cite:EEG_nois_canc. Daarom zal worden onderzocht welke typen ruis er in het gemeten signaal zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literature study worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
+Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is cite:EEG_nois_canc. Als eerste zal er gekeken worden hoe de ruis verminderd kan worden. Daarna zal worden onderzocht welke typen ruis er in het gemeten signaal over zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literature study worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
 
 ** De EEG-firmware
-Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen, dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
+Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag zal vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen. Dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
 
 #+LATEX: \newpage
 * Ethisch
