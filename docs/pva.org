@@ -85,8 +85,22 @@ In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als eer
 *** Brain Computer Interfacing
 Een Brain Computer Interface is een alternatieve manier om een computer te besturen ten opzichte van bijvoorbeeld de veelgebruikte muis en toetsenbord. Bij een Brain Computer Interface wordt de computer door middel van neuronen activiteit in de hersenen bestuurt. Bij deze techniek bestaan er invasive en noninvasive manieren. Bij invasive manieren moet er iets in het lichaam geplaatst worden om de activiteit te meten en bij de noninvasive manier wordt de hersen activiteit van de buitenkant van het lichaam gemeten door bijvoorbeeld gebruik te maken van elektroden cite:vallabhaneni2005brain. Een voorbeeld van een noninvasive-BCI welke gebruik maakt van de elektrodes is de EEG. Een voorbeeld van een invasive-BCI is door zogenoemde "Depth electrodes" in de hersenen te steken. De meeste van deze elektrodes hebben 4 tot en met 12 contact punten die tussen de 5 en 10 mm van elkaar af staan cite:zumsteg2000presurgical.
 
-*** Hersengolven
-Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental. Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. In de literatuur blijkt dat er verschillende frequenties voor de categorieën gebruikt worden. Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG. Er is voor dit artikel gekozen aangezien het een recent document is (2015) en 51 geciteerd is tijdens het schrijven van dit document.
+** Hersenen regio's
+Voor dit onderzoek is het belangrijk om te weten waar in de hersenen wat gebeurd. Dit is omdat dit belangrijke informatie is voor de plaatsing van de elektrodes. Er zijn vier belangrijke regio's in de grote hersenen, namelijk cite:Brain_and_Behavior:
+ - Frontale kwab: Dit is de regio aan de voorkant van het brein. Het is verantwoordelijk voor de volgende functies:
+  - Aandacht hebben voor dingen of zicht goed kunnen concentreren
+  - Het maken van plannen
+  - Oplossen van problemen
+  - Precieze bewegingen maken van bijvoorbeeld: handen, voeten, tong en het gezicht
+  - Hoe een persoon zich gedraagt
+  - Reageren op emoties
+ - Occipitale kwab: Deze kwab is verantwoordelijk voor het kijken en speelt ook een rol in het herkennen van wat gezien wordt
+ - Temporale kwab: Deze regio verantwoordelijk is voor horen, taal, smaken en speelt ook een rol in het herkennen wat gezien wordt
+ - Pariëtale kwab: Deze regio is vooral verantwoordelijk voor het voelen, bijvoorbeeld iets aanraken met de vingers
+** Hersengolven
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die als eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental.
+Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. Tijdens het zoeken naar deze frequenties is tot de conclusie gekomen dat veel bronnen andere frequenties zeggen.
+ Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG:
 - Delta golven: 0,5 tot 3,5 Hz
 - Theta golven: 3,5 Hz tot 8 Hz
 - Alpha golven: 8 Hz tot 13 Hz
@@ -111,8 +125,24 @@ Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met 
 #+ATTR_LATEX: :width 200px
 [[./images/grass_silver_cup_electrodes_single.jpg]]
 
-**** ADC
-Een ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn.
+
+*Plaatsing* \\
+Er zijn standaarden voor de plaatsingen van elektrodes op de schedel cite:Electrode_placement. Een voorbeeld hiervan is het 10-20 systeem, zoals te zien is in figuur [[fig:10-20]]. Bij dit systeem wordt de schedel is vijf verschillende delen verdeeld, deze delen hebben een grote van 10% of 20% van het totaal. In figuur [[fig:10-20-side]] is te zien hoe de verdeling is van deze regio's. In dit figuur is alleen verdeling vanaf de zijkant te zien, maar dezelfde deling geld ook vanaf de voorkant en de bovenkant.\\
+Te zien is dat de regio's een naam krijgen zoals "F5", "Cz" of "T4". Hierbij is de eerste letter de hersenregio die de elektrode zal meten, zoals "F" voor Frontale kwab, "T" voor Temporale, "P" voor Pariëtale en "O" voor Occipitale. De tweede letter of cijfer is toegevoegd om verschillende plekken in een regio aan te kunnen geven. De even getallen voor de rechter helft van de schedel en de oneven getallen zijn voor de linker helft. De "z" in bijvoorbeeld "Cz" staat voor zero.
+Er zijn ook varianten met een deling van maar 10% of zelfs 5% cite:Oostenveld2001.
+#+CAPTION: De vijf verschillende delen cite:Electrode_placement
+#+NAME: fig:10-20-side
+#+ATTR_LATEX: :width 200px 
+[[./images/10-20-side.png]]
+
+#+CAPTION: 10-20 systeem cite:10-20-img
+#+NAME: fig:10_20_placement
+#+LABEL: fig:10-20
+#+ATTR_LATEX: :width 200px
+[[./images/10-20-sys.png]]
+
+*** ADC
+De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn.
 
 *** Signaalverwerking
 Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven. Hierbij zal vooral worden gefocust op het vinden van het P300-signaal uit de hersenen, waarvoor het signaal eerst van ruis moeten worden vrij gemaakt.
