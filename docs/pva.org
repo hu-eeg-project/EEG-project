@@ -180,13 +180,13 @@ Hieronder volgen bronnen die gerelateerd zijn aan dit onderzoek:
 * Doelstelling
 De uiteindelijke doelstelling van dit project is het maken van een EEG-systeem waar andere studenten op voort kunnen bouwen. Dit EEG-systeem zou tenminste een P300-signaal bij de onderzoekers kunnen detecteren. Het EEG-systeem is bedoeld om te kunnen worden gebruikt voor studenten. Hiervoor moet het prototype dus goed gedocumenteerd worden en uitbreidbaar zijn. Aangezien het systeem voor het onderwijs is bedoeld mag het niet te duur zijn dus wordt de prijs gelimiteerd tot onder de 250 euro.
 * Probleemanalyse / Probleemstelling
-Op de Hogeschool Utrecht is het nodig up to date te blijven met nieuw ontwikkelende technologieën. In dit geval gaat het om een Brain-computer interfacing (BCI) systeem waarop ook in de toekomst verder aan gewerkt kan worden door nieuwe studenten. Daarvoor zal er dus onderzoek gedaan moeten worden naar hoe een EEG systeem in elkaar zit en hoe er een gemaakt kan worden voor een redelijke prijs aangezien de meeste op de markt op dit moment zeer duur zijn.
+Op de Hogeschool Utrecht is het nodig up to date te blijven met nieuw ontwikkelende technologieën. In dit geval gaat het om een Brain-computer interfacing (BCI) systeem waarop ook in de toekomst verder aan gewerkt kan worden door nieuwe studenten. Daarvoor zal er dus onderzoek moeten worden gedaan naar hoe een EEG systeem in elkaar zit en hoe er een kan worden gemaakt voor een redelijke prijs, aangezien de meeste op de markt op dit moment duur zijn.
 #+LATEX: \newpage
 * Vraagstelling
-Dit hoofdstuk benoemd en omschrijft de vragen die tijdens dit onderzoek zullen worden beantwoord. Als eerst wordt de hoofdvraag toegelicht en daarna zullen de deelvragen aan de pas komen. Na het stellen van het probleem is er de volgende opgesteld: *Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?* De minimale eisen voor de EEG zijn:
-+ Het kan het P300 signaal beter detecteren bij de onderzoekers dan een goedkope speelgoed EEG. Als goedkoop speelgoed EEG gebruiken we de Star Wars EEG als vergelijk.
+Dit hoofdstuk benoemd en omschrijft de vragen die tijdens dit onderzoek zullen worden beantwoord. Als eerst wordt de hoofdvraag toegelicht en daarna zullen de deelvragen aan de pas komen. Na het stellen van het probleem is er de volgende hoofdvraag opgesteld: *Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?* De minimale eisen voor de EEG zijn:
++ Het kan het P300 signaal beter detecteren bij de onderzoekers dan een goedkope speelgoed EEG. Als goedkoop speelgoed-EEG wordt de Star Wars EEG als vergelijk gebruikt.
 + De kosten voor de hardware die nodig zijn voor de EEG zijn niet meer dan 250 euro. Dit maximale budget is ontvangen van de opdrachtgever
-+ Het is makkelijk uitbreidbaar en kan makkelijk worden gebruikt voor bij andere projecten. Het idee is dat de EEG door andere studenten kan worden gebruikt voor andere projecten, daarom is het dus nodig dat er een duidelijke API is en documentatie.
++ Het is makkelijk uitbreidbaar en kan makkelijk worden gebruikt voor bij andere projecten. Het idee is dat de EEG door andere studenten kan worden gebruikt voor andere projecten, daarom is het dus nodig dat er een duidelijke API en documentatie is.
 
 Voor dit onderzoek zijn er een aantal deelvragen opgesteld welke moeten leiden tot een antwoord op de hoofdvraag. Elke deelvraag heeft weer enkele onder-deelvragen welke moeten leiden tot antwoord op de deelvraag.
 De deelvragen zijn:
@@ -209,52 +209,58 @@ De deelvragen zijn:
 * Methode en Aanpak
 Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
 te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
-gebruikt gaan worden staat in bijlage B ([[#BijlageB]]). Dit hoofdstuk beschrijft deze tabel in meer detail.
+gebruikt gaan worden staat in een tabel in bijlage B ([[#BijlageB]]). Dit hoofdstuk beschrijft deze tabel in meer detail.
 
 ** Benodigde Hardware EEG
-Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literatuur studie toegepast worden. Zo zal naar publicaties gezocht worden waarin onderzoek gedaan worden naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende hardware functionaliteiten van een EEG en wat daarvoor nodig is. \\
+Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literatuur studie worden toegepast. Zo zal naar publicaties worden gezocht waarin onderzoeken worden gedaan naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende benodigde en optionele hardware functionaliteiten van de EEG en wat daarvoor nodig is. \\
 
-Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingslijst worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.
-
+Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingstabel worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.\\
+\\
 Bij het uitzoeken van de hardwaredelen en componenten zal aandacht worden besteed aan het zo min mogelijk hebben van ruis. Bij het uitzoeken van de hardwaredelen zal bijvoorbeeld extra delen kunnen worden toegevoegd (hardwarefilters bijvoorbeeld) om de ruis te verminderen. Bij de hardwarecomponenten zal ruis meespelen als wegingsfactor bij het vergelijken van hardwarecomponenten. Hier al aandacht besteden aan de ruis wordt gedaan om preventief de ruis tegen te gaan.
 
 ** Ruisfiltering
-Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is cite:EEG_nois_canc. Als eerste zal er gekeken worden hoe de ruis verminderd kan worden. Daarna zal worden onderzocht welke typen ruis er in het gemeten signaal over zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Met dit frequentiespectrum kunnen we ruis wat vaste frequenties heeft, zoals 50/60 Hz ruis van de netvoeding, detecteren cite:xu2011160. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literatuur studie worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
+Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is cite:EEG_nois_canc. Als eerste zal er gekeken worden hoe de ruis kan worden verminderd. Daarna zal worden onderzocht welke typen ruis er in het gemeten signaal over zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Met dit frequentiespectrum kunnen we ruis wat vaste frequenties heeft, zoals 50/60 Hz ruis van de netvoeding, detecteren cite:xu2011160. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literatuur studie worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
 
 ** De EEG-firmware
-Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag zal vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen. Dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literatuur studie worden gebruikt.
+Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware worden geschreven. Deze deelvraag zal vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen. Dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware, hierdoor is het programmeren sneller en makkelijker. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literatuur studie worden gebruikt.
+
+** Kwantitatief onderzoek
+Nadat het EEG-systeem af is zal deze worden getest door een vergelijking te maken met een goedkopere EEG. De goedkopere EEG is een EEG uit een speelgoed set welke verkrijgbaar is voor consumenten. Tijdens dit onderzoek zal deze EEG de Star Wars EEG worden genoemd. Deze EEG kan worden gevonden via de volgende link: https://www.amazon.com/Science-Trainer-Brain-Sensing-Hologram-Electronic/dp/B00X5CCDYQ
+
+Het doel van deze tests is om te kijken of de gemaakte EEG beter is dan de Star Wars EEG. Dit zal worden getest met gebruik van de methodiek Benchmark test. Beide EEG's zullen worden getest op proefpersonen door P300-speller als benchmark te gebruiken. De proefpersonen zullen mensen zijn uit het Turing Lab of familie/vrienden van de onderzoekers.
 
 #+LATEX: \newpage
 * Ethiek
 Bij een EEG-systeem worden hersengolven gemeten. Aangezien hersengolven persoonlijk zijn kan dit voor een aantal ethische problemen zorgen. Een EEG kan onder anderen gebruikt worden om iemand te identificeren cite:ashby2011low. Hierdoor is het dus ook een vraag of je de data van een EEG zo zou mogen opslaan aangezien het vergelijkbaar met bijvoorbeeld een vingerafdruk is. Een ander ethisch aspect kan het feit zijn dat een EEG gebruikt kan worden voor leugen detectie cite:abootalebi2009new. Dit kan een gevoelig onderwerp zijn voor bijvoorbeeld mensen die veroordeeld worden. \\
 \\
-Ons EEG-systeem kan ook een positief effect hebben op de studenten. Zo is er meer apparatuur aanwezig bij het Turing Lab van de Hogeschool Utrecht. Dit kan dan gebruikt worden voor verder onderzoek of om van te leren voor toekomstige studenten. \\
+Ons EEG-systeem kan een positief effect hebben op de studenten van de Technische Informatica op de Hogeschool Utrecht. Zo is er meer apparatuur aanwezig bij het Turing Lab van de Hogeschool Utrecht, wat kan worden gebruikt voor verder onderzoek of om van te leren voor toekomstige studenten. \\
 \\
-Het directe doel van dit onderzoek is niet om dingen zoals identificatie of leugen detectie te doen. Maar wordt gericht op de kennis voor het Turing Lab en studenten. Het wordt ook alleen gebruikt op mensen die toestemming geven. Hierdoor is de conclusie dat dit onderzoek ethisch verantwoord is.
+Het directe doel van dit onderzoek is identificatie van mensen of leugen detectie te doen, maar wordt gericht op de kennis voor het Turing Lab en studenten. Het wordt ook alleen gebruikt op mensen die toestemming geven. Hierdoor is de conclusie dat dit onderzoek ethisch verantwoord is.
 
 * Randvoorwaarden
 ** Scope
 Om de scope van dit onderzoek aan te geven is de onderstaande MoSCoW-lijst opgesteld: \\
 Must Have:
-- 1 Elektrode waarvan het signaal gemeten kan worden.
-- Hardware lijst van benodigde componenten.
+- Eén Elektrode waarvan het signaal gemeten kan worden
+- Hardware lijst van benodigde componenten
 - Ruis filtering
 - Functioneel ontwerp
-- Elektrode(s) moeten op het hoofd geplaatst kunnen worden (met een soort cap bijvoorbeeld).
-- P300 golf detecteren.
-- P300-speller demo.
+- Elektrode(s) moeten op het hoofd geplaatst kunnen worden (met een soort cap bijvoorbeeld)
+- P300 golf detecteren
+- P300-speller demo
+- Documentatie over de hardware en de software
 
 Should Have:
-- Meerdere Elektrodes waarvan het signaal gemeten kan worden.
-- Logging van de EEG data.
-- Kwantitatief onderzoek naar ons EEG ten opzichte van de Star Wars EEG.
+- Meerdere Elektrodes waarvan het signaal gemeten kan worden
+- Logging van de EEG data
+- Kwantitatief onderzoek naar ons EEG ten opzichte van de Star Wars EEG
 
 Could Have:
-- Automatisch kalibreren indien nodig.
-- Bluetooth / WiFi connectie.
+- Automatisch kalibreren indien nodig
+- Bluetooth / WiFi connectie
 
 Won't Have:
-- Encryptie van data.
+- Encryptie van data
 
 ** Apparatuur en Tools
 In de onderstaande staat een tabel met daarin de benodigde apparatuur voor dit project en of deze al aanwezig is.
@@ -298,7 +304,7 @@ In de tabel hieronder staan de risico’s die tijdens dit project opkomen dagen 
 De planning voor dit project kan worden gevonden in bijlage A ([[#BijlageA]]).
 
 ** Wijzigingen
-Aangezien sommige delen van het onderzoek van levertijden afhankelijk zijn kan het zijn dat hier aanpassingen voor moeten komen. Als er gewacht moet worden voor een hardware component zal aan het volgende in de planning waarvoor de hardware niet nodig is gewerkt worden totdat het geleverd wordt. Zo kan er al aan het software analyse gedeelte gewerkt worden met een gesimuleerd signaal terwijl er op hardware gewacht wordt.
+Aangezien sommige onderdelen van de planning van levertijden afhankelijk zijn kan het zijn dat hier aanpassingen voor moeten komen. Als er gewacht moet worden op de levering van een hardware component zal aan het volgende in de planning waarvoor de hardware niet nodig is worden gewerkt. Zo kan er bijvoorbeeld al aan het software analyse gedeelte gewerkt worden met een gesimuleerd signaal terwijl er op hardware gewacht wordt.
 
 #+LATEX: \newpage
 
