@@ -85,7 +85,7 @@ In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als eer
 *** Brain Computer Interfacing
 Een Brain Computer Interface is een alternatieve manier om een computer te besturen ten opzichte van bijvoorbeeld de veelgebruikte muis en toetsenbord. Bij een Brain Computer Interface wordt de computer door middel van neuronen activiteit in de hersenen bestuurt. Bij deze techniek bestaan er invasive en noninvasive manieren. Bij invasive manieren moet er iets in het lichaam geplaatst worden om de activiteit te meten en bij de noninvasive manier wordt de hersen activiteit van de buitenkant van het lichaam gemeten door bijvoorbeeld gebruik te maken van elektroden cite:vallabhaneni2005brain. Een voorbeeld van een noninvasive-BCI welke gebruik maakt van de elektrodes is de EEG. Een voorbeeld van een invasive-BCI is door zogenoemde "Depth electrodes" in de hersenen te steken. De meeste van deze elektrodes hebben 4 tot en met 12 contact punten die tussen de 5 en 10 mm van elkaar af staan cite:zumsteg2000presurgical.
 
-** Hersenen regio's
+*** Hersenen regio's
 Voor dit onderzoek is het belangrijk om te weten waar in de hersenen wat gebeurd. Dit is omdat dit belangrijke informatie is voor de plaatsing van de elektrodes. Er zijn vier belangrijke regio's in de grote hersenen, namelijk cite:Brain_and_Behavior:
  - Frontale kwab: Dit is de regio aan de voorkant van het brein. Het is verantwoordelijk voor de volgende functies:
   - Aandacht hebben voor dingen of zicht goed kunnen concentreren
@@ -97,7 +97,7 @@ Voor dit onderzoek is het belangrijk om te weten waar in de hersenen wat gebeurd
  - Occipitale kwab: Deze kwab is verantwoordelijk voor het kijken en speelt ook een rol in het herkennen van wat gezien wordt
  - Temporale kwab: Deze regio verantwoordelijk is voor horen, taal, smaken en speelt ook een rol in het herkennen wat gezien wordt
  - Pariëtale kwab: Deze regio is vooral verantwoordelijk voor het voelen, bijvoorbeeld iets aanraken met de vingers
-** Hersengolven
+*** Hersengolven
 Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die als eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental.
 Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. Tijdens het zoeken naar deze frequenties is tot de conclusie gekomen dat veel bronnen andere frequenties zeggen.
  Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG:
@@ -106,6 +106,7 @@ Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. T
 - Alpha golven: 8 Hz tot 13 Hz
 - Beta golven: 13 Hz tot 13 Hz
 - Gamma golven: >40 Hz
+
 
 Een van de meest bekende hersengolven is de P300-hersengolf. De P300 is een hersengolf welke voorkomt tussen de 0,5 Hz en de 15 Hz cite:Lafuente2017. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteren welke aandacht trekken, zoals een lichtflits. Daarnaast kent de P300 2 vormen, namelijk de P3a en de P3b. De P3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een P3b gaan lijken waarbij de hersenen meer data uit de het geheugen gaan verwerken dan bij de P3a cite:polich07_updat_p300. Het verschil in uiterlijk tussen de P3a en de P3b is dat de P3a een hogere piek in amplitude heeft dan de P3b. Omdat deze hersengolf vaak voorkomt en relatief makkelijk te meten is, wordt deze golf bij dit onderzoek gebruikt als minimale eis aan het EEG-systeem dat gemaakt wordt.
 
@@ -125,7 +126,6 @@ Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met 
 #+ATTR_LATEX: :width 200px
 [[./images/grass_silver_cup_electrodes_single.jpg]]
 
-
 *Plaatsing* \\
 Er zijn standaarden voor de plaatsingen van elektrodes op de schedel cite:Electrode_placement. Een voorbeeld hiervan is het 10-20 systeem, zoals te zien is in figuur [[fig:10-20]]. Bij dit systeem wordt de schedel is vijf verschillende delen verdeeld, deze delen hebben een grote van 10% of 20% van het totaal. In figuur [[fig:10-20-side]] is te zien hoe de verdeling is van deze regio's. In dit figuur is alleen verdeling vanaf de zijkant te zien, maar dezelfde deling geld ook vanaf de voorkant en de bovenkant.\\
 Te zien is dat de regio's een naam krijgen zoals "F5", "Cz" of "T4". Hierbij is de eerste letter de hersenregio die de elektrode zal meten, zoals "F" voor Frontale kwab, "T" voor Temporale, "P" voor Pariëtale en "O" voor Occipitale. De tweede letter of cijfer is toegevoegd om verschillende plekken in een regio aan te kunnen geven. De even getallen voor de rechter helft van de schedel en de oneven getallen zijn voor de linker helft. De "z" in bijvoorbeeld "Cz" staat voor zero.
@@ -141,13 +141,13 @@ Er zijn ook varianten met een deling van maar 10% of zelfs 5% cite:Oostenveld200
 #+ATTR_LATEX: :width 200px
 [[./images/10-20-sys.png]]
 
-*** ADC
+**** ADC
 De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn.
 
 *** Signaalverwerking
 Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven. Hierbij zal vooral worden gefocust op het vinden van het P300-signaal uit de hersenen, waarvoor het signaal eerst van ruis moeten worden vrij gemaakt.
 
-*** Signaalruis
+**** Signaalruis
 Bij een EEG-systeem zijn er verschillende soorten ruis. Voor het meten van het signaal kan dit worden verdeeld in Thermal Noise, Channel Noise, Synaptic Noise en overige. Bij Thermal Noise wat ook bekend is als /Johnson noise/ gaat het om voltage veranderingen door de invloed van temperatuur. Dit kan worden verminderd door de temperatuur of de frequentie te verminderen. Channel Noise wordt veroorzaakt door stochastic ionic channels op de membraan van cellen. Deze channels openen en sluiten toevallig en hebben invloed op het geleiden van stroom. Dit is dus ook een mogelijke bron van ruis. Naast channels die openen en sluiten gaat het bij Synaptic Noise om neurotransmitter moleculen die vrijgelaten worden door cellen. Dit beïnvloed ook de geleiding van stroom waardoor het ruis kan veroorzaken cite:manwani1999detecting. Als laatste zijn er ook nog overige vormen van ruis. Zo kunnen signalen voor spieren van bijvoorbeeld de ogen ruis genereren cite:woestenburg1983removal.
 
 ** Belangrijke bronnen
