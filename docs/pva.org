@@ -131,7 +131,7 @@ Te zien is dat de regio's een naam krijgen zoals "F5", "Cz" of "T4". Hierbij is 
 Er zijn ook varianten met een deling van maar 10% of zelfs 5% cite:Oostenveld2001.
 #+CAPTION: De vijf verschillende delen cite:Electrode_placement
 #+NAME: fig:10-20-side
-#+ATTR_LATEX: :width 200px 
+#+ATTR_LATEX: :width 200px
 [[./images/10-20-side.png]]
 
 #+CAPTION: 10-20 systeem cite:10-20-img
@@ -214,11 +214,12 @@ Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een be
 Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware geschreven worden. Deze deelvraag zal vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen. Dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literature study worden gebruikt.
 
 #+LATEX: \newpage
-* Ethisch
-Bij een EEG-systeem worden hersengolven gemeten. Aangezien hersengolven persoonlijk zijn kan dit voor een aantal ethische problemen zorgen. Een EEG kan onder anderen gebruikt worden om iemand te identificeren cite:ashby2011low. Hierdoor is het dus ook een vraag of je de data van een EEG zo zou mogen opslaan aangezien het vergelijkbaar met bijvoorbeeld een vingerafdruk is. \\
+* Ethiek
+Bij een EEG-systeem worden hersengolven gemeten. Aangezien hersengolven persoonlijk zijn kan dit voor een aantal ethische problemen zorgen. Een EEG kan onder anderen gebruikt worden om iemand te identificeren cite:ashby2011low. Hierdoor is het dus ook een vraag of je de data van een EEG zo zou mogen opslaan aangezien het vergelijkbaar met bijvoorbeeld een vingerafdruk is. Een ander ethisch aspect kan het feit zijn dat een EEG gebruikt kan worden voor leugen detectie cite:abootalebi2009new. Dit kan een gevoelig onderwerp zijn voor bijvoorbeeld mensen die veroordeeld worden. \\
 \\
-Dit onderzoek kan worden gezien als ethisch verantwoord. Dit omdat het EEG-systeem dat gemaakt wordt tijdens dit onderzoek voor het Turing Lab bedoelt is. Hier wordt het dan weer gebruikt om andere studenten iets te laten leren over deze techniek of het wordt gebruikt als voorbeeld van wat er op de opleiding gemaakt wordt.\\
-Ook zullen de belangen van de mensen waarop het systeem getest wordt niet worden geschaad, doordat vooraf om toestemming wordt gevraagd.
+Ons EEG-systeem kan ook een positief effect hebben op de studenten. Zo is er meer apparatuur aanwezig bij het Turing Lab van de Hogeschool Utrecht. Dit kan dan gebruikt worden voor verder onderzoek of om van te leren voor toekomstige studenten. \\
+\\
+Het directe doel van dit onderzoek is niet om dingen zoals identificatie of leugen detectie te doen. Maar wordt gericht op de kennis voor het Turing Lab en studenten. Het wordt ook alleen gebruikt op mensen die toestemming geven. Hierdoor is de conclusie dat dit onderzoek ethisch verantwoord is.
 
 * Randvoorwaarden
 ** Scope
