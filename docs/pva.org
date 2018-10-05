@@ -100,12 +100,21 @@ Voor dit onderzoek is het belangrijk om te weten waar in de hersenen wat gebeurd
 *** Hersengolven
 Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die als eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die gegenereerd worden door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental.
 Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. Tijdens het zoeken naar deze frequenties is tot de conclusie gekomen dat veel bronnen andere frequenties zeggen.
- Bij dit onderzoek gebruiken wij de volgende frequenties, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG:
-- Delta golven: 0,5 tot 3,5 Hz
-- Theta golven: 3,5 Hz tot 8 Hz
-- Alpha golven: 8 Hz tot 13 Hz
-- Beta golven: 13 Hz tot 13 Hz
-- Gamma golven: >40 Hz
+  Bij dit onderzoek worden de volgende frequenties gebruikt, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG:
+#+ATTR_LATEX: :environment longtable :align |l|p{4cm}|p{5cm}|p{4cm}|
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| *Golf* | *Frequentiebereik (Hz)* | *Komt voor tijdens*                                       | *Pathologisch*                                               |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Delta  |                 0,5-3,5 | Slapen, hyperventilatie, baby's, ouderen                  | Hersenaandoeningen, laesie in de witte stof van de hersenen  |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Theta  |                   3,5-8 | Slaperigheid, kinderen, ouderen                           | Hersenaandoeningen, laesie (minder correlatie dan bij Delta) |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Alpha  |                    8-13 | Ontspanning, sluiten van ogen                             | Coma, beroerte                                               |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Beta   |                   13-30 | Ogen open cite:EEG_fundamenental, wakker/actief           | Drugs overdosis                                              |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Gamma  |                   30-80 | Bewegen van spieren, iets leren of het geheugen gebruiken | Beroerte                                                     |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
 
 Een van de meest bekende hersengolven is de P300-hersengolf. De P300 is een event-related-potetial (ERP) cite:polich07_updat_p300, wat wil zeggen dat het een elektrofysiologische reactie is van de hersennen. De P300 komt voor tussen de 0,5 Hz en de 15 Hz cite:Lafuente2017. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteert welke aandacht trekt, zoals een lichtflits. Daarnaast kent de P300 twee vormen, namelijk de P3a en de P3b. De P3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een P3b gaan lijken waarbij de hersenen meer data uit de het geheugen gaan verwerken dan bij de P3a cite:polich07_updat_p300. Het verschil in uiterlijk tussen de P3a en de P3b is dat de P3a een hogere piek in amplitude heeft dan de P3b. Ook is herkomst uit de hersenen anders, zo onstaat de P3a meer in de frontale kwab en de P3b meer uit de temporale/pariëtale kwab. Omdat de P300 vaak voorkomt en relatief makkelijk te meten is, zal het bij dit onderzoek worden gebruikt als minimale eis aan het EEG-systeem dat wordt gemaakt.
 
