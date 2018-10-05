@@ -184,7 +184,7 @@ Op de Hogeschool Utrecht is het nodig up to date te blijven met nieuw ontwikkele
 #+LATEX: \newpage
 * Vraagstelling
 Dit hoofdstuk benoemd en omschrijft de vragen die tijdens dit onderzoek zullen worden beantwoord. Als eerst wordt de hoofdvraag toegelicht en daarna zullen de deelvragen aan de pas komen. Na het stellen van het probleem is er de volgende opgesteld: *Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?* De minimale eisen voor de EEG zijn:
-+ Het kan minimaal het P300 signaal detecteren bij de onderzoekers. Er is voor dit signaal gekozen omdat dit het meeste duidelijke signaal is, ook is het brein makkelijk te activeren om dit signaal te genereren.
++ Het kan het P300 signaal beter detecteren bij de onderzoekers dan een goedkope speelgoed EEG. Als goedkoop speelgoed EEG gebruiken we de Star Wars EEG als vergelijk.
 + De kosten voor de hardware die nodig zijn voor de EEG zijn niet meer dan 250 euro. Dit maximale budget is ontvangen van de opdrachtgever
 + Het is makkelijk uitbreidbaar en kan makkelijk worden gebruikt voor bij andere projecten. Het idee is dat de EEG door andere studenten kan worden gebruikt voor andere projecten, daarom is het dus nodig dat er een duidelijke API is en documentatie.
 
@@ -201,9 +201,9 @@ De deelvragen zijn:
    3. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
    4. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
    5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? Zo ja, hoe?
-3. Hoe vergelijkt onze EEG met de Starwars-EEG?
+3. Hoe vergelijkt onze EEG met de Star Wars EEG?
    1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
-   2. Doet onze EEG het significant beter dan de Starwars-EEG?
+   2. Doet onze EEG het significant beter dan de Star Wars EEG?
 #+LATEX: \newpage
 
 * Methode en Aanpak
@@ -245,7 +245,7 @@ Must Have:
 Should Have:
 - Meerdere Elektrodes waarvan het signaal gemeten kan worden.
 - Logging van de EEG data.
-- Kwantitatief onderzoek naar ons EEG ten opzichte van de star wars EEG.
+- Kwantitatief onderzoek naar ons EEG ten opzichte van de Star Wars EEG.
 
 Could Have:
 - Automatisch kalibreren indien nodig.
@@ -335,7 +335,7 @@ bibliography:sources.bib
 | d | Welke C++/Python libraries zijn er om deze algoritmes toe te passen en welke is het beste, denkend aan performance? | Vergelijkend    | Showroom        | Benchmark test  | Aanbeveling voor gekozen libraries |
 | e | Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? Zo ja, hoe? | Evaluerend      | Field           | Observatie      | Oplossing voor potentiële kalibratie EEG. |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
-| 3 | Hoe vergelijkt onze EEG met de Starwars-EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
+| 3 | Hoe vergelijkt onze EEG met de Star Wars EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
 | a | Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden? | Evaluerend      | Showroom        | Benchmark test  | Testrapport     |
-| b | Doet onze EEG het significant beter dan de Starwars-EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
+| b | Doet onze EEG het significant beter dan de Star Wars EEG? | Vergelijkend    | Showroom        | Benchmark test  | Testrapport     |
 |---+-----------------+-----------------+-----------------+-----------------+-----------------|
