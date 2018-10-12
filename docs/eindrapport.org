@@ -55,7 +55,7 @@ Een van de meest bekende hersengolven is de P300-hersengolf. De P300 is een even
 
 *** Signaalmeting
 In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te meten. Uit vooronderzoek cite:xu2011160 is gebleken dat voor het meten van hersengolven een elektrode en een analoog-digitaal converter (ADC) nodig is. Echter is nog niet duidelijk wat de precieze eisen zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal elektrode en ADC kort worden uitgelegd:
-
+*** TODO Nyquist Sampling Rate uitleggen
 **** Elektrode
 Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd. Doordat elektroden contact maken met het hoofd kunnen hersengolven gemeten worden door de schedel heen. Hierbij is het nodig een goede elektrische verbinding te maken tussen de elektrode en het hoofd om potentiële ruis te verminderen. Voor het verbeteren van dit contact kan een gel gebruikt worden cite:usakli2010improvement. Elektrodes verschillen onder elkaar ook nog op meerdere attributen. Zo zijn ze verkrijgbaar in verschillende maten. Sommige elektrodes zijn herbruikbaar en anderen zijn maar één keer te gebruiken.
 
@@ -126,6 +126,10 @@ kosten per channel:
 
 * Benodigde hardware EEG
 In dit hoofdstuk zal de resultaten worden weergegeven uit het literatuuronderzoek naar de hardwaredelen en componenten die nodig zijn om een EEG-systeem te maken. Als eerste zal worden beschreven welke hardware delen nodig zijn en daarna zal worden beschreven welke componenten binnen deze delen kunnen worden gebruikt.
+*** TODO 
+Er moeten nog meer bronnen komen die uitleggen welke hardwaredelen nodig zijn
+Uitleg waarom een inamp gebruikt moet wordt. We willen het verschil zien tussen elektrode en oor
+
 ** Benodigde hardwaredelen
 In het hoofdstuk over signaalmeting is al verteld dan uit vooronderzoek is gebleken dat tenminste een elektrode en een ADC benodigd is om een EEG-systeem te maken. Echter zal met alleen deze twee hardwaredelen geen succesvol EEG-systeem kunnen worden gemaakt. Dit hoofdstuk zal beschrijven welke hardware delen nog meer nodig zijn. De informatie voor het onderzoeken hiernaar is verkregen door literatuurstudie te doen naar andere EEG-systemen. Enkele van deze systemen zijn opensource waardoor goed te zien is hoe het bij deze systemen gedaan is.\\
 
@@ -133,6 +137,49 @@ Een van deze opensource EEG-systemen is genaamd OpenEEG. OpenEEG is een project 
 Als naar de schematics van de modEEGamp gekeken wordt, welke te vinden is in [[Bijlage A: schakelschema modEEGamp][Bijlage A]] is goed te zien welke hardware delen gebruikt zijn.
 Te zien is dat er per kanaal twee versterkers worden gebruikt, waarvan de ene een instrumentale versterker (inamp) is en de andere een operationele versterker(opamp). voorafgaand aan de inamp is een protectiecircuit tegen......
 
+
+In [[Bijlage B: schakelschema versterker][Bijlage B]] is nog een schakelschema te zien welke waarin ook een inamp en een opamp gebruikt wordt om de hersensignalen te versterken. Echter is dit schema niet het protectiecircuit en de filtering tegen rf-signalen te zien. Dit schema is eerder gebruikt in een succesvol onderzoek naar het maken van een EEG-systeem cite:Diy_EEG. Hieruit kan dus worden afgeleid dat het protectiecircuit en de filtering tegen rf-signalen niet perse nodig, maar misschien wel beter prestaties levert.
+
+Dankzij de bestudeerde bronnen is de volgende lijst van benodigde onderdelen opgesteld:
+- *Elektrode*: om signalen uit de hersenen van een persoon te meten moet contact worden gemaakt met de hoofdhuid, hiervoor worden elektrodes gebruikt. 
+- *Instrumentele versterker (inamp)*: een inamp wordt gebruikt om het verschil tussen de elektrode op het oor en een andere elektrode als uitput te krijgen en deze ook de versterken. 
+- *Operationele versterker (opamp)*: een opamp wordt gebruikt om de output uit de inamp voor het grootste gedeelte te versterken tot een voltagebereik wat kan worden gemeten door een analoog-digitaal converter.
+- *Signaalfiltering*: verwacht wordt dat er in het signaal veel ruis zal bevinden, zoals een lowpas filter die alles boven de 50Hz van het lichtnet verwijderd. Hiervoor kan een opamp worden gebruikt, maar ook weerstand in combinatie met een condensator.
+- *Analoog-digitaal converter (ADC)*: om het analoge signaal uit de opamp om te zetten naar een digitaal signaal is een ADC nodig. De ADC moet tenminste 160 metingen per seconden op acht channels kunnen doen. Er is hier voor 160 gekozen omdat de maximale frequentie die moet kunnen worden gemeten 80Hz is, wat de maximale frequentie van gammagolven uit de hersenen is. Dit dubbele is nodig om aan Nyquist-frequentie te voldoen. 
+- *Microcontroller*: de microcontroller zal de data uit de ADC uitlezen en doorsturen naar een computer. De microcontroller moet minimaal 160x8=1280 metingen per seconden uit de ADC kunnen lezen. De resolutie van de ADC is *!!!!!!MOET NOG GETEST WORDEN!!!!!!*
+
+** De hardware componenten
+Nu er een globaal beeld is van wat er nodig is om een EEG-systeem te maken moeten er nog specifiek hardware componenten worden bepaald. Dit wordt gedaan in dit hoofdstuk.
+In [[Benodigde hardwaredelen]] zijn er een aantal eisen gesteld waar de componenten aan moeten voldoen. Aan het einde van dit hoofdstuk wordt er een lijst opgesteld met de verschillende hardwarecomponenten die nodig zijn voor het EEG-systeem. Voor elke hardwaredeel zal er een tabel worden gemaakt waarin meerdere componenten in dit deel worden vergeleken om zo tot een selectie te komen van componenten. De selectie wordt dan in het echt getest om te kijken welke beter is. 
+
+Als eerste zal worden bepaald welke elektrodes worden gebruikt. Hieronder is een tabel te zien van de elektrodes welke worden vergeleken.
+
+#+ATTR_LATEX: :environment longtable :align |p{3cm}|p{1,2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Naam                                                     | Stuks | Prijs   | Herbruikbaar | Materiaal in contact met huid | Diameter van pad | Extra                       |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Biomedical Sensor Pad                                    |    10 | €9,62   | nee          | ?                             | 24 mm            | Al voorbereid met gel       |
+| Genuine Grass Reusable 10mm Silver Cup Surface Electrode |    10 | $179,95 | ja           | zilver                        | 10 mm            |                             |
+| Technomed Silver Cup EEG Electrodes                      |    12 | $125,-  | ja           | zilver                        | 10 mm            |                             |
+| IMA Silver EEG Flat Electrode                            |     1 | $16,16  | ja           | zilver                        | 8 mm             |                             |
+| GS29 Solid Gel - Square Cloth Electrode                  |   600 | $125,99 | nee          | zilver                        | 22 x 22 mm       |                             |
+| Dry EEG Comb Electrodes                                  |    30 | $29,99  | ja           | zilver chloride coating       | 6,35 mm          | Kan door haar heen meten    |
+| EEG-AE                                                   |     1 | €9,00   | ja           | goud                          | ?                | Bevat een signaalversterker |
+| EEG-PE                                                   |     1 | €5,00   | ja           | goud                          | ?                |                             |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+
+#+ATTR_LATEX: :environment longtable :align |p{2cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2cm}|p{2cm}|p{2cm}|
+|-----------------+-------------+----------+-----------+----------+---------------------+----------------------+---------|
+| Naam            | Prijs(Euro) | Precisie | Range (V) | sps      | input noise uV(RMS) | Output noise uV(RMS) | kanalen |
+|-----------------+-------------+----------+-----------+----------+---------------------+----------------------+---------|
+| MCP3021         | 0,94        | 10-bit   | -0.6~3,4  | 22k      |                     |                      |       1 |
+| TLC1543         | 12,95       | 10-bit   | Reference | 32k      |                     |                      |      11 |
+| MCP3008         | 3,50        | 10-bit   |           | 75k-200k |                     |                      |       8 |
+| ad7705          | 2,60        | 16-bit   |           | ?        |                     |                      |       2 |
+| ads1115         | 2,50        | 16-bit   |           | 860      | 32,25               |                      |       2 |
+| ESP32 ADC       | 13,99       | 12-bit   | 0-3,9     | ?        | ?                   | ?                    |     2x8 |
+| Arduino Uno adc |             | 8-bit    |           |          |                     |                      |         |
+|-----------------+-------------+----------+-----------+----------+---------------------+----------------------+---------|
 
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
@@ -147,6 +194,16 @@ bibliography:sources.bib
 Hieronder kan het schakelschema voor de modEEGamp worden gevonden. Dit schema is gedownload vanaf de volgende link: https://www.olimex.com/Products/EEG/OpenEEG/EEG-ANALOG-ASM/resources/modEEGamp_v1.1.pdf
 #+LATEX_ATTR: 
 [[./images/modEEGamp_v1.1.png]]
+#+LATEX: \newpage
+
+** Bijlage B: schakelschema versterker
+:PROPERTIES:
+:CUSTOM_ID: BijlageB
+:END:
+Hieronder kan een schakelschema worden gevonden voor de versterking van de hersensignalen uit de elektrodes. Dit schema is gedownload vanaf de volgende link: https://sites.google.com/site/chipstein/_/rsrc/1257001084516/home-page/eeg-with-an-arduino/assembling-the-arduino-eeg-circult/Arduino%20PreampNG.jpg?height=327&width=420
+
+#+CAPTION: Versterker schema voor EEG cite:chipstein
+[[./images/Arduino_PreampNG.jpg]]
 #+LATEX: \newpage
 
 
