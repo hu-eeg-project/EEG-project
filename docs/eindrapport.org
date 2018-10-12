@@ -129,9 +129,9 @@ In dit hoofdstuk zal de resultaten worden weergegeven uit het literatuuronderzoe
 ** Benodigde hardwaredelen
 In het hoofdstuk over signaalmeting is al verteld dan uit vooronderzoek is gebleken dat tenminste een elektrode en een ADC benodigd is om een EEG-systeem te maken. Echter zal met alleen deze twee hardwaredelen geen succesvol EEG-systeem kunnen worden gemaakt. Dit hoofdstuk zal beschrijven welke hardware delen nog meer nodig zijn. De informatie voor het onderzoeken hiernaar is verkregen door literatuurstudie te doen naar andere EEG-systemen. Enkele van deze systemen zijn opensource waardoor goed te zien is hoe het bij deze systemen gedaan is.\\
 
-*** OpenEEG
 Een van deze opensource EEG-systemen is genaamd OpenEEG. OpenEEG is een project met als doel om goedkope EEG-systemen en de software hiervoor te maken cite:OpenEEG. Via de webshop Olimex zijn twee PCB's te koop van OpenEEG, de ene is een versterker genaamd modEEGamp en de andere bevat een ADC en een microcontroller om de gemeten data te kunnen versturen naar een computer.
 Als naar de schematics van de modEEGamp gekeken wordt, welke te vinden is in [[Bijlage A: schakelschema modEEGamp][Bijlage A]] is goed te zien welke hardware delen gebruikt zijn.
+Te zien is dat er per kanaal twee versterkers worden gebruikt, waarvan de ene een instrumentale versterker (inamp) is en de andere een operationele versterker(opamp). voorafgaand aan de inamp is een protectiecircuit tegen......
 
 
 * Bronnen
