@@ -1,3 +1,4 @@
+#+TITLE: Mens-machine interactie door middel van EEG
 #+OPTIONS: title:nil toc:nil H:4
 #+LATEX_HEADER: \pagenumbering{gobble}
 #+LATEX_HEADER: \usepackage[margin=3cm]{geometry}
@@ -6,8 +7,64 @@
 #+LATEX_HEADER: \setlength{\parindent}{0em}
 #+LATEX_HEADER: \usepackage{etoolbox}
 
+#+INCLUDE: title-eindrapport.org
+
 #+LATEX: \newpage
 #+LATEX: \pagenumbering{roman}
+
+* Algemene informatie
+*Opleiding*: Technische Informatica \\
+*Organisatie*: Hogeschool Utrecht \\
+*Begeleider*: J. Bunk \\
+*Document status*: concept \\
+*Datum*: \today
+\\
+*auteur 1:*
+- *Naam:* Stefan de Beer
+- *Telefoonnummer:* 0611873666
+- *E-mail:* stefan.debeer@student.hu.nl
+- *Studentennummer:* 1684137
+*auteur 2:*
+- *Naam:* Paul Ettema
+- *Telefoonnummer:* 0630763224
+- *E-mail:* paul.ettema@student.hu.nl
+- *Studentennummer:* 1677247
+
+#+LATEX: \newpage
+#+LATEX: \renewcommand{\contentsname}{Inhoudsopgave}
+#+LATEX: \tableofcontents
+
+#+LATEX: \newpage
+#+LATEX: \pagenumbering{arabic}
+
+* Begrippen
+#+ATTR_LATEX: :environment longtable :align |l|p{10cm}|
+|-------------------+---------------------------------------------------------------------|
+| Begrip            | Betekenis                                                           |
+|-------------------+---------------------------------------------------------------------|
+|                   | <67>                                                                |
+| ADC               | Analog Digital Converter. Zet een analoge stroom om in een digitale waarde. |
+| BCI               | Brein Computer Interface.                                           |
+| Channel           | In context met elektrode: een enkele elektrode met daarbij behorende hardware om hersenactiviteit te meten op een plek. In context met ADC: een input van de ADC waarop het de stroom kan omzetten in een digitale waarde. |
+| EEG               | Elektro-encefalografie is een methode om hersenactiviteit te meten door de kleine elektrische stromen die de hersenen maken te meten. |
+| Elektrode         | Component wat elektronisch contact maakt met het lichaam om stroom van hersenen te meten. |
+| Hardwaredeel      | Een categorie van hardwarecomponenten zoals bijvoorbeeld een ADC of Op-Amp. |
+| Hardwarecomponent | Meer specifiek dan hardware deel bijvoorbeeld een specifieke chip.  |
+| Op-Amp            | Operationele Amplifier. Een chip die een analoog signaal kan versterken. |
+| PoC               | Proof of Concept.                                                   |
+|-------------------+---------------------------------------------------------------------|
+#+LATEX: \newpage
+* Inleiding
+Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren. \\
+Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG op de basis van BCI ligt. Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm bewegen. \\
+Dit onderzoek wordt gedaan door twee studenten van technische Informatica aan de hogeschool Utrecht, voor het onderzoekssemester.
+#+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset
+#+NAME: fig:bci_headset
+#+ATTR_LATEX: :width 250px
+#+ATTR_LATEX: :height 250px
+[[./images/bci_headset.jpg]]
+* TODO
+#+LATEX: \newpage
 
 * Theoretisch kader
 In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als eerste worden er een aantal centrale begrippen over het onderwerp toegelicht. Daarna worden er een aantal belangrijke bronnen neergezet. En als laatste worden gerelateerde werken genoemd.
@@ -116,7 +173,7 @@ Benodigde onderdelen EEG in volgorde
 - kabel van elektrode: De kabel van de elektrode naar de rest van het systeem. Deze kabel kan anders zijn per elektrode en zal goed beschermd moeten zijn tegen ruis.
 - Instrumentele Amplifier: Als eerste stap van de versterking wordt een instrumentele amplifier gebruikt om het verschil tussen de neutrale en de huidige elektrode te meten en te versterken. Het verschil tussen beide is nodig zodat neutrale ruis die door de hele hersenen te meten zijn er uit te filteren.
 - Opamp: Hier komt de grootste versterkingsstap, om het binnen voltages te krijgen die meetbaar zijn voor een ADC.
-- Opamp/filter: Hier wordt met gebruik van een opamp de hoge frequentie (>30Hz) weggefilterd en wordt er ook wat versterkt. 
+- Opamp/filter: Hier wordt met gebruik van een opamp de hoge frequentie (>30Hz) weggefilterd en wordt er ook wat versterkt.
 - ADC: Hier wordt het analoge signaal omgezet naar een digitaal signaal, welke kan worden uitgelezen door een microcontroller.
 - Microcontroller: Deze zal de data uit de ADC lezen en doorsturen naar de computer
 - Computer: Ontvangt data uit microcontroller en voert hier algoritmes op uit om het signaal te verwerken
@@ -126,7 +183,7 @@ kosten per channel:
 
 * Benodigde hardware EEG
 In dit hoofdstuk zal de resultaten worden weergegeven uit het literatuuronderzoek naar de hardwaredelen en componenten die nodig zijn om een EEG-systeem te maken. Als eerste zal worden beschreven welke hardware delen nodig zijn en daarna zal worden beschreven welke componenten binnen deze delen kunnen worden gebruikt.
-*** TODO 
+*** TODO
 Er moeten nog meer bronnen komen die uitleggen welke hardwaredelen nodig zijn
 Uitleg waarom een inamp gebruikt moet wordt. We willen het verschil zien tussen elektrode en oor
 
@@ -141,16 +198,16 @@ Te zien is dat er per kanaal twee versterkers worden gebruikt, waarvan de ene ee
 In [[Bijlage B: schakelschema versterker][Bijlage B]] is nog een schakelschema te zien welke waarin ook een inamp en een opamp gebruikt wordt om de hersensignalen te versterken. Echter is dit schema niet het protectiecircuit en de filtering tegen rf-signalen te zien. Dit schema is eerder gebruikt in een succesvol onderzoek naar het maken van een EEG-systeem cite:Diy_EEG. Hieruit kan dus worden afgeleid dat het protectiecircuit en de filtering tegen rf-signalen niet perse nodig, maar misschien wel beter prestaties levert.
 
 Dankzij de bestudeerde bronnen is de volgende lijst van benodigde onderdelen opgesteld:
-- *Elektrode*: om signalen uit de hersenen van een persoon te meten moet contact worden gemaakt met de hoofdhuid, hiervoor worden elektrodes gebruikt. 
-- *Instrumentele versterker (inamp)*: een inamp wordt gebruikt om het verschil tussen de elektrode op het oor en een andere elektrode als uitput te krijgen en deze ook de versterken. 
+- *Elektrode*: om signalen uit de hersenen van een persoon te meten moet contact worden gemaakt met de hoofdhuid, hiervoor worden elektrodes gebruikt.
+- *Instrumentele versterker (inamp)*: een inamp wordt gebruikt om het verschil tussen de elektrode op het oor en een andere elektrode als uitput te krijgen en deze ook de versterken.
 - *Operationele versterker (opamp)*: een opamp wordt gebruikt om de output uit de inamp voor het grootste gedeelte te versterken tot een voltagebereik wat kan worden gemeten door een analoog-digitaal converter.
 - *Signaalfiltering*: verwacht wordt dat er in het signaal veel ruis zal bevinden, zoals een lowpas filter die alles boven de 50Hz van het lichtnet verwijderd. Hiervoor kan een opamp worden gebruikt, maar ook weerstand in combinatie met een condensator.
-- *Analoog-digitaal converter (ADC)*: om het analoge signaal uit de opamp om te zetten naar een digitaal signaal is een ADC nodig. De ADC moet tenminste 160 metingen per seconden op acht channels kunnen doen. Er is hier voor 160 gekozen omdat de maximale frequentie die moet kunnen worden gemeten 80Hz is, wat de maximale frequentie van gammagolven uit de hersenen is. Dit dubbele is nodig om aan Nyquist-frequentie te voldoen. 
+- *Analoog-digitaal converter (ADC)*: om het analoge signaal uit de opamp om te zetten naar een digitaal signaal is een ADC nodig. De ADC moet tenminste 160 metingen per seconden op acht channels kunnen doen. Er is hier voor 160 gekozen omdat de maximale frequentie die moet kunnen worden gemeten 80Hz is, wat de maximale frequentie van gammagolven uit de hersenen is. Dit dubbele is nodig om aan Nyquist-frequentie te voldoen.
 - *Microcontroller*: de microcontroller zal de data uit de ADC uitlezen en doorsturen naar een computer. De microcontroller moet minimaal 160x8=1280 metingen per seconden uit de ADC kunnen lezen. De resolutie van de ADC is *!!!!!!MOET NOG GETEST WORDEN!!!!!!*
 
 ** De hardware componenten
 Nu er een globaal beeld is van wat er nodig is om een EEG-systeem te maken moeten er nog specifiek hardware componenten worden bepaald. Dit wordt gedaan in dit hoofdstuk.
-In [[Benodigde hardwaredelen]] zijn er een aantal eisen gesteld waar de componenten aan moeten voldoen. Aan het einde van dit hoofdstuk wordt er een lijst opgesteld met de verschillende hardwarecomponenten die nodig zijn voor het EEG-systeem. Voor elke hardwaredeel zal er een tabel worden gemaakt waarin meerdere componenten in dit deel worden vergeleken om zo tot een selectie te komen van componenten. De selectie wordt dan in het echt getest om te kijken welke beter is. 
+In [[Benodigde hardwaredelen]] zijn er een aantal eisen gesteld waar de componenten aan moeten voldoen. Aan het einde van dit hoofdstuk wordt er een lijst opgesteld met de verschillende hardwarecomponenten die nodig zijn voor het EEG-systeem. Voor elke hardwaredeel zal er een tabel worden gemaakt waarin meerdere componenten in dit deel worden vergeleken om zo tot een selectie te komen van componenten. De selectie wordt dan in het echt getest om te kijken welke beter is.
 
 Als eerste zal worden bepaald welke elektrodes worden gebruikt. Hieronder is een tabel te zien van de elektrodes welke worden vergeleken.
 
@@ -192,7 +249,7 @@ bibliography:sources.bib
 :CUSTOM_ID: BijlageA
 :END:
 Hieronder kan het schakelschema voor de modEEGamp worden gevonden. Dit schema is gedownload vanaf de volgende link: https://www.olimex.com/Products/EEG/OpenEEG/EEG-ANALOG-ASM/resources/modEEGamp_v1.1.pdf
-#+LATEX_ATTR: 
+#+LATEX_ATTR:
 [[./images/modEEGamp_v1.1.png]]
 #+LATEX: \newpage
 
