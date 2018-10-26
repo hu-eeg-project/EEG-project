@@ -3,65 +3,101 @@
 from __future__ import print_function
 from ROOT import TCanvas, TGraph, TVirtualFFT, TH1F, TPad
 from ROOT import gROOT, gStyle
-from math import sin, floor
+from math import sin, floor, pi
 from array import array
 import serial
 import time
 import numpy as np
+import threading
+
+class Force_io:
+    def __init__(self, value_q, time_q):
+        self.value_q = value_q
+        self.time_q = time_q
+        self.signal_thread = None
+        self.io_thread = None
+        self.signal_stop = threading.Event()
+        self.serial_stop = threading.Event()
+
+    def start_serial(self, port, baudrate):
+        self.serial_thread = threading.Thread(target=self.serial_thread,
+                                              args=(self.value_q,self.time_q,port,baudrate,self.serial_stop))
+        self.serial_thread.setDaemon(True)
+        self.serial_thread.start()
+
+    def stop_serial(self):
+        if self.serial_thread != None:
+            self.serial_stop.set()
+            self.serial_stop.join()
+
+    def start_test_signal(self, f, fs):
+        self.signal_thread = threading.Thread(target=self.test_signal_thread,
+                                              args=(self.value_q,self.time_q,f,fs,self.signal_stop))
+        self.signal_thread.setDaemon(True)
+        self.signal_thread.start()
+
+    def stop_test_signal(self):
+        if self.signal_thread != None:
+            self.signal_stop.set()
+            self.signal_thread.join()
+
+    def test_signal_thread(self, value_q, time_q, f, fs, stop_evt):
+        st = time.time()
+        t = 1.0 / fs
+        while not stop_evt.is_set():
+            result = 0
+            nt = time.time()
+            for i in f:
+                result += i[1] * sin(i[0] * 2.0 * pi * (nt-st))
+            value_q.append(result)
+            time_q.append(nt-st)
+            time.sleep(t)
+
+    def serial_thread(self, value_q, time_q, port, baudrate, serial_stop):
+        st = time.time()
+        with serial.Serial(port, baudrate) as ser:
+            while not serial_stop.is_set():
+                data = ser.readline()
+                if len(data):
+                    if data[0] == ord(b'd'):
+                        data = data.decode('UTF-8').split(':')
+                        value_q.append(int(data[1]))
+                        time_q.append(time.time()-st)
 
 def main():
+    from math import sin, pi, tan, cos
+    import matplotlib.pyplot as plt
+    import collections
+    import numpy as np
+
+    #pass array of frequencies
+    #index 0 is frequency, index 1 is amplitude
+    f = [(1, 1), (10, 0.3)]
+    fs = 1000
+    n = 512
+    t = 1.0 / fs
+    x = np.linspace(0.0, n*t, n)
+
+    value_q = collections.deque(maxlen=n)
+    time_q = collections.deque(maxlen=n)
+
     graph = EEG_Graph(100)
-    st = time.time()
+
+    io = Force_io(value_q, time_q)
+    io.start_test_signal(f, fs)
+
+    #st = time.time()
 
     while True:
-        delta = time.time() - st
-        delta *= 3
-        graph.append(delta, sin(delta * 5) * 500 + (sin(delta * 20) * 200))
-        #time.sleep(0.001)
+        value_cpy = value_q.copy()
+        time_cpy = time_q.copy()
+        value_q.clear()
+        time_q.clear()
 
-    """
-    port = '/dev/ttyUSB0'
-    baudrate = 115200
-    data_array = []
-    t = 0.03
-    print('Listening on port:', port, 'at baudrate:', baudrate)
-    with serial.Serial(port, baudrate) as ser:
-        while True:
-            ser.reset_input_buffer()
-            data = ser.readline().decode('UTF-8').split(':')
-            if data[0] == 'd':
-                data_array.append(int(data[1]))
-                graph.append(time.time() - st, int(data[1]))
-                #print(data[1])
-                #print(ser.inWaiting())
-            elif data[0] == 'r':
-                print("r: %2i" % (len(data),), end="")
-                if data[1] == '2':
-                    if int(data[2]) < 30:
-                        graph.setQuality(True)
-                    else:
-                        graph.setQuality(False)
-                    print(' signal quality %i' % (int(data[2]),))
-                else:
-                    print(' got an error')
-            #time.sleep(0.03)
-            t += 0.03
-    """
+        for i in range(len(value_cpy)):
+            graph.append(time_cpy[i], value_cpy[i] * 1000)
 
-
-    """
-    for i in range(1000):
-        time.sleep(0.1)
-        n += 1
-        gr.Set(n)
-        gr.SetPoint(n - 1, 0.1 * n, 4)
-        # TCanvas.Update() draws the frame, after which one can change it
-        c1.Update()
-        c1.GetFrame().SetFillColor( 21 )
-        c1.GetFrame().SetBorderSize( 12 )
-        c1.Modified()
-        c1.Update()
-    """
+    io.stop_test_signal()
 
 class EEG_Graph(object):
     def __init__(self, maxpoints=60):
@@ -76,8 +112,6 @@ class EEG_Graph(object):
 
         self.canvas_1.Draw();
         self.canvas_2.Draw();
-
-        #self.canvas.SetFillColor(18)
 
         self.data = [0]
         self.data_time = [time.time()]
@@ -103,21 +137,13 @@ class EEG_Graph(object):
         self.canvas_2.cd()
         TVirtualFFT.SetTransform(0)
         self.fft = TH1F("fft", "eeg_fft", 3, 0, 3)
-        #self.fft = self.graph.GetHistogram().FFT(self.fft, "MAG R2C RE")
         self.fft.SetTitle("EEG FFT")
-        #self.fft.SetMaximum(100)
-        #labels = ["1 Hz", "50 Hz", "100 Hz"]
         self.fft.Fill("1 Hz", 0)
         self.fft.Fill("2 Hz", 0)
-        #self.fft.Fill(labels[1], 160)
-        #self.fft.Fill(labels[2], 80)
-        #self.fft.Fill(labels[2], 400)
         self.fft.SetMinimum(0)
         self.fft.SetMaximum(100000)
-        #self.fft.SetLineColor(2)
         self.fft.SetFillStyle(3001)
         self.fft.SetFillColor(30)
-        #self.fft.Draw("HIST")
         self.fft.Draw("B HIST")
         self.ampmax = 100000
 
@@ -129,7 +155,6 @@ class EEG_Graph(object):
         self.gq = good
 
     def append(self, timep, num):
-        #print("Adding: %f -> %i" % (time, num))
         n = self.graph.GetN()
         if len(self.data) < 2048:
             self.data = self.data + [num]
@@ -146,34 +171,20 @@ class EEG_Graph(object):
             self.graph.Set(n)
             self.graph.SetPoint(n - 1, timep, num)
 
-        #self.fft = self.graph.GetHistogram().FFT(self.fft, "MAG R2C RE")
-
         self.data_fft = np.abs(np.fft.fft(self.data))
-        #print(len(self.data_fft))
-        #print(self.data_fft[1])
         self.fft.Reset()
         if len(self.data_fft) > 256:
             delta = self.data_time[-1] - self.data_time[0]
             for i in range(50):
-                #index = i * delta
-                #print("index %i" % (index,))
                 amp = np.sum(self.data_fft[round(i * delta):round(i * delta + delta)])
-                #print("    %i Hz" % (i + 1,))
                 self.fft.Fill("%i Hz" % (i + 1,), amp)
                 if amp > self.ampmax:
                     self.ampmax = amp
                     self.fft.SetMaximum(amp)
 
-            #print(delta)
-
-            #print("The frequency is {} Hz".format(np.argmax(self.data_fft)))
-        #print(self.data_fft)
-
         self.update()
 
     def update(self):
-        # TCanvas.Update() draws the frame, after which one can change it
-        #self.canvas.Update()
         self.canvas_1.cd()
         if self.gq:
             self.canvas_1.GetFrame().SetFillColor(30)
