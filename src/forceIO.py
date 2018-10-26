@@ -60,18 +60,21 @@ class Force_io:
     
         
 def main():
-    from math import sin, pi, tan, cos
+    from math import sin, pi, sqrt
     import matplotlib.pyplot as plt
     import collections
     import numpy as np
-
+    import scipy.fftpack
+    
     #pass array of frequencies
     #index 0 is frequency, index 1 is amplitude
-    f = [(1, 1), (10, 0.3)]
+    f = [(1, 1), (100, 1)]
     fs = 1000
     n = 512
     t = 1.0 / fs
     x = np.linspace(0.0, n*t, n)
+    t = 1.0 / fs
+
     
     value_q = collections.deque(maxlen=n)
     time_q = collections.deque(maxlen=n)
@@ -79,17 +82,18 @@ def main():
     io = Force_io(value_q, time_q)
     io.start_test_signal(f, fs)
 
-    fig, ax = plt.subplots()
-
+    xf = np.linspace(0.0, 1.0/(2.0*t), int(n/2))
+    
     while True:
         if len(value_q) == n:
             value_cpy = value_q.copy()
             time_cpy = time_q.copy()
             value_q.clear()
             time_q.clear()
-            ax.plot(list(time_cpy), list(value_cpy))
+            fft = scipy.fftpack.fft(value_cpy)
+            plt.plot(xf[1:], 2.0/n * np.abs(fft[0:int(n/2)])[1:])
             plt.show()
-            break
+            
     io.stop_test_signal()
 
 if __name__ == '__main__':
