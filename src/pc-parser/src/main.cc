@@ -15,17 +15,22 @@
 
 #include <thread>
 
-void dataThread(Array<int, 10>* array)
+void dataThread(ArrayPair<Array<int, 10>, Array<int, 10>>* array)
 {
-    for (int i = 0; i < 100; i++) {
-        array->append(i);
-        usleep(1000 * 20);
+    for (int i = 0; i < 10000; i++) {
+        array->lock();
+        array->array1.append(i);
+        array->array2.append(10000 - i);
+        array->unlock();
+        //usleep(1000 * 20);
     }
 }
 
 int main(int argc, char* argv[])
 {
-    Array<int, 10> data;
+    Array<int, 10> data_array;
+    Array<int, 10> time_array;
+    ArrayPair<Array<int, 10>, Array<int, 10>> data(data_array, time_array);
 
     std::thread data_thread(dataThread, &data);
 
@@ -33,13 +38,17 @@ int main(int argc, char* argv[])
     while (looping) {
         printf("Array:\n");
         data.lock();
-        for (int i = 0; i < data.getSize(); i++) {
-            printf("[%2i]", data.getData()[i]);
+        for (int i = 0; i < data.array1.getSize(); i++) {
+            printf("[%4i]", data.array1.getData()[i]);
 
-            if (data.getData()[i] == 99) looping = false;
+            if (data.array1.getData()[i] == 9999) looping = false;
+        }
+        printf("\n");
+        for (int i = 0; i < data.array2.getSize(); i++) {
+            printf("[%4i]", data.array2.getData()[i]);
         }
         data.unlock();
-        printf("\n");
+        printf("\n\n");
     }
 
     data_thread.join();

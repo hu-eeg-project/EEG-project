@@ -9,6 +9,33 @@
 
 #include <mutex>
 
+template<class A, class B>
+class ArrayPair
+{
+    std::mutex m_mutex;
+
+public:
+    A& array1;
+    B& array2;
+
+    ArrayPair(A& a1, B& a2) :
+    array1(a1),
+    array2(a2)
+    {
+
+    }
+
+    inline void lock()
+    {
+        m_mutex.lock();
+    }
+
+    inline void unlock()
+    {
+        m_mutex.unlock();
+    }
+};
+
 template<class T, int SIZE>
 class Array
 {
