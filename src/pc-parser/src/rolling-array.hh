@@ -36,38 +36,42 @@ public:
     }
 };
 
-template<class T, int SIZE>
-class Array
+template<class T>
+class RollingArray
 {
     unsigned int m_index;
     int m_size;
-    T m_data[SIZE * 2];
+    T * m_data;
     std::mutex m_mutex;
+    size_t m_length;
 
 public:
-    Array() :
+    RollingArray(size_t length):
     m_index(0),
-    m_size(0)
+    m_size(0),
+    m_length(length)
     {
-        for (int i = 0; i < SIZE * 2; i++) {
-            m_data[i] = 0;
-        }
+	m_data = new T[length * 2];
     }
 
+    ~RollingArray(){
+	delete m_data;
+    }
+    
     inline void append(T item)
     {
         m_mutex.lock();
 
-        if (m_size < SIZE) {
+        if (m_size < m_length) {
             m_data[m_size] = item;
-            m_data[SIZE + m_size++] = item;
+            m_data[m_length + m_size++] = item;
         } else {
             m_index++;
             m_data[m_index - 1] = item;
-            m_data[m_index + SIZE - 1] = item;
+            m_data[m_index + m_length - 1] = item;
 
-            if (m_index >= SIZE) {
-                m_index -= SIZE;
+            if (m_index >= m_length) {
+                m_index -= m_length;
             }
         }
 
