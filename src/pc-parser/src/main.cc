@@ -19,33 +19,38 @@
 #include <time.h>
 #include <chrono>
 
-void dataThread(ArrayPair<RollingArray<Double_t>,
-                RollingArray<Double_t>>* array)
-{
-    Frequency_t frequencies[2] = {{500, 1}, {300, 50}};
-    WaveGenerator wave(frequencies, 2, array);
+#define NUMBER_OF_POINTS 500
+#define FRAME_DURATION 2
 
+void dataThread(ArrayPair<RollingArray<Double_t>,
+                RollingArray<Double_t>>* array, uint32_t sample_rate)
+{
+    Frequency_t frequencies[] = {{500, 1}, {100, 10}};
+    Noise_t noise = {0, 10};
+    WaveGenerator wave(frequencies, sizeof(frequencies)/sizeof(Frequency_t), array, noise);
+    double t = 1.0f / sample_rate * 1000000;
+    
     while (true) {
         array->lock();
         wave.genSample();
         array->unlock();
 
-        usleep(100);
+        usleep(t);
     }
 }
 
 int main(int argc, char* argv[])
 {
     EEGGraph eeg(&argc, argv);
-
-    RollingArray<Double_t> data_array(4096);
-    RollingArray<Double_t> time_array(4096);
+    
+    RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
+    RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
     ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
 
-    std::thread data_thread(dataThread, &data);
+    std::thread data_thread(dataThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
 
-    Double_t data_array_copy[4096];
-    Double_t time_array_copy[4096];
+    Double_t data_array_copy[NUMBER_OF_POINTS];
+    Double_t time_array_copy[NUMBER_OF_POINTS];
 
     bool looping = true;
     while (looping) {
