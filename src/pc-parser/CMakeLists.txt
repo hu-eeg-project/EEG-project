@@ -11,6 +11,7 @@ set(SOURCE_FILES
     src/main.cc
     src/serial.cc
     src/eeg-graph.cc
+    src/wave-generator.cc
 )
 
 #include_directories("/usr/include/root/")

@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "array.hh"
+#include "rolling-array.hh"
 
 typedef struct {
     double amp;
@@ -14,7 +14,7 @@ class WaveGenerator{
     size_t size;
     ArrayPair<RollingArray<double>, RollingArray<double>> * aPair;
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
-    
+
 public:
     WaveGenerator(const Frequency_t * frequencies,
 		  size_t size,

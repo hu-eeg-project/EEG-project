@@ -11,58 +11,57 @@
 
 #include "serial.hh"
 #include "eeg-graph.hh"
-#include "array.hh"
+#include "rolling-array.hh"
+#include "wave-generator.hh"
 
 #include <thread>
+#include <math.h>
+#include <time.h>
+#include <chrono>
 
-void dataThread(ArrayPair<Array<int, 10>, Array<int, 10>>* array)
+void dataThread(ArrayPair<RollingArray<Double_t>,
+                RollingArray<Double_t>>* array)
 {
-    for (int i = 0; i < 10000; i++) {
+    Frequency_t frequencies[2] = {{500, 1}, {300, 50}};
+    WaveGenerator wave(frequencies, 2, array);
+
+    while (true) {
         array->lock();
-        array->array1.append(i);
-        array->array2.append(10000 - i);
+        wave.genSample();
         array->unlock();
-        //usleep(1000 * 20);
+
+        usleep(100);
     }
 }
 
 int main(int argc, char* argv[])
 {
-    Array<int, 10> data_array;
-    Array<int, 10> time_array;
-    ArrayPair<Array<int, 10>, Array<int, 10>> data(data_array, time_array);
+    EEGGraph eeg(&argc, argv);
+
+    RollingArray<Double_t> data_array(4096);
+    RollingArray<Double_t> time_array(4096);
+    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
 
     std::thread data_thread(dataThread, &data);
 
+    Double_t data_array_copy[4096];
+    Double_t time_array_copy[4096];
+
     bool looping = true;
     while (looping) {
-        printf("Array:\n");
         data.lock();
-        for (int i = 0; i < data.array1.getSize(); i++) {
-            printf("[%4i]", data.array1.getData()[i]);
-
-            if (data.array1.getData()[i] == 9999) looping = false;
-        }
-        printf("\n");
-        for (int i = 0; i < data.array2.getSize(); i++) {
-            printf("[%4i]", data.array2.getData()[i]);
+        int size = data.array1.getSize();
+        for (int i = 0; i < size; i++) {
+            data_array_copy[i] = data.array1.getData()[i];
+            time_array_copy[i] = data.array2.getData()[i];
         }
         data.unlock();
-        printf("\n\n");
+        eeg.update(size, time_array_copy, data_array_copy);
+
+        usleep(1000 * 16);
     }
 
     data_thread.join();
-
-    /*
-    EEGGraph eeg(&argc, argv);
-
-    while (true)
-    {
-        eeg.update();
-
-        usleep(1000*16);
-    }
-    */
 
     /*
     SerialInterface sf("/dev/ttyUSB0");

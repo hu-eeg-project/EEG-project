@@ -21,11 +21,11 @@ class EEGGraph
     TCanvas* m_canvas;
     TGraph* m_graph;
 
-    void updateGraph();
+    void updateGraph(unsigned int points, Double_t* x, Double_t* y);
     void render();
 
 public:
     EEGGraph(int* argc, char** argv);
 
-    void update();
+    void update(unsigned int points, Double_t* x, Double_t* y);
 };

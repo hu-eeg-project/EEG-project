@@ -33,10 +33,11 @@ m_app("EEG Visualizer", argc, argv)
     m_graph->SetLineColor(2);
     m_graph->SetLineWidth(4);
     m_graph->SetMarkerColor(4);
-    m_graph->SetMarkerStyle(21);
+    m_graph->SetMarkerStyle(2);
     m_graph->SetTitle("a simple graph");
     m_graph->GetXaxis()->SetTitle("X title");
     m_graph->GetYaxis()->SetTitle("Y title");
+    m_graph->GetYaxis()->SetRangeUser(-1000,1000);
     m_graph->Draw("ACP");
     // TCanvas::Update() draws the frame, after which one can change it
     m_canvas->Update();
@@ -48,9 +49,13 @@ m_app("EEG Visualizer", argc, argv)
 
 int counter = 0;
 
-void EEGGraph::updateGraph()
+void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
 {
-    m_graph->SetPoint(0, 0, (counter++) % 20);
+    m_graph->Set(points);
+    for (unsigned int i = 0; i < points; i++) {
+        m_graph->SetPoint(i, x[i], y[i]);
+    }
+    m_graph->GetYaxis()->SetRangeUser(-1000,1000);
 }
 
 void EEGGraph::render()
@@ -58,8 +63,8 @@ void EEGGraph::render()
     m_canvas->Update();
 }
 
-void EEGGraph::update()
+void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 {
-    updateGraph();
+    updateGraph(points, x, y);
     render();
 }
