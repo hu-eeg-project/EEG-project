@@ -8,6 +8,7 @@
 #include "eeg-graph.hh"
 
 #include <stdio.h>
+#include <fftw3.h>
 
 EEGGraph::EEGGraph(int* argc, char** argv) :
 m_app("EEG Visualizer", argc, argv)
@@ -77,7 +78,7 @@ void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
     m_graph->GetYaxis()->SetRangeUser(-2000,2000);
 }
 
-void EEGGraph::updateFFT(unsigned int frequencies, unsigned int* values)
+void EEGGraph::updateFFT(unsigned int frequencies, double* values)
 {
     m_pad2->cd();
     m_fft->Reset();
@@ -107,6 +108,44 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 {
     updateGraph(points, x, y);
     unsigned int freq[2] = {100, 200};
-    updateFFT(2, freq);
+
+    int index = -1;
+    for (int i = points - 1; i >= 0; i--) {
+        if (x[points - 1] - x[i] >= 1) {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1) return;
+
+    size_t fft_size = points - index;
+
+    /*
+    size_t fft_size = 0;
+    if (points < 256) {
+        return;
+    } else if (points >= 512) {
+        fft_size = 512;
+    } else {
+        fft_size = 128;
+    }
+    */
+
+    double fft_result[512][2];
+    double buffer[256] = {0};
+    fftw_plan plan = fftw_plan_dft_r2c_1d(fft_size,
+                                          y + (points - fft_size),
+                                          fft_result,
+                                          0);
+    fftw_execute(plan);
+
+    for (int i = 1; i < fft_size / 2 - 1; i++) {
+        buffer[i - 1] = sqrt(pow(fft_result[i][0], 2) +
+                             pow(fft_result[i][1], 2));
+    }
+
+    fftw_destroy_plan(plan);
+
+    updateFFT(fft_size / 2 - 1, buffer);
     render();
 }

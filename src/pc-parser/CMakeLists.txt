@@ -18,3 +18,5 @@ set(SOURCE_FILES
 
 add_executable(pc-parser ${SOURCE_FILES})
 target_link_libraries(pc-parser ${ROOT_LIBRARIES})
+target_link_libraries(pc-parser m)
+target_link_libraries(pc-parser fftw3)

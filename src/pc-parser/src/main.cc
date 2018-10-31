@@ -28,8 +28,8 @@
 void testThread(ArrayPair<RollingArray<Double_t>,
                 RollingArray<Double_t>>* array, uint32_t sample_rate)
 {
-    Frequency_t frequencies[] = {{500, 1}, {100, 10}};
-    Noise_t noise = {0, 10};
+    Frequency_t frequencies[] = {{300, 1}, {300, 10}, {400, 17}, {100, 20}};
+    Noise_t noise = {0, 60};
     WaveGenerator wave(frequencies, sizeof(frequencies)/sizeof(Frequency_t), array, noise);
     double t = 1.0f / sample_rate * 1000000;
 
