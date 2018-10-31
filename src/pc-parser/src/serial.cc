@@ -10,20 +10,19 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-#include <termios.h>
 #include <unistd.h>
 #include <sstream>
 
 #include <time.h>
 
-SerialInterface::SerialInterface(const std::string fname)
+SerialInterface::SerialInterface(const SerialConfig_t sConfig)
 {
-    m_serial = open(fname.c_str(), O_RDWR | O_NOCTTY | O_SYNC);
+    m_serial = open(sConfig.port.c_str(), O_RDWR | O_NOCTTY | O_SYNC);
     if (m_serial < 0) {
         return;
     }
 
-    if (setAttributes()) printf("Error Setting Attributes!\n");
+    if (setAttributes(sConfig.baudrate)) printf("Error Setting Attributes!\n");
 }
 
 SerialInterface::~SerialInterface()
@@ -31,7 +30,7 @@ SerialInterface::~SerialInterface()
     close(m_serial);
 }
 
-int SerialInterface::setAttributes()
+int SerialInterface::setAttributes(speed_t baudrate)
 {
     struct termios tty;
     memset(&tty, 0, sizeof(tty));
@@ -39,8 +38,8 @@ int SerialInterface::setAttributes()
         return -1;
     }
 
-    cfsetospeed(&tty, B115200);
-    cfsetispeed(&tty, B115200);
+    cfsetospeed(&tty, baudrate);
+    cfsetispeed(&tty, baudrate);
 
     tty.c_iflag &= ~IGNBRK;
     tty.c_lflag = 0;

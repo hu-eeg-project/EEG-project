@@ -17,14 +17,17 @@
 #include <thread>
 #include <math.h>
 #include <time.h>
+#include <termios.h>
 #include <chrono>
+#include <iostream>
+#include <sstream>
 
 #define NUMBER_OF_POINTS 500
 #define FRAME_DURATION 2
 
-void dataThread(ArrayPair<RollingArray<Double_t>,
+void testThread(ArrayPair<RollingArray<Double_t>,
                 RollingArray<Double_t>>* array, uint32_t sample_rate)
-{
+{   
     Frequency_t frequencies[] = {{500, 1}, {100, 10}};
     Noise_t noise = {0, 10};
     WaveGenerator wave(frequencies, sizeof(frequencies)/sizeof(Frequency_t), array, noise);
@@ -39,16 +42,42 @@ void dataThread(ArrayPair<RollingArray<Double_t>,
     }
 }
 
+void serialThread(ArrayPair<RollingArray<int16_t>,
+		  RollingArray<Double_t>>* array, const SerialConfig_t sConfig)
+{
+    std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
+    st = std::chrono::high_resolution_clock::now();
+    SerialInterface sf(sConfig);
+    while (true) {
+	std::string input = sf.getNextLine();
+	char type, delim;
+	int16_t eeg_data;
+	if(input.size()){
+	    std::stringstream stream(input);
+	    stream >> type >> delim >> eeg_data;
+	    if(type == 'd'){
+		nt = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> dt = nt-st;
+		array->lock();
+		array->array1.append(eeg_data);
+		array->array2.append(dt.count());
+		array->unlock();
+	    }
+	}
+    }
+}
+
 int main(int argc, char* argv[])
 {
+    
     EEGGraph eeg(&argc, argv);
     
-    RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
+    RollingArray<int16_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
-    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
-
-    std::thread data_thread(dataThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
-
+    ArrayPair<RollingArray<int16_t>, RollingArray<Double_t>> data(data_array, time_array);
+    SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
+    std::thread data_thread(serialThread, &data, sConfig);
+    
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
 
@@ -67,14 +96,5 @@ int main(int argc, char* argv[])
     }
 
     data_thread.join();
-
-    /*
-    SerialInterface sf("/dev/ttyUSB0");
-
-    while (true) {
-        printf("Line: %s\n", sf.getNextLine().c_str());
-    }
-    */
-
     return 0;
 }
