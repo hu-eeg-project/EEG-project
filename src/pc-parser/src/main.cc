@@ -23,16 +23,16 @@
 #include <sstream>
 
 #define NUMBER_OF_POINTS 500
-#define FRAME_DURATION 2
+#define FRAME_DURATION 3
 
 void testThread(ArrayPair<RollingArray<Double_t>,
                 RollingArray<Double_t>>* array, uint32_t sample_rate)
-{   
+{
     Frequency_t frequencies[] = {{500, 1}, {100, 10}};
     Noise_t noise = {0, 10};
     WaveGenerator wave(frequencies, sizeof(frequencies)/sizeof(Frequency_t), array, noise);
     double t = 1.0f / sample_rate * 1000000;
-    
+
     while (true) {
         array->lock();
         wave.genSample();
@@ -69,15 +69,16 @@ void serialThread(ArrayPair<RollingArray<int16_t>,
 
 int main(int argc, char* argv[])
 {
-    
+
     EEGGraph eeg(&argc, argv);
-    
-    RollingArray<int16_t> data_array(NUMBER_OF_POINTS);
+
+    RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
-    ArrayPair<RollingArray<int16_t>, RollingArray<Double_t>> data(data_array, time_array);
-    SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
-    std::thread data_thread(serialThread, &data, sConfig);
-    
+    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
+    //SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
+    //std::thread data_thread(serialThread, &data, sConfig);
+    std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
+
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
 

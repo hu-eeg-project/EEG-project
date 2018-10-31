@@ -20,29 +20,47 @@ m_app("EEG Visualizer", argc, argv)
 
     // -------------------------------------------------------------
 
-    m_canvas = new TCanvas("c1","A Simple Graph Example",200,10,700,500);
-    m_canvas->SetGrid();
-    const Int_t n = 20;
-    Double_t x[n], y[n];
-    for (Int_t i=0;i<n;i++) {
-        x[i] = i*0.1;
-        y[i] = 10*sin(x[i]+0.2);
-        printf(" i %i %f %f \n",i,x[i],y[i]);
-    }
+    m_canvas = new TCanvas("c1","FFT Graph Canvas",0,0,1920,1080);
+    m_pad1 = new TPad("c1_1", "c1_1", 0.01, 0.67, 0.99, 0.99);
+    m_pad2 = new TPad("c1_2", "c1_2", 0.01, 0.01, 0.99, 0.66);
+
+
+    m_pad1->SetGrid();
+    m_pad2->SetGridx();
+
+    m_pad1->Draw();
+    m_pad2->Draw();
+
+    const Int_t n = 1;
+    Double_t x[n] = {0};
+    Double_t y[n] = {0};
+
+    m_pad1->cd();
     m_graph = new TGraph(n,x,y);
     m_graph->SetLineColor(2);
     m_graph->SetLineWidth(4);
     m_graph->SetMarkerColor(4);
     m_graph->SetMarkerStyle(2);
-    m_graph->SetTitle("a simple graph");
-    m_graph->GetXaxis()->SetTitle("X title");
-    m_graph->GetYaxis()->SetTitle("Y title");
-    m_graph->GetYaxis()->SetRangeUser(-1000,1000);
+    m_graph->SetTitle("EEG Signal");
+    m_graph->GetXaxis()->SetTitle("Time");
+    m_graph->GetYaxis()->SetTitle("Amplitude");
     m_graph->Draw("ACP");
     // TCanvas::Update() draws the frame, after which one can change it
-    m_canvas->Update();
-    m_canvas->GetFrame()->SetBorderSize(12);
-    m_canvas->Modified();
+    //m_canvas->Update();
+    //m_canvas->GetFrame()->SetBorderSize(12);
+    //m_canvas->Modified();
+
+    m_pad2->cd();
+    m_fft = new TH1F("fft", "eeg_fft", 3, 0, 3);
+    m_fft->SetTitle("EEG FFT");
+    m_fft->SetFillStyle(3001);
+    m_fft->SetFillColor(30);
+    m_fft->Draw("B HIST");
+    m_amp_max = 100;
+    m_fft->SetMinimum(0);
+    m_fft->SetMaximum(m_amp_max);
+
+    m_fft->SetStats(false);
 
     m_app.Show();
 }
@@ -51,20 +69,44 @@ int counter = 0;
 
 void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
 {
+    m_pad1->cd();
     m_graph->Set(points);
     for (unsigned int i = 0; i < points; i++) {
         m_graph->SetPoint(i, x[i], y[i]);
     }
-    m_graph->GetYaxis()->SetRangeUser(-1000,1000);
+    m_graph->GetYaxis()->SetRangeUser(-2000,2000);
+}
+
+void EEGGraph::updateFFT(unsigned int frequencies, unsigned int* values)
+{
+    m_pad2->cd();
+    m_fft->Reset();
+
+    char buffer[32];
+
+    for (int i = 0; i < frequencies; i++) {
+        sprintf(buffer, "%i\0", i + 1);
+        m_fft->Fill(buffer, values[i]);
+
+        if (values[i] > m_amp_max) {
+            m_amp_max = values[i];
+            m_fft->SetMaximum(m_amp_max);
+        }
+    }
+
+    m_pad2->Modified();
 }
 
 void EEGGraph::render()
 {
+    m_canvas->Modified();
     m_canvas->Update();
 }
 
 void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 {
     updateGraph(points, x, y);
+    unsigned int freq[2] = {100, 200};
+    updateFFT(2, freq);
     render();
 }
