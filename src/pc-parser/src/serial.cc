@@ -42,7 +42,7 @@ int SerialInterface::setAttributes(speed_t baudrate)
     cfsetispeed(&tty, baudrate);
 
     tty.c_iflag &= ~IGNBRK;
-    tty.c_lflag = 0;
+    tty.c_lflag &= (~ICANON & ~ECHO);
     tty.c_oflag = 0;
     tty.c_cc[VMIN] = 0;
     tty.c_cc[VTIME] = 5;

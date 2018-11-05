@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <fftw3.h>
+#include <iostream>
 
 EEGGraph::EEGGraph(int* argc, char** argv) :
 m_app("EEG Visualizer", argc, argv)
@@ -39,13 +40,13 @@ m_app("EEG Visualizer", argc, argv)
     m_pad1->cd();
     m_graph = new TGraph(n,x,y);
     m_graph->SetLineColor(2);
-    m_graph->SetLineWidth(4);
+    m_graph->SetLineWidth(1);
     m_graph->SetMarkerColor(4);
-    m_graph->SetMarkerStyle(2);
+    m_graph->SetMarkerStyle(1);
     m_graph->SetTitle("EEG Signal");
     m_graph->GetXaxis()->SetTitle("Time");
     m_graph->GetYaxis()->SetTitle("Amplitude");
-    m_graph->Draw("ACP");
+    m_graph->Draw("APL");
     // TCanvas::Update() draws the frame, after which one can change it
     //m_canvas->Update();
     //m_canvas->GetFrame()->SetBorderSize(12);
@@ -75,7 +76,7 @@ void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
     for (unsigned int i = 0; i < points; i++) {
         m_graph->SetPoint(i, x[i], y[i]);
     }
-    m_graph->GetYaxis()->SetRangeUser(-2000,2000);
+    m_graph->GetYaxis()->SetRangeUser(-300,300);
 }
 
 void EEGGraph::updateFFT(unsigned int frequencies, double* values)
@@ -106,9 +107,6 @@ void EEGGraph::render()
 
 void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 {
-    updateGraph(points, x, y);
-    unsigned int freq[2] = {100, 200};
-
     int index = -1;
     for (int i = points - 1; i >= 0; i--) {
         if (x[points - 1] - x[i] >= 1) {
@@ -116,21 +114,14 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
             break;
         }
     }
-    if (index == -1) return;
-
-    size_t fft_size = points - index;
-
-    /*
-    size_t fft_size = 0;
-    if (points < 256) {
-        return;
-    } else if (points >= 512) {
-        fft_size = 512;
-    } else {
-        fft_size = 128;
+    if (index == -1){
+	return;
     }
-    */
 
+    Double_t * result_y = new Double_t[points];
+    memcpy(result_y, y, points);
+    
+    size_t fft_size = points - index;
     double fft_result[512][2];
     double buffer[256] = {0};
     fftw_plan plan = fftw_plan_dft_r2c_1d(fft_size,
@@ -138,14 +129,30 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
                                           fft_result,
                                           0);
     fftw_execute(plan);
+    fftw_destroy_plan(plan);
 
+    for(int i = 2;i<fft_size/2;i++){
+	fft_result[i][0] = 0;
+	fft_result[i][1] = 0;
+    }
+
+    plan = fftw_plan_dft_c2r_1d(fft_size, fft_result, result_y, 0);
+    fftw_execute(plan);
+    fftw_destroy_plan(plan);
+
+    for(int i = 0;i<points;i++){
+	result_y[i] *= 1.0f/points;
+    }
+
+    updateGraph(points, x, result_y);
+    
     for (int i = 1; i < fft_size / 2 - 1; i++) {
         buffer[i - 1] = sqrt(pow(fft_result[i][0], 2) +
                              pow(fft_result[i][1], 2));
     }
 
-    fftw_destroy_plan(plan);
+    
 
-    updateFFT(fft_size / 2 - 1, buffer);
+    updateFFT(50, buffer);
     render();
 }
