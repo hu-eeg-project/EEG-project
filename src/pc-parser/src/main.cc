@@ -13,6 +13,7 @@
 #include "eeg-graph.hh"
 #include "rolling-array.hh"
 #include "wave-generator.hh"
+#include "eeg-data-decoding.hh"
 
 #include <thread>
 #include <math.h>
@@ -22,7 +23,7 @@
 #include <iostream>
 #include <sstream>
 
-#define NUMBER_OF_POINTS 1000
+#define NUMBER_OF_POINTS 300
 #define FRAME_DURATION 3
 
 void testThread(ArrayPair<RollingArray<Double_t>,
@@ -42,52 +43,31 @@ void testThread(ArrayPair<RollingArray<Double_t>,
     }
 }
 
-void serialThread(ArrayPair<RollingArray<int16_t>,
-		  RollingArray<Double_t>>* array, const SerialConfig_t sConfig, size_t frame_size)
+void serialThread(ArrayPair<RollingArray<uint16_t>,
+                  RollingArray<Double_t>>* array)
 {
+    SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
+    size_t frame_size = 16;
+    
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
     st = std::chrono::high_resolution_clock::now();
 
-    size_t frame_index = 0;
-    int16_t * frame = new int16_t[frame_size];
-    int32_t total_dur = 0;
-    
     SerialInterface sf(sConfig);
-    while (true) {
-	//auto test1 = std::chrono::high_resolution_clock::now();
-	std::string input = sf.getNextLine();
-	char type, delim;
-	int16_t eeg_data, frame_dur;
-	if(input.size()){
-	    std::stringstream stream(input);
-	    stream >> type >> delim >> eeg_data >> delim >> frame_dur;
-	    if(type == 'd'){
-		frame[frame_index] = eeg_data;
-		frame_index+=1;
-		total_dur += frame_dur;
-		if(frame_index >= frame_size){
-		    nt = std::chrono::high_resolution_clock::now();
-		    std::chrono::duration<double> dt = nt-st;
-		    double end_time = dt.count() + total_dur;
-		    double avrg_frame_time = (double)total_dur / frame_size / 1000000;
-		    
-		    array->lock();
-		    for(int i = 0;i<frame_index;i++){
-			array->array1.append(frame[i]);
-			array->array2.append(dt.count() + avrg_frame_time * i);
-		    }
-		    array->unlock();
-		    
-		    frame_index = 0;
-		    total_dur = 0;
-		}
-//std::chrono::duration<double> dt = nt-st;
-		//array->lock();
-		//array->array1.append(eeg_data);
-		//array->array2.append(dt.count());
-		//array->unlock();
-	    }
-	}
+
+    std::string input = sf.getNextLine();
+    printf("Waitig for batch specifier...\n");
+    while(true){
+        if(input[0] == 'b'){
+            if(input[0] == '1'){
+                printf("Decoding batched\n");
+                loopDecodeBatched(sf, array, frame_size);
+            }else{
+                printf("Decoding non batched\n");
+                loopDecodeNonBatched(sf, array);
+            }
+            break;
+        }
+        input = sf.getNextLine();
     }
 }
 
@@ -95,14 +75,14 @@ int main(int argc, char* argv[])
 {
 
     EEGGraph eeg(&argc, argv);
-
-    RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
+    printf("hello\n");
+    RollingArray<uint16_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
-    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
-    //SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
-    //std::thread data_thread(serialThread, &data, sConfig, 16);
-    std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
-
+    ArrayPair<RollingArray<uint16_t>, RollingArray<Double_t>> data(data_array, time_array);
+    SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
+    std::thread data_thread(serialThread, &data);
+    //std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
+    
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
 
@@ -110,7 +90,7 @@ int main(int argc, char* argv[])
     while (looping) {
         data.lock();
         int size = data.array1.getSize();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) { 
             data_array_copy[i] = data.array1.getData()[i];
             time_array_copy[i] = data.array2.getData()[i];
         }
@@ -119,7 +99,7 @@ int main(int argc, char* argv[])
 
         usleep(1000 * 16);
     }
-
+    
     data_thread.join();
     return 0;
 }
