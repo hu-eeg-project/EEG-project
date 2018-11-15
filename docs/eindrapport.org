@@ -116,7 +116,6 @@ Een van de meest bekende hersengolven is de P300-hersengolf. De P300 is een even
 
 *** Signaalmeting
 In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te meten. Uit vooronderzoek cite:xu2011160 is gebleken dat voor het meten van hersengolven een elektrode en een analoog-digitaal converter (ADC) nodig is. Echter is nog niet duidelijk wat de precieze eisen zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal elektrode en ADC kort worden uitgelegd:
-*** TODO Nyquist Sampling Rate uitleggen
 **** Elektrode
 Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd. Doordat elektroden contact maken met het hoofd kunnen hersengolven gemeten worden door de schedel heen. Hierbij is het nodig een goede elektrische verbinding te maken tussen de elektrode en het hoofd om potentiële ruis te verminderen. Voor het verbeteren van dit contact kan een gel gebruikt worden cite:usakli2010improvement. Elektrodes verschillen onder elkaar ook nog op meerdere attributen. Zo zijn ze verkrijgbaar in verschillende maten. Sommige elektrodes zijn herbruikbaar en anderen zijn maar één keer te gebruiken.
 
@@ -140,8 +139,16 @@ Er zijn ook varianten met een deling van maar 10% of zelfs 5% cite:Oostenveld200
 #+ATTR_LATEX: :width 200px
 [[./images/10-20-sys.png]]
 
+**** Bemonsteringstheorema van Nyquist-Shannon
+Bij het meten van het signaal is het belangrijk dat er met de juiste frequentie gemeten word. het Bemonsteringstheorema van Nyquist-Shannon zegt dat het aantal keren per seconden dat het signaal gemeten wordt (sps) hoger moet zijn dan de frequentie in het signaal cite:Nyquist. Als minder vaak gemeten wordt dan de frequentie in het signaal kan het gemeten signaal foutief zijn. Als de sps gelijk is aan de frequentie dan zal er een constant voltage worden gemeten, zoals te zien in figuur [[fig:nyquist]].
+#+CAPTION: Onjuiste en juiste meet frequentie
+#+NAME: fig:nyquist
+#+LABEL: fig:nyquist
+#+ATTR_LATEX: :width 300px
+[[./images/n-sample.jpg]]
+
 **** ADC
-De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn.
+De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn, maximaal 80Hz voor gamma golven.
 
 *** Signaalverwerking
 Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven. Hierbij zal vooral worden gefocust op het vinden van het P300-signaal uit de hersenen, waarvoor het signaal eerst van ruis moeten worden vrij gemaakt.
@@ -170,7 +177,6 @@ Hieronder volgen bronnen die gerelateerd zijn aan dit onderzoek:
 #+LATEX: \newpage
 
 
-
 * Theoretisch kader
 Benodigde onderdelen EEG in volgorde
 - Elektrode: Een elektrode zal nodig zijn om elektrisch contact te maken met het hoofd
@@ -183,7 +189,6 @@ Benodigde onderdelen EEG in volgorde
 - Computer: Ontvangt data uit microcontroller en voert hier algoritmes op uit om het signaal te verwerken
 
 kosten per channel:
-
 
 * Benodigde hardware EEG
 In dit hoofdstuk zal de resultaten worden weergegeven uit het literatuuronderzoek naar de hardwaredelen en componenten die nodig zijn om een EEG-systeem te maken. Als eerste zal worden beschreven welke hardware delen nodig zijn en daarna zal worden beschreven welke componenten binnen deze delen kunnen worden gebruikt.
@@ -198,8 +203,7 @@ Een van deze opensource EEG-systemen is genaamd OpenEEG. OpenEEG is een project 
 Als naar de schematics van de modEEGamp gekeken wordt, welke te vinden is in [[Bijlage A: schakelschema modEEGamp][Bijlage A]] is goed te zien welke hardware delen gebruikt zijn.
 Te zien is dat er per kanaal twee versterkers worden gebruikt, waarvan de ene een instrumentale versterker (inamp) is en de andere een operationele versterker(opamp). voorafgaand aan de inamp is een protectiecircuit tegen......
 
-
-In [[Bijlage B: schakelschema versterker][Bijlage B]] is nog een schakelschema te zien welke waarin ook een inamp en een opamp gebruikt wordt om de hersensignalen te versterken. Echter is dit schema niet het protectiecircuit en de filtering tegen rf-signalen te zien. Dit schema is eerder gebruikt in een succesvol onderzoek naar het maken van een EEG-systeem cite:Diy_EEG. Hieruit kan dus worden afgeleid dat het protectiecircuit en de filtering tegen rf-signalen niet perse nodig, maar misschien wel beter prestaties levert.
+In [[Bijlage B: schakelschema versterker][Bijlage B]] is nog een schakelschema te zien welke waarin ook een inamp en een opamp gebruikt wordt om de hersensignalen te versterken. Echter is dit schema niet het protectiecircuit en de filtering tegen rf-signalen te zien. Dit schema is eerder gebruikt in een succesvol onderzoek naar het maken van een EEG-systeem cite:Diy_EEG. Hieruit kan dus worden afgeleid dat het protectiecircuit en de filtering tegen rf-signalen niet perse nodig, maar misschien wel beter prestaties levert. Of dit nodig is zal moeten worden getest.
 
 Dankzij de bestudeerde bronnen is de volgende lijst van benodigde onderdelen opgesteld:
 - *Elektrode*: om signalen uit de hersenen van een persoon te meten moet contact worden gemaakt met de hoofdhuid, hiervoor worden elektrodes gebruikt.
@@ -214,6 +218,12 @@ Nu er een globaal beeld is van wat er nodig is om een EEG-systeem te maken moete
 In [[Benodigde hardwaredelen]] zijn er een aantal eisen gesteld waar de componenten aan moeten voldoen. Aan het einde van dit hoofdstuk wordt er een lijst opgesteld met de verschillende hardwarecomponenten die nodig zijn voor het EEG-systeem. Voor elke hardwaredeel zal er een tabel worden gemaakt waarin meerdere componenten in dit deel worden vergeleken om zo tot een selectie te komen van componenten. De selectie wordt dan in het echt getest om te kijken welke beter is.
 
 Als eerste zal worden bepaald welke elektrodes worden gebruikt. Hieronder is een tabel te zien van de elektrodes welke worden vergeleken.
+Gekozen is om beide de EEG-AE en de EEG-PE te bestellen en daarnaast ook nog one-time-use elektrodes te kopen met een Silver Chlorided Plastic coating. Voor de EEG-AE en de EEG-PE is gekozen om het verschil tussen een actieve en passive elektrode te kunnen meten, ook zijn deze elektrodes niet one-time-use. Voor de one-time-use elektrodes is gekozen om te eten hoe dee vergelijken met de andere 2 elektrodes en ook om te kijken hoe goed deze elektrodes werken na het eerste gebruik. 
+Er is niet voor de andere elektrodes gekozen omdat deze of te duur zijn(>30 euro) of minder makkelijker leverbaar zijn in Nederland. \\
+
+Bij het kiezen van een intrumentele amplifier(INA) is het belangrijk dat deze zo ruisvrij mogelijk is. Daarnaast is het ook handig als de INA een DIP-package (of through hole) is, dit omdat het dan makkelijker is om iets aan de pinnen van de INA vast te maken of te solderen. Ook kan, als het nodig is, de INA dan in een breadboard worden gestoken om het testen makkelijker te maken.
+Als naar de vergelijkingstabel voor de intrumentele versterker gekeken wordt, dan is te zien dat de AD8429 de beste prestaties levert kwa ruis. Echter zullen wij niet kiezen voor deze chip omdat niet een DIP-package is, maar is er voor de INA129P en de AD620ARZ gekozen. Voor de AD620ARZ is gekozen omdat deze veel gebruikt wordt in bestaande EEG-schakelschema's, zoals die van de OpenEEG of schakelschema's uit meerdere papers cite:Sahin2015,Badillo. 
+Daarnaast is gekozen voor de INA129P omdat deze een 
 
 #+ATTR_LATEX: :environment longtable :align |p{3cm}|p{1,2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|
 |----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
@@ -240,18 +250,25 @@ Als eerste zal worden bepaald welke elektrodes worden gebruikt. Hieronder is een
 | Oorelectrode                                             |     2 | €26.25  | ja           | tin                           | ?                | Oor referentie voor EEG     |
 |----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
 
-#+ATTR_LATEX: :environment longtable :align |p{2cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2cm}|p{2cm}|p{2cm}|
-|-----------------+-------------+----------+-----------+----------+---------------------+----------------------+---------|
-| Naam            | Prijs(Euro) | Precisie | Range (V) | sps      | input noise uV(RMS) | Output noise uV(RMS) | kanalen |
-|-----------------+-------------+----------+-----------+----------+---------------------+----------------------+---------|
-| MCP3021         | 0,94        | 10-bit   | -0.6~3,4  | 22k      |                     |                      |       1 |
-| TLC1543         | 12,95       | 10-bit   | Reference | 32k      |                     |                      |      11 |
-| MCP3008         | 3,50        | 10-bit   |           | 75k-200k |                     |                      |       8 |
-| ad7705          | 2,60        | 16-bit   |           | ?        |                     |                      |       2 |
-| ads1115         | 2,50        | 16-bit   |           | 860      | 32,25               |                      |       2 |
-| ESP32 ADC       | 13,99       | 12-bit   | 0-3,9     | ?        | ?                   | ?                    |     2x8 |
-| Arduino Uno adc |             | 8-bit    |           |          |                     |                      |         |
-|-----------------+-------------+----------+-----------+----------+---------------------+----------------------+---------|
+
+#+ATTR_LATEX: :environment longtable :align |p{1,5cm}|p{1cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2,4cm}|p{1,5cm}|p{1,5cm}|
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| Naam            | Prijs (Euro) | Precisie | metingen per seconden | input/ output ruis uV(RMS) | signaal-ruisverhouding en distortie (dB) | niet lineariteit | kanalen |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| MCP3021         | 0,94         | 10-bit   | 22k                   | ?                          | 60                                       | +/- 0,25 LSB     |       1 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| TLC1543         | 12,95        | 10-bit   | 32k                   | ?                          | ?                                        | +/- 1 LSB        |      11 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| MCP3008         | 3,50         | 10-bit   | 75k-200k              | ?                          | 51                                       | +/- 0,25 LSB     |       8 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| ad7705          | 2,60         | 16-bit   | 38,4K                 | ?/110                      | ?                                        | 0,003%           |       2 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| ads1115         | 2,50         | 16-bit   | 860                   | 32,25                      | ?                                        |                  |       2 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| ESP32 ADC       | 13,99        | 12-bit   | 6K                    | ?                          | ?                                        |                  |     2x8 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| Arduino Uno adc |              | 8-bit    | 9,615K                | ?                          | ?                                        |                  |       8 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
 
 Voor instrumente amplifiers is het belangrijk dat er weinig noise is. Dit komt doordat het de eerste chip is waar het signaal van een elektrode binnenkomt waar de kleinste ruis het meeste uitmaakt. Bij de instrumentele amplifiers is er gekozen om de AD620ANZ en INA129P te bestellen. Hiervoor is gekozen omdat er niet veel verschil tussen de input noise zit van de verschillende instrumentele amplifiers in de lijst. Deze twee zijn ook vaker gebruikt in andere zelfgemaakte EEG systemen zoals OpenEEG.
 
