@@ -1,4 +1,5 @@
 #+TITLE: Mens-machine interactie door middel van EEG
+#+LANGUAGE: nl-nl
 #+OPTIONS: title:nil toc:nil H:4
 #+LATEX_HEADER: \pagenumbering{gobble}
 #+LATEX_HEADER: \usepackage[margin=3cm]{geometry}
