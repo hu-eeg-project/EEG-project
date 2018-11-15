@@ -98,6 +98,11 @@ public:
         m_mutex.unlock();
     }
 
+    inline T operator[](size_t index){
+        T* array_begin = getData();
+        return array_begin[index];
+    }
+    
     /*
     inline T* getActualData()
     {

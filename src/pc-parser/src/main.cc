@@ -29,9 +29,9 @@
 void testThread(ArrayPair<RollingArray<Double_t>,
                 RollingArray<Double_t>>* array, uint32_t sample_rate)
 {
-    Frequency_t frequencies[] = {{200, 1}, {20, 10}};
+    Frequency_t frequencies[] = {{300, 1}, {20, 10}};
     Noise_t noise = {0, 60};
-    WaveGenerator wave(frequencies, sizeof(frequencies)/sizeof(Frequency_t), array, noise);
+    WaveGenerator wave(frequencies, sizeof(frequencies)/sizeof(Frequency_t), array);
     double t = 1.0f / sample_rate * 1000000;
 
     while (true) {
@@ -76,12 +76,12 @@ int main(int argc, char* argv[])
 
     EEGGraph eeg(&argc, argv);
     printf("hello\n");
-    RollingArray<uint16_t> data_array(NUMBER_OF_POINTS);
+    RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
-    ArrayPair<RollingArray<uint16_t>, RollingArray<Double_t>> data(data_array, time_array);
+    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
     SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
-    std::thread data_thread(serialThread, &data);
-    //std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
+    //std::thread data_thread(serialThread, &data);
+    std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
     
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
@@ -91,8 +91,8 @@ int main(int argc, char* argv[])
         data.lock();
         int size = data.array1.getSize();
         for (int i = 0; i < size; i++) { 
-            data_array_copy[i] = data.array1.getData()[i];
-            time_array_copy[i] = data.array2.getData()[i];
+            data_array_copy[i] = data.array1[i];
+            time_array_copy[i] = data.array2[i];
         }
         data.unlock();
         eeg.update(size, time_array_copy, data_array_copy);
