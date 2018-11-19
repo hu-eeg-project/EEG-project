@@ -1,8 +1,10 @@
 #include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_event.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include "esp_timer.h"
 
 #include "driver/gpio.h"
 #include "driver/uart.h"
@@ -40,6 +42,8 @@ void app_main(void)
 
     char buff[1024];
     setvbuf(stdout, buff, _IOLBF, 1024);
+
+    int64_t st = esp_timer_get_time();
     
     while(true){
 	uart_read_bytes(UART_NUM_2, &data, 1, portMAX_DELAY);
@@ -71,8 +75,7 @@ void app_main(void)
 	    {
 	    case 0x01:
 		ESP_LOGI("BATTERY:" , "%d", pdata[++j]);
-		continue;
-		
+		continue;		
 	    case 0x02: // Signal status
 		printf("r:%d:%d\n", ERROR_BAD_SIGNAL, pdata[j + 1]);
 		if(pdata[j + 1] > 0x10){
@@ -110,7 +113,11 @@ void app_main(void)
 		    value = value << 8 | pdata[j + 2 + u];
 		}
 		ESP_LOGI("RAW_WAVE_VALUE", "%d", value);
-		printf("d:%d\n", value);
+		int64_t nt = esp_timer_get_time();
+		//printf("dur: %ll", nt-st);
+		printf("d:%d:%lld\n", value, nt-st);
+		st = nt;
+		
 		j += 1 + rlength;
 		continue;
 
@@ -127,6 +134,7 @@ void app_main(void)
 		    waves[i] |= (pdata[++j] << 8);
 		    waves[i] |= pdata[++j];
 		}
+		printf("waves\n\n");
 		ESP_LOGI("ASIC_EEG_POWER",
 			 "\nDelta: %d\n"
 			 "Theta: %d\n"
