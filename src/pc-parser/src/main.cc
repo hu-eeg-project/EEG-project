@@ -43,22 +43,22 @@ void testThread(ArrayPair<RollingArray<Double_t>,
     }
 }
 
-void serialThread(ArrayPair<RollingArray<uint16_t>,
+void serialThread(ArrayPair<RollingArray<int16_t>,
                   RollingArray<Double_t>>* array)
 {
     SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
     size_t frame_size = 16;
-    
+    printf("hello\n");
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
     st = std::chrono::high_resolution_clock::now();
 
     SerialInterface sf(sConfig);
 
-    std::string input = sf.getNextLine();
     printf("Waitig for batch specifier...\n");
+    std::string input = sf.getNextLine();
     while(true){
         if(input[0] == 'b'){
-            if(input[0] == '1'){
+            if(input[2] == '1'){
                 printf("Decoding batched\n");
                 loopDecodeBatched(sf, array, frame_size);
             }else{
@@ -75,13 +75,12 @@ int main(int argc, char* argv[])
 {
 
     EEGGraph eeg(&argc, argv);
-    printf("hello\n");
-    RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
+    RollingArray<int16_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
-    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
+    ArrayPair<RollingArray<int16_t>, RollingArray<Double_t>> data(data_array, time_array);
     SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
-    //std::thread data_thread(serialThread, &data);
-    std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
+    std::thread data_thread(serialThread, &data);
+    //std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
     
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
