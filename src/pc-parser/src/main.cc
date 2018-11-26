@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "cmdline.h"
+
 #include "serial.hh"
 #include "eeg-graph.hh"
 #include "rolling-array.hh"
@@ -23,15 +25,17 @@
 #include <iostream>
 #include <sstream>
 
-#define NUMBER_OF_POINTS 300
+#define NUMBER_OF_POINTS 1000
 #define FRAME_DURATION 3
 
 void testThread(ArrayPair<RollingArray<Double_t>,
-                RollingArray<Double_t>>* array, uint32_t sample_rate)
+                RollingArray<Double_t>>* array,
+                uint32_t sample_rate,
+                const Frequency_t* frequencies,
+                size_t size)
 {
-    Frequency_t frequencies[] = {{300, 1}, {20, 10}};
     Noise_t noise = {0, 60};
-    WaveGenerator wave(frequencies, sizeof(frequencies)/sizeof(Frequency_t), array);
+    WaveGenerator wave(frequencies, size, array);
     double t = 1.0f / sample_rate * 1000000;
 
     while (true) {
@@ -43,12 +47,11 @@ void testThread(ArrayPair<RollingArray<Double_t>,
     }
 }
 
-void serialThread(ArrayPair<RollingArray<int16_t>,
+void serialThread(ArrayPair<RollingArray<Double_t>,
                   RollingArray<Double_t>>* array)
 {
     SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
     size_t frame_size = 16;
-    printf("hello\n");
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
     st = std::chrono::high_resolution_clock::now();
 
@@ -73,15 +76,49 @@ void serialThread(ArrayPair<RollingArray<int16_t>,
 
 int main(int argc, char* argv[])
 {
+    gengetopt_args_info config;
+    if (cmdline_parser(argc, argv, &config) != 0) {
+        exit(1);
+    }
+
+    Frequency_t* frequencies = NULL;
+
+    if (config.serial_flag) {
+        if (config.verbose_flag) printf("Using Serial as data source.\n");
+    } else if (config.generator_flag) {
+        if (config.verbose_flag) printf("Using Generator as data source.\n");
+        if (config.frequency_given != config.amplitude_given) {
+            printf("Same amount of frequencies and amplitudes needed!\n");
+            exit(1);
+        }
+
+        frequencies = new Frequency_t[config.frequency_given];
+        if (!frequencies) {
+            printf("Failed to allocate memory for frequencies.\n");
+            exit(1);
+        }
+
+        for (int i = 0; i < config.frequency_given; i++) {
+            frequencies[i] = {config.amplitude_arg[i], (uint16_t) config.frequency_arg[i]};
+        }
+    } else {
+        printf("No data source!\n");
+        exit(1);
+    }
 
     EEGGraph eeg(&argc, argv);
-    RollingArray<int16_t> data_array(NUMBER_OF_POINTS);
+    RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
-    ArrayPair<RollingArray<int16_t>, RollingArray<Double_t>> data(data_array, time_array);
-    SerialConfig_t sConfig = {(std::string)"/dev/ttyUSB0", B115200};
-    std::thread data_thread(serialThread, &data);
-    //std::thread data_thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION);
-    
+    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
+
+    std::thread data_thread;
+    if (config.serial_flag) {
+        SerialConfig_t sConfig = {std::string(config.interface_arg), B115200};
+        data_thread = std::thread(serialThread, &data);
+    } else {
+        data_thread = std::thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION, frequencies, config.frequency_given);
+    }
+
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
 
@@ -89,7 +126,7 @@ int main(int argc, char* argv[])
     while (looping) {
         data.lock();
         int size = data.array1.getSize();
-        for (int i = 0; i < size; i++) { 
+        for (int i = 0; i < size; i++) {
             data_array_copy[i] = data.array1[i];
             time_array_copy[i] = data.array2[i];
         }
@@ -98,7 +135,10 @@ int main(int argc, char* argv[])
 
         usleep(1000 * 16);
     }
-    
+
     data_thread.join();
+
+    if (frequencies) delete[] frequencies;
+
     return 0;
 }

@@ -76,7 +76,7 @@ void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
     for (unsigned int i = 0; i < points; i++) {
         m_graph->SetPoint(i, x[i], y[i]);
     }
-    m_graph->GetYaxis()->SetRangeUser(-300,300);
+    m_graph->GetYaxis()->SetRangeUser(-1000,1000);
 }
 
 void EEGGraph::updateFFT(unsigned int frequencies, double* values)
@@ -107,6 +107,10 @@ void EEGGraph::render()
 
 void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 {
+    if (!points) return;
+
+    updateGraph(points, x, y);
+
     int index = -1;
     for (int i = points - 1; i >= 0; i--) {
         if (x[points - 1] - x[i] >= 1) {
@@ -115,12 +119,12 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
         }
     }
     if (index == -1){
-	return;
+        return;
     }
 
     Double_t * result_y = new Double_t[points];
     memcpy(result_y, y, points);
-    
+
     size_t fft_size = points - index;
     double fft_result[512][2];
     double buffer[256] = {0};
@@ -144,14 +148,12 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 	result_y[i] *= 1.0f/points;
     }
 
-    updateGraph(points, x, result_y);
-    
+
+
     for (int i = 1; i < fft_size / 2 - 1; i++) {
         buffer[i - 1] = sqrt(pow(fft_result[i][0], 2) +
                              pow(fft_result[i][1], 2));
     }
-
-    
 
     updateFFT(50, buffer);
     render();

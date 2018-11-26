@@ -1,0 +1,16 @@
+package "pc-parser"
+version "0.1.0"
+usage "pc-parser"
+description "The PC parser and visualizer for the EEG research."
+versiontext "First version with commandline options"
+
+option "verbose" v "Run the program in verbose mode." flag off
+
+section "Data Acquisition"
+option "generator" g "Use a generated signal." flag on
+option "serial" s "Use the serial interface for data acquisition." flag off
+option  "interface" i "Serial Interface to listen on." string optional default="/dev/ttyUSB0"
+
+section "Generator"
+option "frequency" f "Frequency to use for the generator. For multiple frequencies, use a comma separated list for the frequency and amplitude." int optional multiple(1-)
+option "amplitude" a "Amplitude matching the frequency given for the generator." float optional multiple(1-)

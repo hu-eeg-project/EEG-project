@@ -27,7 +27,7 @@ std::string getStringForError(int error_code)
 }
 
 void loopDecodeNonBatched(SerialInterface& sf,
-                          ArrayPair<RollingArray<int16_t>, RollingArray<Double_t>>* array)
+                          ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>>* array)
 {
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
     st = std::chrono::high_resolution_clock::now();
@@ -52,11 +52,10 @@ void loopDecodeNonBatched(SerialInterface& sf,
 }
 
 void loopDecodeBatched(SerialInterface& sf,
-                       ArrayPair<RollingArray<int16_t>,
+                       ArrayPair<RollingArray<Double_t>,
                        RollingArray<Double_t>>* array,
                        const size_t frame_size)
 {
-
     std::chrono::time_point<std::chrono::high_resolution_clock> st =
         std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> dt;
@@ -114,10 +113,6 @@ void loopDecodeBatched(SerialInterface& sf,
                 case 'r':
                     int error_code;
                     input_stream >> error_code;
-
-                    std::cout << "Error with code: " << error_code
-                              << " (" << getStringForError(error_code) << ")"
-                              << std::endl;
 
                     break;
 
