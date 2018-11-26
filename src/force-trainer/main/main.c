@@ -11,10 +11,11 @@
 
 #include "string.h"
 
-#define ERROR_UNKOWN_CMD   0x01
-#define ERROR_BAD_SIGNAL   0x02
-#define ERROR_BAD_CHECKSUM 0x03
-#define ERROR_PACKET_LEN   0x04
+#define ERROR_UNKOWN_CMD    0x01
+#define ERROR_BAD_SIGNAL    0x02
+#define ERROR_BAD_CHECKSUM  0x03
+#define ERROR_PACKET_LEN    0x04
+#define ERROR_CREATING_TASK 0x05
 
 void app_main(void)
 {    
@@ -44,8 +45,17 @@ void app_main(void)
     setvbuf(stdout, buff, _IOLBF, 1024);
 
     int64_t st = esp_timer_get_time();
-    
+    int64_t batch_timer = st;
+
+    int16_t frame_buffer[20] = {0};
+    size_t frame_index = 0;
+    uint64_t frame_dur = 0;
     while(true){
+        if((esp_timer_get_time()-batch_timer)>1000000){ // every second
+            printf("b:1\n");
+            batch_timer = esp_timer_get_time();
+        }
+        
 	uart_read_bytes(UART_NUM_2, &data, 1, portMAX_DELAY);
 	if (data != 0xAA) continue; // No Sync Packet
 	uart_read_bytes(UART_NUM_2, &data, 1, portMAX_DELAY);
@@ -69,7 +79,6 @@ void app_main(void)
 	if (checksum != pchecksum) {
 	    ESP_LOGE("BAD_CHECKSUM", "%d != %d", checksum, pchecksum);
 	}
-	
 	for (int j = 0; j < plength; j++) {
 	    switch (pdata[j])
 	    {
@@ -113,10 +122,20 @@ void app_main(void)
 		    value = value << 8 | pdata[j + 2 + u];
 		}
 		ESP_LOGI("RAW_WAVE_VALUE", "%d", value);
-		int64_t nt = esp_timer_get_time();
-		//printf("dur: %ll", nt-st);
-		printf("d:%d:%lld\n", value, nt-st);
-		st = nt;
+                uint64_t nt = esp_timer_get_time();
+		uint64_t dt = nt-st;
+                frame_dur += dt;
+                frame_buffer[frame_index++] = value;
+                if(dt>20000){
+                    printf("f:%d:%lld\n", frame_index, frame_dur);
+                    for(int i = 0;i<frame_index;i++){
+                        printf("d:%d\n", frame_buffer[i]);
+                    }
+                    //printf("\n");
+                    frame_index = 0;
+                    frame_dur = 0;
+                }
+                st = nt;
 		
 		j += 1 + rlength;
 		continue;
