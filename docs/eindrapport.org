@@ -67,9 +67,23 @@ Dit onderzoek wordt gedaan door twee studenten van technische Informatica aan de
 #+ATTR_LATEX: :width 250px
 #+ATTR_LATEX: :height 250px
 [[./images/bci_headset.jpg]]
-* TODO
-#+LATEX: \newpage
 
+#+LATEX: \newpage
+* Aanleiding en Context
+Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen die goed zijn zeer duur kunnen zijn is het goedkoper zelf een te maken. Er zijn wel goedkopere EEG-systemen alleen is de kwaliteit hiervan slechter. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar één meetpunt heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. Met het maken van een eigen EEG kan daarnaast ook veel geleerd worden in het ontwerpen van de hardware en in het programmeren hiervan. Ook kan het voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Daarnaast is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen op de opleiding Technische Informatica.
+
+** Use case
+Een voorbeeld van een use case waar een EEG-systeem als deze voor gebruikt kan worden is een P300-speller. Via een P300-speller kan door naar een toets van een toetsenbord op een scherm te kijken deze toets getypt worden. Dit werkt doordat als deze toets flitst met een andere kleur (zwart naar wit bijvoorbeeld) terwijl er naar gekeken wordt het brein een P300-golf maakt, deze kan worden gedetecteerd door de EEG en zo weet de computer dat deze letter bedoeld wordt.\\
+Zo een speller kan goed gebruikt worden door ALS-patiënten die problemen hebben om te praten of te typen doordat ze weinig tot geen controle hebben over de benodigde spieren, maar nog wel de ogen kunnen bewegen. Als een P300-speller wordt aangesloten aan tekst-naar-spraak computer zou zo een ALS-patient weer een soort van kunnen praten en zo dus weer makkelijker kunnen communiceren met andere mensen.
+
+** De Organisatie
+de Organisatie waar dit onderzoek voor gedaan wordt is de Hogeschool Utrecht. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen: Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd waaronder het EEG-systeem zal vallen. \\
+Specifiek wordt het onderzoek gedaan voor het Turing Lab. Het Turing Lab is vooral een werkplek voor studenten en docenten van de opleiding Technische Informatica op de Hogeschool Utrecht.
+
+** Opdrachtgever
+De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij is hogeschooldocent bij HBO-ICT en verzorgd onderwijs voor Technische Informatica en Applied AI. Hij zal de begeleider zijn voor dit onderzoek.
+
+#+LATEX: \newpage
 * Theoretisch kader
 In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als eerste worden er een aantal centrale begrippen over het onderwerp toegelicht. Daarna worden er een aantal belangrijke bronnen neergezet. En als laatste worden gerelateerde werken genoemd.
 ** Core Concepts
@@ -190,7 +204,56 @@ Hieronder volgen bronnen die gerelateerd zijn aan dit onderzoek:
   Hier wordt het P300-signaal gebruikt om leugens te detecteren.
 #+LATEX: \newpage
 
+* Doelstelling
+De uiteindelijke doelstelling van dit project is het maken van een EEG-systeem waar andere studenten op voort kunnen bouwen. Dit EEG-systeem zou tenminste een P300-signaal bij de onderzoekers kunnen detecteren. Het EEG-systeem is bedoeld om te kunnen worden gebruikt voor studenten. Hiervoor moet het prototype dus goed gedocumenteerd worden en uitbreidbaar zijn. Aangezien het systeem voor het onderwijs is bedoeld mag het niet te duur zijn dus wordt de prijs gelimiteerd tot onder de 250 euro.
+* Vraagstelling
+Dit hoofdstuk benoemd en omschrijft de vragen die tijdens dit onderzoek zullen worden beantwoord. Als eerst wordt de hoofdvraag toegelicht en daarna zullen de deelvragen aan de pas komen. Na het stellen van het probleem is er de volgende hoofdvraag opgesteld: *Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?* De minimale eisen voor de EEG zijn:
++ Het kan het P300 signaal beter detecteren bij de onderzoekers dan een goedkope speelgoed EEG. Als goedkoop speelgoed-EEG wordt de Star Wars EEG als vergelijk gebruikt.
++ De kosten voor de hardware die nodig zijn voor de EEG zijn niet meer dan 250 euro. Dit maximale budget is ontvangen van de opdrachtgever
++ Het is makkelijk uitbreidbaar en kan makkelijk worden gebruikt voor bij andere projecten. Het idee is dat de EEG door andere studenten kan worden gebruikt voor andere projecten, daarom is het dus nodig dat er een duidelijke API en documentatie is.
 
+Voor dit onderzoek zijn er een aantal deelvragen opgesteld welke moeten leiden tot een antwoord op de hoofdvraag. Elke deelvraag heeft weer enkele onder-deelvragen welke moeten leiden tot antwoord op de deelvraag.
+De deelvragen zijn:
+1. Welke hardware is nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
+   1. Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
+   2. Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen en de kosten (totaal maximaal 250 euro)?
+   3. Wat voor typen ruis zijn er in het ontvangen signaal?
+   4. Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe?
+2. Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)?
+   1. Welk algoritme is het beste voor de signaalverwerking van de analoge data uit de elektroden?
+   2. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
+   3. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
+   4. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
+   5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? Zo ja, hoe?
+3. Hoe vergelijkt onze EEG met de Star Wars EEG?
+   1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
+   2. Doet onze EEG het significant beter dan de Star Wars EEG?
+#+LATEX: \newpage
+
+* Methode en Aanpak
+Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
+te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
+gebruikt gaan worden staat in een tabel in bijlage B ([[#BijlageB]]). Dit hoofdstuk beschrijft deze tabel in meer detail.
+
+** Benodigde Hardware EEG
+Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literatuur studie worden toegepast. Zo zal naar publicaties worden gezocht waarin onderzoeken worden gedaan naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende benodigde en optionele hardware functionaliteiten van de EEG en wat daarvoor nodig is. \\
+
+Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingstabel worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.\\
+\\
+Bij het uitzoeken van de hardwaredelen en componenten zal aandacht worden besteed aan het zo min mogelijk hebben van ruis. Bij het uitzoeken van de hardwaredelen zal bijvoorbeeld extra delen kunnen worden toegevoegd (hardwarefilters bijvoorbeeld) om de ruis te verminderen. Bij de hardwarecomponenten zal ruis meespelen als wegingsfactor bij het vergelijken van hardwarecomponenten. Hier al aandacht besteden aan de ruis wordt gedaan om preventief de ruis tegen te gaan.
+
+** Ruisfiltering
+Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is cite:EEG_nois_canc. Als eerste zal er gekeken worden hoe de ruis kan worden verminderd. Daarna zal worden onderzocht welke typen ruis er in het gemeten signaal over zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Met dit frequentiespectrum kunnen we ruis wat vaste frequenties heeft, zoals 50/60 Hz ruis van de netvoeding, detecteren cite:xu2011160. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literatuur studie worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
+
+** De EEG-firmware
+Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware worden geschreven. Deze deelvraag zal vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen. Dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware, hierdoor is het programmeren sneller en makkelijker. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literatuur studie worden gebruikt.
+
+** Kwantitatief onderzoek
+Nadat het EEG-systeem af is zal deze worden getest door een vergelijking te maken met een goedkopere EEG. De goedkopere EEG is een EEG uit een speelgoed set welke verkrijgbaar is voor consumenten. Tijdens dit onderzoek zal deze EEG de Star Wars EEG worden genoemd. Deze EEG kan worden gevonden via de volgende link: https://www.amazon.com/Science-Trainer-Brain-Sensing-Hologram-Electronic/dp/B00X5CCDYQ
+
+Het doel van deze tests is om te kijken of de gemaakte EEG beter is dan de Star Wars EEG. Dit zal worden getest met gebruik van de methodiek Benchmark test. Beide EEG's zullen worden getest op proefpersonen door P300-speller als benchmark te gebruiken. De proefpersonen zullen mensen zijn uit het Turing Lab of familie/vrienden van de onderzoekers.
+
+#+LATEX: \newpage
 * Benodigde hardware EEG
 In dit hoofdstuk zal de resultaten worden weergegeven uit het literatuuronderzoek naar de hardwaredelen en componenten die nodig zijn om een EEG-systeem te maken. Als eerste zal worden beschreven welke hardware delen nodig zijn en daarna zal worden beschreven welke componenten binnen deze delen kunnen worden gebruikt.
 
@@ -231,6 +294,12 @@ Voor instrumente amplifiers (inamp) is het belangrijk dat er weinig noise is. Di
 Voor de opamp hebben we gekozen om de standaard veelgebruikte en goedkope LM358 te testen en een duurdere OP27GPZ. De OP27GPZ is een opamp gespecialiseerd op low noise en is ook vaker in andere EEG schakelschema's tegen gekomen. Hieruit is besloten om deze twee met elkaar te vergelijken of het een significant verschil maakt om een gespecialiseerde opamp te gebruiken op het gebied van ruis.
 
 #+LATEX: \newpage
+
+** Ruis in het signaal
+In dit hoofdstuk zal worden besproken welke type ruis er zijn tegengekomen tijdens het maken van het prototypen EEG-systeem. Ook zal worden besproken hoe deze ruis er uitgefilterd is.
+
+Als er een oscilloscoop wordt aangesloten direct op de passieve elektrode van de OpenEEG
+
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 bibliographystyle:apalike
