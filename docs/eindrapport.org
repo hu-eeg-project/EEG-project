@@ -160,7 +160,7 @@ Omdat de stroom uit de elektrodes zeer klein is zal dit eerst moeten worden vers
 De Operationele versterker of opamp is een IC die veel gebruikt wordt om signalen te versterken cite:opamp_handbook. Een opamp heeft twee inputs en een output. De twee inputs zijn de inverting- en de non-invertinginputs. De opamp is zo ontworpen dat op de output het voltage verschil van de inputs gezet wordt keer de versterking, wat standaard hoog is (rond de 100000). De output kan echter niet hoger worden dan de voltage van de voeding.
 
 *Instrumentele versterker*
-Een ander soort versterker is de instrumentele versterker of inamp. De inamp lijkt sterk op de opamp dat het een verschil tussen de twee inputs keer een versterking op de output zet. Maar een inamp heeft een nog hogere input impedantie waardoor het te meten signaal nog minder wordt verstoord. Ook kan de versterking van een inamp worden gezet door een enkele weerstand, terwijl bij een opamp twee weerstanden nodig zijn cite:inamp_uitleg. 
+Een ander soort versterker is de instrumentele versterker of inamp. De inamp lijkt sterk op de opamp dat het een verschil tussen de twee inputs keer een versterking op de output zet. Maar een inamp heeft een nog hogere input impedantie waardoor het te meten signaal nog minder wordt verstoord. Ook kan de versterking van een inamp worden gezet door een enkele weerstand, terwijl bij een opamp twee weerstanden nodig zijn cite:inamp_uitleg.
 
 **** Bemonsteringstheorema van Nyquist-Shannon
 Bij het meten van het signaal is het belangrijk dat er met de juiste frequentie gemeten word. het Bemonsteringstheorema van Nyquist-Shannon zegt dat het aantal keren per seconden dat het signaal gemeten wordt (sps) hoger moet zijn dan de frequentie in het signaal cite:Nyquist. Als minder vaak gemeten wordt dan de frequentie in het signaal kan het gemeten signaal foutief zijn. Als de sps gelijk is aan de frequentie dan zal er een constant voltage worden gemeten, zoals te zien in figuur [[fig:nyquist]].
@@ -174,7 +174,7 @@ Bij het meten van het signaal is het belangrijk dat er met de juiste frequentie 
 De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn, maximaal 80Hz voor gamma golven.
 
 **** DRL
-Voor het tegengaan van noise in het EEG-systeem is een DRL (Driven Right Leg) circuit een goede toevoeging cite:venkatesh_2011. Een DRL werkt op het principe dat bij de instrumentele amplifier het Common-Mode voltage op de versterkingsweerstand staat. Het Common-Mode voltage is de stroom die door het hele lichaam verdeeld is en ontstaat door elektriciteit om het persoon heen, bijvoorbeeld TL buizen of het lichtnet om ons heen. 
+Voor het tegengaan van noise in het EEG-systeem is een DRL (Driven Right Leg) circuit een goede toevoeging cite:venkatesh_2011. Een DRL werkt op het principe dat bij de instrumentele amplifier het Common-Mode voltage op de versterkingsweerstand staat. Het Common-Mode voltage is de stroom die door het hele lichaam verdeeld is en ontstaat door elektriciteit om het persoon heen, bijvoorbeeld TL buizen of het lichtnet om ons heen.
 Een DRL verlaagd die Common-Mode noise door de Common-Mode van de instrumentele amplifiers te nemen en hier het geïnverteerde signaal terug te leiden naar het persoon. Hierdoor heffen beide stromen elkaar op, echter is dit nooit perfect.
 Om de Common-Mode van de instrumentele amplifier te nemen moet het worden gebufferd om geen invloed op de werking van de instrumentele amplifier te hebben. Hiervoor wordt het in een opamp gevoerd, wat als buffer zal dienen, die vervolgens het signaal aan de DRL zelf geeft. De DRL heeft de input van één of meerdere aangesloten op de inverting input van de opamp. De non-inverting input wordt dan op de grond aangesloten om zo de inverse van het signaal te creëren. De output van dit circuit is dan aangesloten aan bijvoorbeeld een earclip om zo de inverse Common-Mode signaal terug te brengen naar de gebruiker van de EEG om de invloed daarvan te verminderen.
 
@@ -299,6 +299,18 @@ Voor de opamp hebben we gekozen om de standaard veelgebruikte en goedkope LM358 
 In dit hoofdstuk zal worden besproken welke type ruis er zijn tegengekomen tijdens het maken van het prototypen EEG-systeem. Ook zal worden besproken hoe deze ruis er uitgefilterd is.
 
 Als er een oscilloscoop wordt aangesloten direct op de passieve elektrode van de OpenEEG
+
+* De hardware
+Voor het hardware gedeelte hebben wij drie onderdelen. Hier kijken we naar twee bestaande EEGs. De Force Trainer is een goedkope speelgoed EEG die gebruikt wordt om concentratie te meten met een neurosky chip. OpenEEG is een open source project om een modulaire EEG te maken. Tenslotte ons eigen EEG is het circuit dat wij zelf proberen te maken om signalen te versterken en te meten.
+
+** Force Trainer
+Als eerste hebben we de force trainer opgezet en met de bijbehorende app getest. Hierbij lukte de concentratie meten bij Stefan al beter dan bij Paul. Daarna hebben we de force trainer EEG opengemaakt en draadjes op de uart aansluiting van de neurosky chip gesoldeerd. cite:force_trainer_hack Vervolgens hebben we met behulp van de documentatie van neurosky een parser geschreven die de data van de uart omzet in bruikbare data die geplot kan worden.
+
+** OpenEEG
+Voor de OpenEEG hebben wij alleen de versterkings module gekocht, een earclip en een paar pasieve en actieve elektrodes. In de eerste instantie zijn wij gaan testen door de module aan te sluiten met de earclip aan de DRL en twee pasieve elektrodes op de + en - van de eerste channel. Bij het uitlezen
+
+** Eigen EEG
+Met onze eigen EEG zijn we begonnen met een simpele opamp aan een elektrode te bevestigen. Hierbij hebben wij niet veel succes gehad doordat er bij de output hetzelfde signaal als aan de input uitkwam. Hierna is het ook geprobeerd met een instrumentele amplifier. Daarbij is één input op de earclip gezet om een zo goed mogelijke common mode referentie te krijgen. De andere input is aan een elektrode vastgezet om zo het verschil tussen de common mode en de elektrode te krijgen en eventueel te versterken. Bij de output was hier teveel 50 Hz noise te zien waardoor er geen echt signaal herkenbaar was. Om dit te verminderen hebben we twee verschillende filters gebruikt, een simpele RC filter en een RC filter met opamp om de 50 Hz weg te filteren. Bij beide gevallen was de 50 Hz nog teveel aanwezig om het eigenlijke signaal eruit te meten.
 
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
