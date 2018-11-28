@@ -81,6 +81,8 @@ void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
 
 void EEGGraph::updateFFT(unsigned int frequencies, double* values)
 {
+    if (frequencies > 50) frequencies = 50;
+
     m_pad2->cd();
     m_fft->Reset();
 
@@ -105,29 +107,80 @@ void EEGGraph::render()
     m_canvas->Update();
 }
 
+#define POINTS 128
+
+double TimePoints[] = {0.0078125,
+                       0.015625,
+                       0.03125,
+                       0.0625,
+                       0.125,
+                       0.25,
+                       0.5,
+                       1};
+
+int findTimePoint(const double timepoint,
+                  const unsigned int points,
+                  const Double_t* x)
+{
+    int index = -1;
+    for (int i = points - 1; i >= 0; i--) {
+        if (x[points - 1] - x[i] >= timepoint) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+struct timeIndexPair {
+    double timepoint;
+    int index;
+};
+
+timeIndexPair findBiggestTimePoint(const unsigned int points, const Double_t* x)
+{
+    timeIndexPair ret = {0, -1};
+
+    for (int i = 0; i < sizeof(TimePoints) / sizeof(TimePoints[0]); i++) {
+        int val = findTimePoint(TimePoints[i], points, x);
+        if (val != -1) ret = ret = {TimePoints[i], val};
+    }
+
+    return ret;
+}
+
 void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 {
     if (!points) return;
 
     updateGraph(points, x, y);
 
-    int index = -1;
-    for (int i = points - 1; i >= 0; i--) {
-        if (x[points - 1] - x[i] >= 1) {
-            index = i;
-            break;
-        }
-    }
-    if (index == -1){
-        return;
-    }
+    timeIndexPair timepoint = findBiggestTimePoint(points, x);
+
+    const int num_points_frame = points - timepoint.index;
+    const int bin_size = (int) (1.0 / timepoint.timepoint);
+    const int max_frequency = num_points_frame / bin_size / 2;
+
+    /*
+    printf("TimePoints: %f @ %3i of %3i, bins: %i max freq: %i Hz\n",
+           timepoint.timepoint,
+           timepoint.index,
+           num_points_frame,
+           bin_size,
+           max_frequency);
+    */
+
+    if ((points - timepoint.index) /
+        ((int) (1.0 / timepoint.timepoint)) / 2
+        < 1) return;
 
     Double_t * result_y = new Double_t[points];
     memcpy(result_y, y, points);
 
-    size_t fft_size = points - index;
-    double fft_result[512][2];
-    double buffer[256] = {0};
+    size_t fft_size = points - timepoint.index;
+    double fft_result[2048][2];
+    double buffer[1024] = {0};
+
     fftw_plan plan = fftw_plan_dft_r2c_1d(fft_size,
                                           y + (points - fft_size),
                                           fft_result,
@@ -135,26 +188,18 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
     fftw_execute(plan);
     fftw_destroy_plan(plan);
 
-    for(int i = 2;i<fft_size/2;i++){
-	fft_result[i][0] = 0;
-	fft_result[i][1] = 0;
-    }
-
-    plan = fftw_plan_dft_c2r_1d(fft_size, fft_result, result_y, 0);
-    fftw_execute(plan);
-    fftw_destroy_plan(plan);
-
-    for(int i = 0;i<points;i++){
-	result_y[i] *= 1.0f/points;
-    }
-
-
-
-    for (int i = 1; i < fft_size / 2 - 1; i++) {
+    for (int i = 1; i < (fft_size - 2) / 2; i++) {
         buffer[i - 1] = sqrt(pow(fft_result[i][0], 2) +
                              pow(fft_result[i][1], 2));
     }
 
-    updateFFT(50, buffer);
+    /*
+    printf("Time: %f - %f = %f\n",
+           x[points - 1],
+           x[points - fft_size - 1],
+           x[points - 1] - x[points - fft_size - 1]);
+    */
+
+    updateFFT(num_points_frame / bin_size / 2, buffer);
     render();
 }

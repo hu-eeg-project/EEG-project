@@ -110,6 +110,9 @@ void loopDecodeBatched(SerialInterface& sf,
                 case 'w': // Waves
                     break;
 
+                case 'b': // Batch specifier
+                    break;
+
                 case 'r':
                     int error_code;
                     input_stream >> error_code;
