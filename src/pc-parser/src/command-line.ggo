@@ -5,6 +5,7 @@ description "The PC parser and visualizer for the EEG research."
 versiontext "First version with commandline options"
 
 option "verbose" v "Run the program in verbose mode." flag off
+option "p300" p "Run the program with a P300 display and trigger." flag off
 
 section "Data Acquisition"
 option "generator" g "Use a generated signal." flag on

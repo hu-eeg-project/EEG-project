@@ -16,14 +16,17 @@
 #include "rolling-array.hh"
 #include "wave-generator.hh"
 #include "eeg-data-decoding.hh"
+#include "display.hh"
 
 #include <thread>
 #include <math.h>
 #include <time.h>
 #include <termios.h>
+#include <time.h>
 #include <chrono>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 #define NUMBER_OF_POINTS 1000
 #define FRAME_DURATION 3
@@ -45,6 +48,19 @@ void testThread(ArrayPair<RollingArray<Double_t>,
 
         usleep(t);
     }
+}
+
+std::string getTimeAndDate()
+{
+    time_t rawtime;
+    struct tm* timeinfo;
+    char buffer[128];
+
+    time (&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d_%H:%M:%S", timeinfo);
+    return std::string(buffer);
 }
 
 void serialThread(ArrayPair<RollingArray<Double_t>,
@@ -82,6 +98,7 @@ int main(int argc, char* argv[])
     }
 
     Frequency_t* frequencies = NULL;
+    Display* display = NULL;
 
     if (config.serial_flag) {
         if (config.verbose_flag) printf("Using Serial as data source.\n");
@@ -106,6 +123,11 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
+    if (config.p300_flag) {
+        if (config.verbose_flag) printf("Creating P300 display\n");
+        display = new Display();
+    }
+
     EEGGraph eeg(&argc, argv);
     RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
@@ -122,6 +144,11 @@ int main(int argc, char* argv[])
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
 
+    std::ofstream file;
+    std::string filename;
+    double last_time;
+
+    bool recording = false;
     bool looping = true;
     while (looping) {
         data.lock();
@@ -131,6 +158,35 @@ int main(int argc, char* argv[])
             time_array_copy[i] = data.array2[i];
         }
         data.unlock();
+
+        if (display) {
+            display->update();
+            if (display->recording()) {
+                if (!recording) {
+                    recording = true;
+                    filename = getTimeAndDate() + ".📈";
+                    file.open(filename);
+                    last_time = time_array_copy[size - 1];
+                }
+
+                for (int i = 0; i < size; i++) {
+                    if (time_array_copy[i] > last_time) {
+                        last_time = time_array_copy[i];
+                        file << time_array_copy[i] << ","
+                             << data_array_copy[i] << std::endl;
+                    }
+                }
+
+            } else {
+                if (recording) {
+                    recording = false;
+                    file.close();
+                    if (config.verbose_flag)
+                        printf("Wrote P300 file [%s].\n", filename.c_str());
+                }
+            }
+        }
+
         eeg.update(size, time_array_copy, data_array_copy);
 
         usleep(1000 * 16);
@@ -139,6 +195,7 @@ int main(int argc, char* argv[])
     data_thread.join();
 
     if (frequencies) delete[] frequencies;
+    if (display) delete display;
 
     return 0;
 }
