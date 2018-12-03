@@ -123,15 +123,15 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    if (config.p300_flag) {
-        if (config.verbose_flag) printf("Creating P300 display\n");
-        display = new Display();
-    }
-
     EEGGraph eeg(&argc, argv);
     RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
     ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
+
+    if (config.p300_flag) {
+        if (config.verbose_flag) printf("Creating P300 display\n");
+        display = new Display();
+    }
 
     std::thread data_thread;
     if (config.serial_flag) {
