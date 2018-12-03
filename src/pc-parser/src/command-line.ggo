@@ -18,5 +18,5 @@ option "amplitude" a "Amplitude matching the frequency given for the generator."
 
 section "Filtering"
 option "filter_frequency" r "Frequencies to filter out, use a comma separated list for multiple frequencies." int multiple optional default="50"
-option "hp_cutoff" H "Everything above this frequency wil be filtered out." int optional
-option "lp_cutoff" l "Everything below this frequency wil be filtered out." int optional
+option "hp_cutoff" H "Everything below this frequency wil be filtered out." int optional
+option "lp_cutoff" l "Everything above this frequency wil be filtered out." int optional
