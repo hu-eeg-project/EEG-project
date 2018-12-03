@@ -97,8 +97,12 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
+    FrequencyFilter_t filter = {0};
     Frequency_t* frequencies = NULL;
+
     Display* display = NULL;
+
+    bool filtering = false;
 
     if (config.serial_flag) {
         if (config.verbose_flag) printf("Using Serial as data source.\n");
@@ -118,6 +122,23 @@ int main(int argc, char* argv[])
         for (int i = 0; i < config.frequency_given; i++) {
             frequencies[i] = {config.amplitude_arg[i], (uint16_t) config.frequency_arg[i]};
         }
+
+        if(config.filter_frequency_given){
+            filtering = true;
+            for(int i = 0;i<config.filter_frequency_given;i++){
+                filter.frequencies = config.filter_frequency_arg;
+            }
+            filter.len = config.filter_frequency_given;
+        }
+        if(config.hp_cutoff_given){
+            filtering = true;
+            filter.hp_cutoff = config.hp_cutoff_arg;
+        }
+        if(config.lp_cutoff_given){
+            filtering = true;
+            filter.lp_cutoff = config.lp_cutoff_arg;
+        }
+        
     } else {
         printf("No data source!\n");
         exit(1);
@@ -144,12 +165,16 @@ int main(int argc, char* argv[])
     Double_t data_array_copy[NUMBER_OF_POINTS];
     Double_t time_array_copy[NUMBER_OF_POINTS];
 
+    RollingArray<Double_t> filtered_data(NUMBER_OF_POINTS);
+    RollingArray<Double_t> filtered_time(NUMBER_OF_POINTS);
+    
     std::ofstream file;
     std::string filename;
     double last_time;
 
     bool recording = false;
     bool looping = true;
+    
     while (looping) {
         data.lock();
         int size = data.array1.getSize();
@@ -186,9 +211,17 @@ int main(int argc, char* argv[])
                 }
             }
         }
-
-        eeg.update(size, time_array_copy, data_array_copy);
-
+        if(filtering){
+            eeg.filter_freq(size,
+                            time_array_copy,
+                            data_array_copy,
+                            &filtered_data,
+                            &filtered_time,
+                            filter);
+            eeg.update(size, filtered_time.getData(), filtered_data.getData());
+        }else{
+            eeg.update(size, time_array_copy, data_array_copy);
+        }
         usleep(1000 * 16);
     }
 

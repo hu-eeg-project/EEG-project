@@ -7,7 +7,6 @@
  */
 #include "eeg-graph.hh"
 
-#include <stdio.h>
 #include <fftw3.h>
 #include <iostream>
 
@@ -65,6 +64,8 @@ m_app("EEG Visualizer", argc, argv)
     m_fft->SetStats(false);
 
     m_app.Show();
+
+    st = std::chrono::high_resolution_clock::now();
 }
 
 int counter = 0;
@@ -118,7 +119,7 @@ double TimePoints[] = {0.0078125,
                        0.5,
                        1};
 
-int findTimePoint(const double timepoint,
+int EEGGraph::findTimePoint(const double timepoint,
                   const unsigned int points,
                   const Double_t* x)
 {
@@ -132,18 +133,18 @@ int findTimePoint(const double timepoint,
     return index;
 }
 
-struct timeIndexPair {
+struct EEGGraph::timeIndexPair {
     double timepoint;
     int index;
 };
 
-timeIndexPair findBiggestTimePoint(const unsigned int points, const Double_t* x)
+EEGGraph::timeIndexPair EEGGraph::findBiggestTimePoint(const unsigned int points, const Double_t* x)
 {
     timeIndexPair ret = {0, -1};
 
     for (int i = 0; i < sizeof(TimePoints) / sizeof(TimePoints[0]); i++) {
         int val = findTimePoint(TimePoints[i], points, x);
-        if (val != -1) ret = ret = {TimePoints[i], val};
+        if (val != -1) ret = {TimePoints[i], val};
     }
 
     return ret;
@@ -174,9 +175,6 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
         ((int) (1.0 / timepoint.timepoint)) / 2
         < 1) return;
 
-    Double_t * result_y = new Double_t[points];
-    memcpy(result_y, y, points);
-
     size_t fft_size = points - timepoint.index;
     double fft_result[2048][2];
     double buffer[1024] = {0};
@@ -202,4 +200,75 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
 
     updateFFT(num_points_frame / bin_size / 2, buffer);
     render();
+}
+
+void EEGGraph::filter_freq(const size_t points,
+                           const double* time_src,
+                           const double* wave_src,
+                           RollingArray<Double_t>* wave_dest,
+                           RollingArray<Double_t>* time_dest,
+                           FrequencyFilter_t filter)
+{
+    if (!points) return;
+/*
+    std::chrono::time_point<std::chrono::high_resolution_clock> nt;
+    nt = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> dt = nt - filter_last_time;
+    if(dt.count() < 1.f){
+        return;
+    }
+    filter_last_time = nt;
+*/
+    timeIndexPair timepoint = findBiggestTimePoint(points, time_src);
+
+    if ((points - timepoint.index) /
+        ((int) (1.0 / timepoint.timepoint)) / 2
+        < 1) return;
+
+    Double_t * result_y = new Double_t[points];
+    for(int i = 0;i<points;i++){
+        result_y[i] = wave_src[i];
+    }
+
+    size_t fft_size = points - timepoint.index;
+    fftw_complex fft_result[2048];
+    double filtered_result[2048];
+    
+    fftw_plan plan = fftw_plan_dft_r2c_1d(fft_size,
+                                          result_y + (points - fft_size),
+                                          fft_result,
+                                          0);
+    fftw_execute(plan);
+    fftw_destroy_plan(plan);
+    delete[] result_y;
+
+    for(int i = 0;i<filter.len;i++){
+        fft_result[filter.frequencies[i]][0] = 0;
+        fft_result[filter.frequencies[i]][1] = 0;
+    }
+    if(filter.hp_cutoff){
+        for(int i = filter.hp_cutoff;i>=0;i--){
+            fft_result[i][0] = 0;
+            fft_result[i][1] = 0;
+        }
+    }
+    if(filter.lp_cutoff){
+        for(int i = filter.lp_cutoff;i<fft_size;i++){
+            fft_result[i][0] = 0;
+            fft_result[i][1] = 0;
+        }
+    }
+  
+    fftw_plan fft_inv_plan = fftw_plan_dft_c2r_1d(fft_size, fft_result, filtered_result, 0);
+    fftw_execute(fft_inv_plan);
+    fftw_destroy_plan(fft_inv_plan);
+
+    int i = 0;
+    for(i; i < fft_size; i++){
+        if(time_src[timepoint.index+i] > last_time){
+            wave_dest->append(filtered_result[i] * 1.0f/fft_size);
+            time_dest->append(time_src[timepoint.index+i]);
+        }
+    } 
+    last_time = time_src[timepoint.index+i-1];
 }

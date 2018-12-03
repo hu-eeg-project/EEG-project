@@ -1,7 +1,6 @@
 #include "wave-generator.hh"
 
 #include <math.h>
-#include <iostream>
 #include <random>
 
 WaveGenerator::WaveGenerator(const Frequency_t * frequencies,

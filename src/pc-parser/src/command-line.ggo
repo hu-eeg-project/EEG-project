@@ -15,3 +15,8 @@ option  "interface" i "Serial Interface to listen on." string optional default="
 section "Generator"
 option "frequency" f "Frequency to use for the generator. For multiple frequencies, use a comma separated list for the frequency and amplitude." int optional multiple(1-)
 option "amplitude" a "Amplitude matching the frequency given for the generator." float optional multiple(1-)
+
+section "Filtering"
+option "filter_frequency" r "Frequencies to filter out, use a comma separated list for multiple frequencies." int multiple optional default="50"
+option "hp_cutoff" H "Everything above this frequency wil be filtered out." int optional
+option "lp_cutoff" l "Everything below this frequency wil be filtered out." int optional

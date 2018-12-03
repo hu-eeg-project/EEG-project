@@ -55,13 +55,12 @@ public:
     }
 
     ~RollingArray(){
-	delete m_data;
+	delete[] m_data;
     }
     
     inline void append(T item)
     {
         m_mutex.lock();
-
         if (m_size < m_length) {
             m_data[m_size] = item;
             m_data[m_length + m_size++] = item;

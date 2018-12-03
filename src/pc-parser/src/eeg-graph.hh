@@ -8,6 +8,8 @@
 #pragma once
 
 #include <math.h>
+#include <chrono>
+
 #include <TAxis.h>
 #include <TFrame.h>
 #include <TCanvas.h>
@@ -16,6 +18,15 @@
 #include <TH1F.h>
 #include <TApplication.h>
 #include <TROOT.h>
+
+#include "rolling-array.hh"
+
+typedef struct{
+    int* frequencies;
+    size_t len;
+    int lp_cutoff;
+    int hp_cutoff;
+}FrequencyFilter_t;
 
 class EEGGraph
 {
@@ -27,12 +38,29 @@ class EEGGraph
     TH1F* m_fft;
     double m_amp_max;
 
+    std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
+    double last_time = 0;
+    
+    struct timeIndexPair;
+    
     void updateGraph(unsigned int points, Double_t* x, Double_t* y);
     void updateFFT(unsigned int frequencies, double* values);
     void render();
+    timeIndexPair findBiggestTimePoint(const unsigned int points, const Double_t* x);
 
 public:
     EEGGraph(int* argc, char** argv);
 
     void update(unsigned int points, Double_t* x, Double_t* y);
+    
+    void filter_freq(const size_t points,
+                               const double* time_src,
+                               const double* wave_src,
+                               RollingArray<Double_t>* wave_dest,
+                               RollingArray<Double_t>* time_dest,
+                               FrequencyFilter_t filter);
+    
+    int findTimePoint(const double timepoint,
+                      const unsigned int points,
+                      const Double_t* x);
 };
