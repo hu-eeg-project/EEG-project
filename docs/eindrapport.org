@@ -5,6 +5,7 @@
 #+LATEX_HEADER: \usepackage[margin=3cm]{geometry}
 #+LATEX_HEADER: \usepackage{pdfpages}
 #+LATEX_HEADER: \usepackage[dutch]{babel}
+#+LATEX_HEADER: \usepackage{placeins}
 #+LATEX_HEADER: \setlength{\parindent}{0em}
 #+LATEX_HEADER: \usepackage{etoolbox}
 
@@ -301,14 +302,21 @@ In dit hoofdstuk zal worden besproken welke type ruis er zijn tegengekomen tijde
 Als er een oscilloscoop wordt aangesloten direct op de passieve elektrode van de OpenEEG
 
 * De hardware
-Voor het hardware gedeelte hebben wij drie onderdelen. Hier kijken we naar twee bestaande EEGs. De Force Trainer is een goedkope speelgoed EEG die gebruikt wordt om concentratie te meten met een neurosky chip. OpenEEG is een open source project om een modulaire EEG te maken. Tenslotte ons eigen EEG is het circuit dat wij zelf proberen te maken om signalen te versterken en te meten.
+Voor het hardware gedeelte zijn er drie onderdelen. Dit zijn twee bestaande EEG's en een de gene die gemaakt wordt tijdens dit onderzoek. Hieronder wordt uitgeleged hoe elk deel gebruikt en getest is. 
+
+De eerste is een speelgoed EEG genaamd Force Trainer. Dit is een goedkope speelgoed EEG die gebruikt wordt om concentratie van en persoon te meten. Deze con OpenEEG is een open source project om een modulaire EEG te maken. Tenslotte ons eigen EEG is het circuit dat wij zelf proberen te maken om signalen te versterken en te meten.
 
 ** Force Trainer
-Als eerste hebben we de force trainer opgezet en met de bijbehorende app getest. Hierbij lukte de concentratie meten bij Stefan al beter dan bij Paul. Daarna hebben we de force trainer EEG opengemaakt en draadjes op de uart aansluiting van de neurosky chip gesoldeerd. cite:force_trainer_hack Vervolgens hebben we met behulp van de documentatie van neurosky een parser geschreven die de data van de uart omzet in bruikbare data die geplot kan worden.
+Als eerste is er een goedkope (40 euro) speelgoed EEG getest. Deze EEG heet de Force Trainer en is bedoelt voor een spel waarbij een persoon via zijn concentratie "holografische" objecten kan laten stijgen op dalen. Deze EEG is voor dit onderzoek aangeschaft omdat online andere mensen deze hebben aangepast om de waardes uit te lezen en voor eigen doeleinde te gebruiken. Ditzelfde doel is er bij dit onderzoek voor de Force Trainer. Hoe de data uitgelezen wordt uit de de Force Trainer is te vinden in de bijlage van [[Bijlage D: Force Trainer uitlezen]].\\
+
+Nadat Data uit de Force trainer wordt uit gelezen kan de data worden geplot op een grafiek om deze te bekijken.
+
+Als eerste hebben is de Force Trainer opgezet en met de bijbehorende app getest. Hierbij lukte de concentratie meten bij Stefan al beter dan bij Paul. Daarna hebben we de force trainer EEG opengemaakt en draadjes op de uart aansluiting van de neurosky chip gesoldeerd. cite:force_trainer_hack Vervolgens hebben we met behulp van de documentatie van neurosky een parser geschreven die de data van de uart omzet in bruikbare data die geplot kan worden.
+
+
 
 ** OpenEEG
 Voor de OpenEEG hebben wij alleen de versterkings module gekocht, een earclip en een paar pasieve en actieve elektrodes. In de eerste instantie zijn wij gaan testen door de module aan te sluiten met de earclip aan de DRL en twee pasieve elektrodes op de + en - van de eerste channel. Bij het uitlezen
-
 ** Eigen EEG
 Met onze eigen EEG zijn we begonnen met een simpele opamp aan een elektrode te bevestigen. Hierbij hebben wij niet veel succes gehad doordat er bij de output hetzelfde signaal als aan de input uitkwam. Hierna is het ook geprobeerd met een instrumentele amplifier. Daarbij is één input op de earclip gezet om een zo goed mogelijke common mode referentie te krijgen. De andere input is aan een elektrode vastgezet om zo het verschil tussen de common mode en de elektrode te krijgen en eventueel te versterken. Bij de output was hier teveel 50 Hz noise te zien waardoor er geen echt signaal herkenbaar was. Om dit te verminderen hebben we twee verschillende filters gebruikt, een simpele RC filter en een RC filter met opamp om de 50 Hz weg te filteren. Bij beide gevallen was de 50 Hz nog teveel aanwezig om het eigenlijke signaal eruit te meten.
 
@@ -383,7 +391,7 @@ Hieronder kan een schakelschema worden gevonden voor de versterking van de herse
 | Arduino Uno adc |              | 8-bit    | 9,615K                | ?                          | ?                                        |                  |       8 |
 |-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
 
- #+ATTR_LATEX: :float sidewaystable :placement [H] :align |p{2cm}|p{1,3cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2,5cm}|p{1,5cm}|p{2cm}|p{2cm}|p{2cm}|
+ #+ATTR_LATEX: :float nil :placement [H] :align |p{2cm}|p{1,3cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2,5cm}|p{1,5cm}|p{2cm}|p{2cm}|p{2cm}|
 |-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
 | Naam      | Prijs (Euro) | Channels | Max verterking | Min voeding (V) | Voltage noise (uVpp) |              CMRR | Input noise (nV/√Hz) | Input noise (nV/√Hz) | Gain error                  |
 |           |              |          |                |                 | g=1000 f=0,1-10Hz    | (tot 60hz G=1000) |               @ 30Hz |               @ 1kHz | G=100/1000                  |
@@ -395,22 +403,25 @@ Hieronder kan een schakelschema worden gevonden voor de versterking van de herse
 | AD8429ARZ | 10,49        |        1 |          10000 | 4,0             | 0,1                  |               134 |                      |                    1 | 0,3 voor alles groter dan 1 |
 | INA129    | 5,95         |        1 |          10000 | 2,25            | 0,2                  |               130 |                      |                    8 | 0,05%/0,5%                  |
 |-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+#+LATEX: \FoatBarrier
+#+LATEX: \newpage
+** Bijlage D: Force Trainer uitlezen
+Als de Force Trainer open gemaakt wordt kan de printplaat worden gezien. Figuur [[fig:Force_Trainer_marked]] laat deze printplaat zien met een extra gedeelte gemarkeerd in een rood vierkant. In dit vierkant is een chip van Neurosky te vinden welke het meten van de hersensignalen afhandelt. De desbetreffende chip is de TGAT1-LC4.
+Volgens een handleiding van en persoon die de Force Trainer heeft aangepast is er een tx-aansluiting cite:force_trainer_hack. Uit ervaring van de onderzoekers is te weten dat tx een veelgebruikte term is voor een datalijn in het UART-protocol. Hierover zal dus de data van de Neurosky chip worden verstuurd. Volgens de datasheet van deze chip[fn:1] wordt de data over de tx-aansluitign via het ThinkGear protocol verstuurt. Volgende de handleiding van dit protocol [fn:2] verstuurt de TGAT1 500 metingen per seconden over de UART en heeft de UART een baudrate van 57600.
 
-* aantekeningen cursus
+#+CAPTION: De PCB in de Force Trainer met de Neurosky chip (TGAT1-LC4) gemarkeerd. Onderaan de chip zijn is de aansluiting met de elektrodes.
+#+NAME: fig:Force_Trainer_marked
+#+ATTR_LATEX: :width 300px :float nil
+[[./images/force-trainer-pcb-marked.jpg]]
 
-scriptie structuur
-- voorblad
-- (versiebeheer)
-- (voorwoord)
-- management samenvatting
-- inhoudsopgave
-- inleiding
-- Aanleiding, context, organisatorische context, kwestie(probleemstelling), opdracht, doel
-- theoretisch kader
-- vraagstelling
-- Methoden
-- uitwerking opdracht, resultaten, conclusie en inleiding per resultaat
-- conclusie
-- aanbevelingen
-- bronvermelding
-- bijlage
+De benodigde data uit de Neurosky chip zal dus over deze tx-aansluiting worden verstuurd. Om dit uit te lezen is een draad gesoldeerd op de tx-aansluiting welke kan worden gevonden op de achterkant van de printplaat, zoals te zien is in figuur [[fig:Force_Trainer_pcb_back]]. Aan de andere kant van dit draad is een microcontroller om de data uit te lezen. Er zijn geen strenge eisen aan de microcontroller, zolang het maar UART op 57600 baud kan uitlezen, deze data kan verwerken en dan de data naar een PC kan sturen. Hier is gekozen voor een ESP32 omdat de onderzoekers veel ervaring hebben met deze microcontroller en het bijbehorende framework. Een tweede draad dat moet worden gesoldeerd is een tussen de grond van de microcontroller en van de Froce Trainer, er is gekozen om dit draad bij de Force Trainer op de negatieve kant van de batterijhouder te solderen.\\
+
+
+#+CAPTION: Achterkant van de Force Trainer met het draad dat is aangesloten op de tx-aansluiting
+#+NAME: fig:Force_Trainer_pcb_back
+#+ATTR_LATEX: :width 300px :float nil
+[[./images/force-trainer-pcb-back.jpg]]
+
+
+[fn:1] http://wearcam.org/ece516/neurosky_eeg_brainwave_chip_and_board_tgam1.pdf
+[fn:2] http://developer.neurosky.com/docs/doku.php?id=thinkgear_communications_protocol
