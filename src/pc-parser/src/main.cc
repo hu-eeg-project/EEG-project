@@ -206,7 +206,7 @@ int main(int argc, char* argv[])
                 if (!recording) {
                     recording = true;
                     filename = start_time_string + "/"
-                             + getTimeAndDate() + ".📈";
+                             + getTimeAndDate() + ".eeg";
 
                     file.open(filename);
                     if (!file.is_open()) {

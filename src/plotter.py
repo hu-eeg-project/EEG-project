@@ -3,6 +3,7 @@
 import sys
 import matplotlib.pyplot as plt
 import os
+from math import ceil
 
 def main():
     if len(sys.argv) < 2:
@@ -15,11 +16,18 @@ def main():
         if os.path.isdir(arg):
             l = os.listdir(arg)
             for plot in l:
-                if plot.endswith(".📈"):
+                if plot.endswith(".eeg"):
                     plots += [arg + "/" + plot]
         else:
             plots += [arg]
 
+    y = 2
+    x = ceil(len(plots)/y)
+    fig, ax = plt.subplots(x, y, sharex=True)
+
+    xbuf = 0
+    ybuf = 0
+    
     for plot in plots:
         f = open(plot, "r")
         lines = f.read().splitlines()
@@ -41,7 +49,11 @@ def main():
                 count += 1
 
         if count < len(lines) / 3:
-            plt.plot(time_array, data_array)
+            ax[xbuf, ybuf].plot(time_array, data_array)
+            xbuf += 1
+            if xbuf >= x:
+                xbuf = 0
+                ybuf += 1
 
     plt.xlabel("Time")
     plt.ylabel("Amplitude")
