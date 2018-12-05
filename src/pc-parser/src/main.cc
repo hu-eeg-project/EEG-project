@@ -27,6 +27,9 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
 
 #define NUMBER_OF_POINTS 1000
 #define FRAME_DURATION 3
@@ -138,7 +141,7 @@ int main(int argc, char* argv[])
             filtering = true;
             filter.lp_cutoff = config.lp_cutoff_arg;
         }
-        
+
     } else {
         printf("No data source!\n");
         exit(1);
@@ -149,9 +152,22 @@ int main(int argc, char* argv[])
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
     ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
 
+    std::string start_time_string = getTimeAndDate();
+
     if (config.p300_flag) {
         if (config.verbose_flag) printf("Creating P300 display\n");
         display = new Display();
+
+        DIR* d = opendir(start_time_string.c_str());
+        if (d) closedir(d);
+        else {
+            int r = mkdir(start_time_string.c_str(),
+                          S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+            if (r == -1) {
+                printf("Failed to create directory for logs!\n");
+                exit(-1);
+            }
+        }
     }
 
     std::thread data_thread;
@@ -167,14 +183,14 @@ int main(int argc, char* argv[])
 
     RollingArray<Double_t> filtered_data(NUMBER_OF_POINTS);
     RollingArray<Double_t> filtered_time(NUMBER_OF_POINTS);
-    
+
     std::ofstream file;
     std::string filename;
     double last_time;
 
     bool recording = false;
     bool looping = true;
-    
+
     while (looping) {
         data.lock();
         int size = data.array1.getSize();
@@ -189,8 +205,14 @@ int main(int argc, char* argv[])
             if (display->recording()) {
                 if (!recording) {
                     recording = true;
-                    filename = getTimeAndDate() + ".📈";
+                    filename = start_time_string + "/"
+                             + getTimeAndDate() + ".📈";
+
                     file.open(filename);
+                    if (!file.is_open()) {
+                        printf("Failed to create file!\n");
+                    }
+
                     last_time = time_array_copy[size - 1];
                 }
 

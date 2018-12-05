@@ -15,6 +15,8 @@ class Display
     sf::RenderWindow m_window;
     sf::Clock m_clock;
     double m_time;
+    sf::Font m_font;
+    sf::Text m_text;
 
 public:
     Display();

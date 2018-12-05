@@ -33,7 +33,7 @@ std::string exec(const char* cmd) {
 }
 
 Display::Display() :
-m_window(sf::VideoMode(200, 200), "P300 Display", sf::Style::None)
+m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None)
 {
     m_window.clear();
 
@@ -74,6 +74,12 @@ m_window(sf::VideoMode(200, 200), "P300 Display", sf::Style::None)
     m_clock = sf::Clock();
 
     m_time = 3 + std::rand() % 10;
+
+    if (!m_font.loadFromFile("/usr/share/fonts/noto/NotoSans-Regular.ttf")) {
+        printf("Couldn't load font!\n");
+    }
+    m_text.setFont(m_font);
+    m_text.setCharacterSize(160);
 }
 
 Display::~Display()
@@ -85,10 +91,18 @@ void Display::update()
 {
     sf::Time elapsed = m_clock.getElapsedTime();
 
-    if (elapsed.asSeconds() > m_time && elapsed.asSeconds() < m_time + 0.2f) {
+    if (elapsed.asSeconds() > m_time && elapsed.asSeconds() < m_time + 0.05f) {
         m_window.clear(sf::Color::White);
+        m_text.setFillColor(sf::Color::Black);
     } else {
         m_window.clear(sf::Color::Black);
+        m_text.setFillColor(sf::Color::White);
+    }
+
+    for (char c = 'A'; c <= 'Z'; c++){
+        m_text.setString(std::string(1, c));
+        m_text.setPosition(((c - 'A') % 8) * 160.0f + 160.0f, ((c - 'A') / 8) * 160.0f + 160.0f);
+        m_window.draw(m_text);
     }
 
     m_window.display();
@@ -98,11 +112,11 @@ bool Display::recording()
 {
     sf::Time elapsed = m_clock.getElapsedTime();
 
-    if (elapsed.asSeconds() >= m_time + 0.2f && elapsed.asSeconds() < m_time + 1.7f) {
+    if (elapsed.asSeconds() >= m_time && elapsed.asSeconds() < m_time + 0.8f) {
         return true;
     } else if (elapsed.asSeconds() >= m_time + 0.2f) {
         m_clock = sf::Clock();
-        m_time = 5 + std::rand() % 10;
+        m_time = 3 + std::rand() % 5;
     }
 
     return false;
