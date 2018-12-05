@@ -309,16 +309,22 @@ De eerste is een speelgoed EEG genaamd Force Trainer. Dit is een goedkope speelg
 ** Force Trainer
 Als eerste is er een goedkope (40 euro) speelgoed EEG getest. Deze EEG heet de Force Trainer en is bedoelt voor een spel waarbij een persoon via zijn concentratie "holografische" objecten kan laten stijgen op dalen. Deze EEG is voor dit onderzoek aangeschaft omdat online andere mensen deze hebben aangepast om de waardes uit te lezen en voor eigen doeleinde te gebruiken. Ditzelfde doel is er bij dit onderzoek voor de Force Trainer. Hoe de data uitgelezen wordt uit de de Force Trainer is te vinden in de bijlage van [[Bijlage D: Force Trainer uitlezen]].\\
 
-Nadat Data uit de Force trainer wordt uit gelezen kan de data worden geplot op een grafiek om deze te bekijken.
+Nadat Data uit de Force Trainer wordt uit gelezen kan de data worden geplot op een grafiek om deze te bekijken, Hiervoor is eigen software geschreven. Als deze software gebruikt word om naar de data te kijken is te zien dat als er gefronst of met de ogen geknipperd wordt een piek te zien is in de data. Deze peik is
 
-Als eerste hebben is de Force Trainer opgezet en met de bijbehorende app getest. Hierbij lukte de concentratie meten bij Stefan al beter dan bij Paul. Daarna hebben we de force trainer EEG opengemaakt en draadjes op de uart aansluiting van de neurosky chip gesoldeerd. cite:force_trainer_hack Vervolgens hebben we met behulp van de documentatie van neurosky een parser geschreven die de data van de uart omzet in bruikbare data die geplot kan worden.
-
-
+Als eerste is de Force Trainer opgezet en met de bijbehorende app getest. Hierbij lukte de concentratie meten bij Stefan al beter dan bij Paul. Daarna hebben we de force trainer EEG opengemaakt en draadjes op de uart aansluiting van de neurosky chip gesoldeerd. cite:force_trainer_hack Vervolgens hebben we met behulp van de documentatie van neurosky een parser geschreven die de data van de uart omzet in bruikbare data die geplot kan worden.
 
 ** OpenEEG
-Voor de OpenEEG hebben wij alleen de versterkings module gekocht, een earclip en een paar pasieve en actieve elektrodes. In de eerste instantie zijn wij gaan testen door de module aan te sluiten met de earclip aan de DRL en twee pasieve elektrodes op de + en - van de eerste channel. Bij het uitlezen
-** Eigen EEG
-Met onze eigen EEG zijn we begonnen met een simpele opamp aan een elektrode te bevestigen. Hierbij hebben wij niet veel succes gehad doordat er bij de output hetzelfde signaal als aan de input uitkwam. Hierna is het ook geprobeerd met een instrumentele amplifier. Daarbij is één input op de earclip gezet om een zo goed mogelijke common mode referentie te krijgen. De andere input is aan een elektrode vastgezet om zo het verschil tussen de common mode en de elektrode te krijgen en eventueel te versterken. Bij de output was hier teveel 50 Hz noise te zien waardoor er geen echt signaal herkenbaar was. Om dit te verminderen hebben we twee verschillende filters gebruikt, een simpele RC filter en een RC filter met opamp om de 50 Hz weg te filteren. Bij beide gevallen was de 50 Hz nog teveel aanwezig om het eigenlijke signaal eruit te meten.
+Voor de OpenEEG bestaat er een deel voor de versterking en een digitaal gedeelte, voor dit onderzoek is in eerste instantie alleen het deel voor de versterking aangeschaft, met daarnaast een earclip en een paar pasieve en actieve elektrodes. Er is alleen voor de versterking gekozen zodat er een eigen microcontroller met ADC kan worden gebruikt.
+In de eerste instantie is getest door de module aan te sluiten met de earclip aan de DRL en twee pasieve elektrodes op de + en - van de eerste channel. De ingangen van het tweede channel zijn op de grond gezet.
+Om te testen of er iets van een signaal te zien is zullen de elektroden op het voorhoofd worden geplaatst en zal het persoon dan gaan fronsen of met de ogen knipperen. Als dit gedaan wordt zal er op de oscilloscoop een duidelijke piek te zien moeten zijn. Zoals gezien is bij de Force Trainer.
+Bij het uitlezen van deze data is gezien dat er veel 50Hz int het signaal te vinden is en dat fronzen of knipperen geen pieken genereerd.
+
+** DIY EEG
+Voor dit onderzoek is ook geprobeerd een EEG te maken met eigen componenten. In het begin is simpel begonnen door een elektrode te bevestigen op een amplifier en de output van de amplifier te bekijken op een oscilloscoop, hier waren de verwachtingen laag. Het doel was om de elektrode op het voorhoofd te plaatsen en een duidelijke verandering op de oscilloscoop te zien als er gefronst of geknipperd word met de ogen, wat zien is bij de Force Trainer. Zoals verwacht was deze verandering niet te zien, maar was er alleen een 50Hz signaal te zien wat waarschijnlijk van het lichtnet komt.
+
+Hierna is hetzelfde geprobeerd met een instrumentele amplifier, wat beter tegen ruis zou moeten zijn. 
+
+Hierbij hebben wij niet veel succes gehad doordat er bij de output hetzelfde signaal als aan de input uitkwam. Hierna is het ook geprobeerd met een instrumentele amplifier. Daarbij is één input op de earclip gezet om een zo goed mogelijke common mode referentie te krijgen. De andere input is aan een elektrode vastgezet om zo het verschil tussen de common mode en de elektrode te krijgen en eventueel te versterken. Bij de output was hier teveel 50 Hz noise te zien waardoor er geen echt signaal herkenbaar was. Om dit te verminderen hebben we twee verschillende filters gebruikt, een simpele RC filter en een RC filter met opamp om de 50 Hz weg te filteren. Bij beide gevallen was de 50 Hz nog teveel aanwezig om het eigenlijke signaal eruit te meten.
 
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
