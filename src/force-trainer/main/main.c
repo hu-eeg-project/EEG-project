@@ -4,6 +4,11 @@
 
 #include "force-trainer.h"
 
+#define TX_PIN  17
+#define RX_PIN  16
+#define RTS_PIN 18
+#define CTS_PIN 19
+
 void app_main(void)
 {    
     nvs_flash_init();
@@ -20,7 +25,7 @@ void app_main(void)
     };
     // UART_NUM_2 is connected to usb output
     ESP_ERROR_CHECK(uart_param_config(UART_NUM_2, &uart_config));
-    ESP_ERROR_CHECK(uart_set_pin(UART_NUM_2, 17, 16, 18, 19));
+    ESP_ERROR_CHECK(uart_set_pin(UART_NUM_2, TX_PIN, RX_PIN, RTS_PIN, CTS_PIN));
     ESP_ERROR_CHECK(uart_driver_install(UART_NUM_2, 1024 * 2, 0, 0, NULL, 0));
     ESP_LOGI("status", "initialized");
 
