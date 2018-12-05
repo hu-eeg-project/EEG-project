@@ -77,6 +77,7 @@ m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None)
 
     if (!m_font.loadFromFile("/usr/share/fonts/noto/NotoSans-Regular.ttf")) {
         printf("Couldn't load font!\n");
+        exit(1);
     }
     m_text.setFont(m_font);
     m_text.setCharacterSize(160);

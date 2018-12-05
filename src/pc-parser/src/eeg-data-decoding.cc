@@ -85,9 +85,6 @@ void loopDecodeBatched(SerialInterface& sf,
                     frame_start_time = dt.count() - frame_duration / 1000000;
                     point_increment = frame_duration / 1000000.0 / number_of_points;
 
-                    std::cout << "Frame: " << frame_start_time << " | "
-                              << point_increment << std::endl;
-
                     current_point = 0;
 
                     break;
