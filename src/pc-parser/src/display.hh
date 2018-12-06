@@ -17,6 +17,9 @@ class Display
     double m_time;
     sf::Font m_font;
     sf::Text m_text;
+    bool m_flash;
+    int m_flash_counter;
+    double m_flash_stop;
 
 public:
     Display();

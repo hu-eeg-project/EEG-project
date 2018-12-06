@@ -33,14 +33,18 @@ std::string exec(const char* cmd) {
 }
 
 Display::Display() :
-m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None)
+m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None),
+m_flash(false),
+m_flash_counter(0),
+m_flash_stop(0)
 {
     m_window.clear();
 
     m_window.display();
 
     std::istringstream res =
-        std::istringstream(exec("xrandr | grep ' connected' | tr ' ' '\n' | grep '+'"));
+        std::istringstream(exec("xrandr | grep ' connected' "
+                                "| tr ' ' '\n' | grep '+'"));
 
     std::list<monitor_t> monitors;
     std::string line;
@@ -92,17 +96,38 @@ void Display::update()
 {
     sf::Time elapsed = m_clock.getElapsedTime();
 
-    if (elapsed.asSeconds() > m_time && elapsed.asSeconds() < m_time + 0.05f) {
+    if (elapsed.asSeconds() > m_time && m_flash_counter == 0) {
+        m_flash_stop = elapsed.asSeconds() + 0.05f;
+    }
+
+    if (elapsed.asSeconds() > m_time &&
+        elapsed.asSeconds() < m_flash_stop &&
+        m_flash_counter <= 5) {
+
         m_window.clear(sf::Color::White);
         m_text.setFillColor(sf::Color::Black);
+        if (!m_flash) {
+            m_flash = true;
+            m_flash_counter++;
+        }
+    } else if (m_flash_counter <= 5) {
+        if (m_flash) {
+            m_time = m_flash_stop + 0.3f;
+            m_flash_stop = m_time + 0.05f;
+            m_flash = false;
+        }
+        m_window.clear(sf::Color::Black);
+        m_text.setFillColor(sf::Color::White);
     } else {
+        m_flash = false;
         m_window.clear(sf::Color::Black);
         m_text.setFillColor(sf::Color::White);
     }
 
     for (char c = 'A'; c <= 'Z'; c++){
         m_text.setString(std::string(1, c));
-        m_text.setPosition(((c - 'A') % 8) * 160.0f + 160.0f, ((c - 'A') / 8) * 160.0f + 160.0f);
+        m_text.setPosition(((c - 'A') % 8) * 160.0f + 160.0f,
+                           ((c - 'A') / 8) * 160.0f + 160.0f);
         m_window.draw(m_text);
     }
 
@@ -113,11 +138,14 @@ bool Display::recording()
 {
     sf::Time elapsed = m_clock.getElapsedTime();
 
-    if (elapsed.asSeconds() >= m_time && elapsed.asSeconds() < m_time + 0.8f) {
+    if (elapsed.asSeconds() >= m_time &&
+        elapsed.asSeconds() < m_time + 0.8f &&
+        m_flash_counter > 5) {
         return true;
     } else if (elapsed.asSeconds() >= m_time + 0.2f) {
         m_clock = sf::Clock();
         m_time = 3 + std::rand() % 5;
+        m_flash_counter = 0;
     }
 
     return false;
