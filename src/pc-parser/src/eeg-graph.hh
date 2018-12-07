@@ -38,6 +38,8 @@ class EEGGraph
     TH1F* m_fft;
     double m_amp_max;
 
+    int ay_min, ay_max;
+
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
     double last_time = 0;
     
@@ -49,7 +51,7 @@ class EEGGraph
     timeIndexPair findBiggestTimePoint(const unsigned int points, const Double_t* x);
 
 public:
-    EEGGraph(int* argc, char** argv);
+    EEGGraph(int* argc, char** argv, const int ay_min, const int ay_max);
 
     void update(unsigned int points, Double_t* x, Double_t* y);
     

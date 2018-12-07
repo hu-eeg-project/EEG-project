@@ -10,8 +10,10 @@
 #include <fftw3.h>
 #include <iostream>
 
-EEGGraph::EEGGraph(int* argc, char** argv) :
-m_app("EEG Visualizer", argc, argv)
+EEGGraph::EEGGraph(int* argc, char** argv, const int ay_min, const int ay_max) :
+    m_app("EEG Visualizer", argc, argv),
+    ay_min(ay_min),
+    ay_max(ay_max)
 {
     //m_app = TApplication("EEG Visualizer", argc, argv);
     if (gROOT->IsBatch()) {
@@ -77,7 +79,7 @@ void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
     for (unsigned int i = 0; i < points; i++) {
         m_graph->SetPoint(i, x[i], y[i]);
     }
-    m_graph->GetYaxis()->SetRangeUser(-1000,1000);
+    m_graph->GetYaxis()->SetRangeUser(ay_min,ay_max);
 }
 
 void EEGGraph::updateFFT(unsigned int frequencies, double* values)

@@ -63,6 +63,8 @@ int main(int argc, char* argv[])
 
     bool filtering = false;
 
+    int ay_min, ay_max;
+
     if (config.serial_flag) {
         if (config.verbose_flag) printf("Using Serial as data source.\n");
     } else if (config.generator_flag) {
@@ -103,7 +105,15 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    EEGGraph eeg(&argc, argv);
+    if(config.ay_range_given == 2){
+        ay_min = config.ay_range_arg[0];
+        ay_max = config.ay_range_arg[1];
+    }else{
+        ay_min = -1000;
+        ay_max = 1000;
+    }
+
+    EEGGraph eeg(&argc, argv, ay_min, ay_max);
     RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
     ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
