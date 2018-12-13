@@ -31,6 +31,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <memory>
+#include <atomic>
 
 #define NUMBER_OF_POINTS 1000
 #define FRAME_DURATION 3
@@ -59,7 +61,7 @@ int main(int argc, char* argv[])
     FrequencyFilter_t filter = {0};
     Frequency_t* frequencies = NULL;
 
-    Display* display = NULL;
+    std::unique_ptr<Display> display;
 
     bool filtering = false;
 
@@ -122,7 +124,7 @@ int main(int argc, char* argv[])
 
     if (config.p300_flag) {
         if (config.verbose_flag) printf("Creating P300 display\n");
-        display = new Display();
+        display = std::make_unique<Display>();
 
         DIR* d = opendir(start_time_string.c_str());
         if (d) closedir(d);
@@ -135,13 +137,18 @@ int main(int argc, char* argv[])
             }
         }
     }
-
+    std::atomic<bool> close_thread(0);
     std::thread data_thread;
     if (config.serial_flag) {
         SerialConfig_t sConfig = {std::string(config.interface_arg), B115200};
-        data_thread = std::thread(serialThread, &data);
+        data_thread = std::thread(serialThread, &data, &close_thread);
     } else {
-        data_thread = std::thread(testThread, &data, NUMBER_OF_POINTS / FRAME_DURATION, frequencies, config.frequency_given);
+        data_thread = std::thread(testThread,
+                                  &data,
+                                  NUMBER_OF_POINTS / FRAME_DURATION,
+                                  frequencies,
+                                  config.frequency_given,
+                                  &close_thread);
     }
 
     Double_t data_array_copy[NUMBER_OF_POINTS];
@@ -167,7 +174,7 @@ int main(int argc, char* argv[])
         data.unlock();
 
         if (display) {
-            display->update();
+            looping = display->update();
             if (display->recording()) {
                 if (!recording) {
                     recording = true;
@@ -212,11 +219,11 @@ int main(int argc, char* argv[])
         }
         usleep(1000 * 16);
     }
-
+    close_thread = true;
     data_thread.join();
 
     if (frequencies) delete[] frequencies;
-    if (display) delete display;
+    if (display) display.reset(nullptr);
 
     return 0;
 }

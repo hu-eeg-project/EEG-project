@@ -92,7 +92,7 @@ Display::~Display()
 
 }
 
-void Display::update()
+bool Display::update()
 {
     sf::Time elapsed = m_clock.getElapsedTime();
 
@@ -131,7 +131,15 @@ void Display::update()
         m_window.draw(m_text);
     }
 
+    while(m_window.pollEvent(event)){
+        if(event.type == sf::Event::Closed ||
+           event.type == sf::Event::KeyPressed){
+            m_window.close();
+            return false; // Close program.
+        }
+    }
     m_window.display();
+    return true; // Program schould not close.
 }
 
 bool Display::recording()
