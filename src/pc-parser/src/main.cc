@@ -66,6 +66,8 @@ int main(int argc, char* argv[])
     bool filtering = false;
 
     int ay_min, ay_max;
+    int threshold;
+    int surface_calc;
 
     if (config.serial_flag) {
         if (config.verbose_flag) printf("Using Serial as data source.\n");
@@ -113,6 +115,14 @@ int main(int argc, char* argv[])
     }else{
         ay_min = -1000;
         ay_max = 1000;
+    }
+    if (config.threshold_given) {
+        threshold = config.threshold_arg;
+    } else {
+        threshold = (ay_max + ay_min) / 2;
+    }
+    if (config.verbose_flag) {
+        printf("Range: %i <-> %i Threshold: %i\n", ay_min, ay_max, threshold);
     }
 
     EEGGraph eeg(&argc, argv, ay_min, ay_max);
@@ -186,6 +196,7 @@ int main(int argc, char* argv[])
                         printf("Failed to create file!\n");
                     }
 
+                    surface_calc = 0;
                     last_time = time_array_copy[size - 1];
                 }
 
@@ -194,6 +205,7 @@ int main(int argc, char* argv[])
                         last_time = time_array_copy[i];
                         file << time_array_copy[i] << ","
                              << data_array_copy[i] << std::endl;
+                        surface_calc += data_array_copy[i] - threshold;
                     }
                 }
 
@@ -201,8 +213,10 @@ int main(int argc, char* argv[])
                 if (recording) {
                     recording = false;
                     file.close();
-                    if (config.verbose_flag)
+                    if (config.verbose_flag) {
                         printf("Wrote P300 file [%s].\n", filename.c_str());
+                        printf("Graph Surface [%i].\n", surface_calc);
+                    }
                 }
             }
         }

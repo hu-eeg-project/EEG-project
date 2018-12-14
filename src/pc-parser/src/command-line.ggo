@@ -7,6 +7,7 @@ versiontext "First version with commandline options"
 option "verbose" v "Run the program in verbose mode." flag off
 option "p300" p "Run the program with a P300 display and trigger." flag off
 option "ay_range" y "Y axis range for the graph First value is min, second is max." int optional multiple(2)
+option "threshold" t "The threshold for the p300 detection. (middle of y range is default)" int optional
 
 section "Data Acquisition"
 option "generator" g "Use a generated signal." flag on
@@ -21,4 +22,3 @@ section "Filtering"
 option "filter_frequency" r "Frequencies to filter out, use a comma separated list for multiple frequencies." int multiple optional default="50"
 option "hp_cutoff" H "Everything below this frequency wil be filtered out." int optional
 option "lp_cutoff" l "Everything above this frequency wil be filtered out." int optional
-

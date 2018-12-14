@@ -10,7 +10,10 @@
 #include <fftw3.h>
 #include <iostream>
 
-EEGGraph::EEGGraph(int* argc, char** argv, const int ay_min, const int ay_max) :
+EEGGraph::EEGGraph(int* argc,
+                   char** argv,
+                   const int ay_min,
+                   const int ay_max) :
     m_app("EEG Visualizer", argc, argv),
     ay_min(ay_min),
     ay_max(ay_max)
@@ -235,7 +238,7 @@ void EEGGraph::filter_freq(const size_t points,
     size_t fft_size = points - timepoint.index;
     fftw_complex fft_result[2048];
     double filtered_result[2048];
-    
+
     fftw_plan plan = fftw_plan_dft_r2c_1d(fft_size,
                                           result_y + (points - fft_size),
                                           fft_result,
@@ -260,7 +263,7 @@ void EEGGraph::filter_freq(const size_t points,
             fft_result[i][1] = 0;
         }
     }
-  
+
     fftw_plan fft_inv_plan = fftw_plan_dft_c2r_1d(fft_size, fft_result, filtered_result, 0);
     fftw_execute(fft_inv_plan);
     fftw_destroy_plan(fft_inv_plan);
@@ -271,6 +274,6 @@ void EEGGraph::filter_freq(const size_t points,
             wave_dest->append(filtered_result[i] * 1.0f/fft_size);
             time_dest->append(time_src[timepoint.index+i]);
         }
-    } 
+    }
     last_time = time_src[timepoint.index+i-1];
 }

@@ -39,7 +39,7 @@ void loopDecodeNonBatched(SerialInterface& sf,
             int16_t eeg_data;
             stream >> type >> delim >> eeg_data;
             if(type == 'd'){
-                printf("%i\n", eeg_data);
+                //printf("%i\n", eeg_data);
                 nt = std::chrono::high_resolution_clock::now();
                 std::chrono::duration<double> dt = nt-st;
                 array->lock();
