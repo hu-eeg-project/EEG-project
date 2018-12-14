@@ -132,10 +132,12 @@ bool Display::update()
     }
 
     while(m_window.pollEvent(event)){
-        if(event.type == sf::Event::Closed ||
-           event.type == sf::Event::KeyPressed){
-            m_window.close();
-            return false; // Close program.
+        if(event.type == sf::Event::Closed) return false; // Close program.
+        if(event.type == sf::Event::KeyPressed){
+            if(event.key.code == sf::Keyboard::Escape){
+                m_window.close();
+                return false; // Close program.
+            }
         }
     }
     m_window.display();
