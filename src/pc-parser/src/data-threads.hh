@@ -17,7 +17,7 @@ void testThread(ArrayPair<RollingArray<Double_t>,
     WaveGenerator wave(frequencies, size, array);
     double t = 1.0f / sample_rate * 1000000;
 
-    while (!close_thread) {
+    while(!*close_thread){
         array->lock();
         wave.genSample();
         array->unlock();
@@ -40,7 +40,7 @@ void serialThread(ArrayPair<RollingArray<Double_t>,
 
     printf("Waitig for batch specifier...\n");
     std::string input = sf.getNextLine();
-    while(!close_thread){
+    while(!*close_thread){
         if(input[0] == 'b'){
             if(input[2] == '1'){
                 printf("Decoding batched\n");
