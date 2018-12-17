@@ -310,7 +310,7 @@ De eerste is een speelgoed EEG genaamd Force Trainer. Dit is een goedkope speelg
 Als eerste is er een goedkope (40 euro) speelgoed EEG getest. Deze EEG heet de Force Trainer en is bedoelt voor een spel waarbij een persoon via zijn concentratie "holografische" objecten kan laten stijgen op dalen. Deze EEG is voor dit onderzoek aangeschaft omdat online andere mensen deze hebben aangepast om de waardes uit te lezen en voor eigen doeleinde te gebruiken. Ditzelfde doel is er bij dit onderzoek voor de Force Trainer. Hoe de data uitgelezen wordt uit de de Force Trainer is te vinden in de bijlage van [[Bijlage D: Force Trainer uitlezen]].\\
 
 Nadat Data uit de Force Trainer wordt uit gelezen kan de data worden geplot op een grafiek om deze te bekijken, Hiervoor is eigen software geschreven. Deze software kan het beeld van een computer laten knipperen waardoor er een P300 zou moeten worden gegenereerd bij een persoon die naar het beeld kijkt cite:polich07_updat_p300. Als het beeld geknipperd is zal de software een bepaald aantal tijd (bijv. 500 milliseconden) de inkomende EEG-data uit het EEG-systeem opslaan in een bestand om later te worden geanalyseerd.
- Als deze software gebruikt word om naar de data te kijken is te zien dat als er gefronst of met de ogen geknipperd wordt een piek te zien is in de data. Deze piek is te zien in figuur !!!!!. Deze pieken zijn ruis wat ervoor kan zorgen dat het gemeten signaal niet klopt. Het is dus belangrijk dat een algoritme om de p300 te detecteren hier rekening mee houdt.
+ Als deze software gebruikt word om naar de data te kijken is te zien dat als er gefronst of met de ogen geknipperd wordt een piek te zien is in de data. Deze piek is te zien in figuur(Figuur gaat nog komen!!!!). Deze pieken zijn ruis wat ervoor kan zorgen dat het gemeten signaal niet klopt. Het is dus belangrijk dat een algoritme om de p300 te detecteren hier rekening mee houdt.
 
 ** OpenEEG
 Voor de OpenEEG bestaat er een gedeelte voor de versterking en een digitaal gedeelte, voor dit onderzoek is in eerste instantie alleen het deel voor de versterking aangeschaft, met daarnaast een earclip en een paar pasieve en actieve elektrodes. Er is alleen voor de versterking gekozen zodat er een eigen microcontroller met ADC kan worden gebruikt, wat goedkoper is dan het digitale gedeelte.
@@ -320,6 +320,15 @@ Bij het uitlezen van deze data is gezien dat er veel 50Hz int het signaal te vin
 In het schakelschema van het digitale gedeelte is te zien dat dit derde deel een R/C filter is waarbij de weerstand 7,5K Ohm en een condensator van 220n Farad. Als de formule van een R/C filter gebruikt wordt:
 \[f= \frac{1}{2 \pi R C}\]
 Waarbij "f" de cutoff frequentie is, "R" de waarde van de weerstand in Ohms is en C de waarde van de condensator in Farad is. Als bovenstaande waardes worden ingevuld komt er een f van 96,46 Hz uit. Voor het meten van de P300 is kan echter meer worden weg gefilterd, omdat de P300 maar tussen de 0,5 en 15 Hz voorkomt (zie theoretisch kader [[Hersengolven]]). Om dit te bereiken kan volgens de formule met een "f" van 15 een "C" van 1,415 \micro Farad gebruikt worden. De dichtstbijzijnde 1,5 \micro Farad condensator wordt hier gebruikt. Door deze afronding wordt er inplaats is de f inplaats 14,147 Hz
+Tijdens het testen van de OpenEEG met de ESP32 viel op dat er nog steeds veel ruis in het signaal zat, wat op 50Hz leek. Echter na het proberen van verschillende R/C filters bleef het signaal aanwezig. Wat bleek was dat de software in de ESP32 te snel de ADC uitlas. Dit is opgelost door 20 milliseconden te wachten tussen elke meting. \\
+In figuur [[fig:openeeg-esp32-schematic]] is te zien hoe de OpenEEG en de ESP32 verbonden zijn inclusief de filters. 
+
+#+CAPTION: Aansuitschema van de openEEG versterker en de ESP32
+#+NAME: fig:openeeg-esp32-schematic
+[[./images/openeeg-schematic.png]]
+
+In het rood omlijnde gebied is de hierboven uitgelegde filter te zien met een 7,5K Ohm en een 1\micro Farad en een 0,5\micro farad condensator. Deze filter is om alles frequenties boven 15Hz weg te filteren.
+In het blauw omlijnde gebied is een voltage deler te zien die van 3,3 volt 2 volt maakt wat de versterker nodig heeft. Dit is nodig omdat de versterker deze 2 volt bij het signaal optelt zodat signalen die eigenlijk onder de 0 volt zijn nu boven de 0 volt zijn.
 
 ** DIY EEG
 Voor dit onderzoek is ook geprobeerd een EEG te maken met eigen componenten. In het begin is simpel begonnen door een elektrode te bevestigen op een amplifier en de output van de amplifier te bekijken op een oscilloscoop, hier waren de verwachtingen laag. Het doel was om de elektrode op het voorhoofd te plaatsen en een duidelijke verandering op de oscilloscoop te zien als er gefronst of geknipperd word met de ogen, wat zien is bij de Force Trainer. Zoals verwacht was deze verandering niet te zien, maar was er alleen een 50Hz signaal te zien wat waarschijnlijk van het lichtnet komt.
@@ -331,6 +340,10 @@ Hierbij hebben wij niet veel succes gehad doordat er bij de output hetzelfde sig
 Aangezien er niet veel tijd meer is voor de rest van het onderzoek en elektrotechniek niet de sterkste kant is van de onderzoekers, is er voor gekozen de eigen EEG hierbij te laten en focus te leggen op de Force Trainer en OpenEEG. Hierbij wordt nog wel een eigen deel gemaakt op de output van de OpenEEG met eventuele extra filtering en het ADC gedeelte om het signaal op de computer voor processing te krijgen.
 
 #+LATEX: \newpage
+* De P300 detecteren
+Dit hoofdstuk behandeld hoe pogingen zijn gedaan om de P300 te detecteren.
+
+
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 bibliographystyle:apalike
