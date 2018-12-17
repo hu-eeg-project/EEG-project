@@ -40,17 +40,14 @@ void serialThread(ArrayPair<RollingArray<Double_t>,
 
     printf("Waitig for batch specifier...\n");
     std::string input = sf.getNextLine();
-    while(!*close_thread){
-        if(input[0] == 'b'){
-            if(input[2] == '1'){
-                printf("Decoding batched\n");
-                loopDecodeBatched(sf, array, frame_size);
-            }else{
-                printf("Decoding non batched\n");
-                loopDecodeNonBatched(sf, array);
-            }
-            break;
-        }
+    while(input[0] != 'b'){
         input = sf.getNextLine();
+    }
+    if(input[2] == '1'){
+        printf("Decoding batched\n");
+        loopDecodeBatched(sf, array, frame_size, close_thread);
+    }else{
+        printf("Decoding non batched\n");
+        loopDecodeNonBatched(sf, array, close_thread);
     }
 }

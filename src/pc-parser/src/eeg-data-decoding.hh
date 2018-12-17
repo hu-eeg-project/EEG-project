@@ -6,9 +6,11 @@
 
 void loopDecodeNonBatched(SerialInterface& sf,
                           ArrayPair<RollingArray<Double_t>,
-                          RollingArray<Double_t>>* array);
+                          RollingArray<Double_t>>* array,
+                          std::atomic<bool>* close_thread);
 
 void loopDecodeBatched(SerialInterface& sf,
                        ArrayPair<RollingArray<Double_t>,
                        RollingArray<Double_t>>* array,
-                       const size_t frame_size);
+                       const size_t frame_size,
+                       std::atomic<bool>* close_thread);

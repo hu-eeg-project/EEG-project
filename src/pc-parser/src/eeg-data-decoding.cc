@@ -27,11 +27,12 @@ std::string getStringForError(int error_code)
 }
 
 void loopDecodeNonBatched(SerialInterface& sf,
-                          ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>>* array)
+                          ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>>* array,
+                          std::atomic<bool>* close_thread)
 {
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
     st = std::chrono::high_resolution_clock::now();
-    while(true){
+    while(!*close_thread){
         std::string input = sf.getNextLine();
         if(input.size()){
             std::stringstream stream(input);
@@ -54,7 +55,8 @@ void loopDecodeNonBatched(SerialInterface& sf,
 void loopDecodeBatched(SerialInterface& sf,
                        ArrayPair<RollingArray<Double_t>,
                        RollingArray<Double_t>>* array,
-                       const size_t frame_size)
+                       const size_t frame_size,
+                       std::atomic<bool>* close_thread)
 {
     std::chrono::time_point<std::chrono::high_resolution_clock> st =
         std::chrono::high_resolution_clock::now();
@@ -66,7 +68,7 @@ void loopDecodeBatched(SerialInterface& sf,
     int frame_duration;
     double point_increment;
 
-    while (true)
+    while (!*close_thread)
     {
         std::string input = sf.getNextLine();
 
