@@ -16,7 +16,7 @@
 #include "rolling-array.hh"
 #include "wave-generator.hh"
 #include "eeg-data-decoding.hh"
-#include "display.hh"
+#include "display-keyboard.hh"
 #include "data-threads.hh"
 
 #include <thread>
@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 
     if (config.p300_flag) {
         if (config.verbose_flag) printf("Creating P300 display\n");
-        display = std::make_unique<Display>();
+        display = std::make_unique<DisplayKeyboard>();
 
         DIR* d = opendir(start_time_string.c_str());
         if (d) closedir(d);

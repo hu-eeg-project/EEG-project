@@ -12,12 +12,12 @@
 
 class Display
 {
-    sf::RenderWindow m_window;
-    sf::Clock m_clock;
-    double m_time;
-    sf::Font m_font;
-    sf::Text m_text;
     sf::Event event;
+
+protected:
+    sf::RenderWindow m_window;
+    double m_time;
+    sf::Clock m_clock;
     bool m_flash;
     int m_flash_counter;
     double m_flash_stop;
@@ -26,7 +26,6 @@ public:
     Display();
     ~Display();
 
-    bool update();
+    virtual bool update();
     bool recording();
-    
 };
