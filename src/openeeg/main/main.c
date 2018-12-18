@@ -33,6 +33,6 @@ void app_main(void)
             printf("b:0\n");
         }
 
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        vTaskDelay(20 / portTICK_PERIOD_MS);
     }
 }
