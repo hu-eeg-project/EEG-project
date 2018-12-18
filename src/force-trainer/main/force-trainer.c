@@ -6,6 +6,8 @@
 #define ERROR_PACKET_LEN    0x04
 #define ERROR_CREATING_TASK 0x05
 
+// The documentation for the protocol can be found here: 
+
 void handle_force_trainer(){
     uint8_t data = 0;
     uint8_t pdata[170];

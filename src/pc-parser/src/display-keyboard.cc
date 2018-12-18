@@ -7,9 +7,14 @@
  */
 #include "display-keyboard.hh"
 
-DisplayKeyboard::DisplayKeyboard()
+#include <iostream>
+
+DisplayKeyboard::DisplayKeyboard(double m_time, size_t size, std::string path_to_ttf):
+    m_size(size),
+    m_random_c('A'),
+    m_time(m_time)
 {
-    if (!m_font.loadFromFile("/usr/share/fonts/noto/NotoSans-Regular.ttf")) {
+    if (!m_font.loadFromFile(path_to_ttf)) {
         printf("Couldn't load font!\n");
         exit(1);
     }
@@ -20,39 +25,39 @@ DisplayKeyboard::DisplayKeyboard()
 bool DisplayKeyboard::update()
 {
     sf::Time elapsed = m_clock.getElapsedTime();
-    char random_c = 'A' + rand() % 26;
-    if (elapsed.asSeconds() > m_time && m_flash_counter == 0) {
-        m_flash_stop = elapsed.asSeconds() + 0.05f;
+    if (elapsed.asSeconds() > m_time && !is_recording) {
+        //m_time = elapsed.asSeconds();
+        m_random_c = 'A' + std::rand() % m_size;
+        is_recording = true;
     }
 
-    if (elapsed.asSeconds() > m_time &&
-        elapsed.asSeconds() < m_flash_stop &&
-        m_flash_counter <= 5) {
-
-        //char random_c = 'A' + rand() % 26;
-
-        if (!m_flash) {
-            m_flash = true;
-            m_flash_counter++;
-        }
-    } else if (m_flash_counter <= 5) {
-        if (m_flash) {
-            m_time = m_flash_stop + 0.3f;
-            m_flash_stop = m_time + 0.05f;
-            m_flash = false;
-        }
-    } else {
-        m_flash = false;
-    }
-
-    for (char c = 'A'; c <= 'Z'; c++){
+    //sf::Vector2u window_size = m_window.getSize();
+    
+    for (char c = 'A'; c <= 'A' + m_size; c++){
         m_text.setString(std::string(1, c));
         m_text.setPosition(((c - 'A') % 6) * 160.0f + 160.0f,
                            ((c - 'A') / 6) * 160.0f + 160.0f);
-        if(c == random_c) m_text.setFillColor(sf::Color::White);
+        
+        if(c == m_random_c) m_text.setFillColor(sf::Color::White);
         else m_text.setFillColor(sf::Color(50, 50, 50));
+        
         m_window.draw(m_text);
     }
-
     return Display::update();
+}
+
+record_data_t DisplayKeyboard::recording()
+{
+    sf::Time elapsed = m_clock.getElapsedTime();
+
+    if (is_recording &&
+        elapsed.asSeconds() > m_time + 0.6f) {
+        m_clock = sf::Clock();
+        is_recording = false;
+    }
+    else if (is_recording &&
+        elapsed.asSeconds() > m_time + 0.2f){
+        return {true, std::string(1, m_random_c)};
+    }     
+    return {false, ""};
 }

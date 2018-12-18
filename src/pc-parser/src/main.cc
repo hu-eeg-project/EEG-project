@@ -141,13 +141,14 @@ int main(int argc, char* argv[])
 
     if (config.p300_given) {
         if (config.verbose_flag) printf("Creating P300 display\n");
+
         switch (config.p300_arg)
         {
             case 1:
                 display = std::make_unique<DisplaySquare>();
                 break;
             case 2:
-                display = std::make_unique<DisplayKeyboard>();
+                display = std::make_unique<DisplayKeyboard>(1.f, 10);
                 break;
             default:
                 if (config.verbose_flag) printf("Invalid p300 display!\n");

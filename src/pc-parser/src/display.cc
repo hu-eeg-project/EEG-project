@@ -76,9 +76,6 @@ m_flash_stop(0)
     }
 
     m_clock = sf::Clock();
-
-    //m_time = 3 + std::rand() % 10;
-    m_time = 1;
 }
 
 Display::~Display()

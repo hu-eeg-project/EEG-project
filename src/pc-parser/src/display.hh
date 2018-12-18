@@ -24,7 +24,6 @@ class Display
 
 protected:
     sf::RenderWindow m_window;
-    double m_time;
     sf::Clock m_clock;
     bool m_flash;
     int m_flash_counter;
@@ -36,4 +35,5 @@ public:
 
     virtual bool update();
     virtual record_data_t recording() = 0;
+
 };
