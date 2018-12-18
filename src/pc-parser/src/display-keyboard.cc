@@ -38,7 +38,8 @@ bool DisplayKeyboard::update()
         m_text.setPosition(((c - 'A') % 6) * 160.0f + 160.0f,
                            ((c - 'A') / 6) * 160.0f + 160.0f);
         
-        if(c == m_random_c) m_text.setFillColor(sf::Color::White);
+        if(c == m_random_c && elapsed.asSeconds() < m_time + 0.05f)
+            m_text.setFillColor(sf::Color::White);
         else m_text.setFillColor(sf::Color(50, 50, 50));
         
         m_window.draw(m_text);
