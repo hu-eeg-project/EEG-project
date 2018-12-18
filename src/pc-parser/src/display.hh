@@ -7,8 +7,16 @@
  */
 #pragma once
 
+#include <string>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
+
+typedef struct
+{
+    bool recording;
+    std::string metadata;
+} record_data_t;
 
 class Display
 {
@@ -27,5 +35,5 @@ public:
     ~Display();
 
     virtual bool update();
-    bool recording();
+    virtual record_data_t recording() = 0;
 };

@@ -21,6 +21,7 @@ set(SOURCE_FILES
     src/wave-generator.cc
     src/eeg-data-decoding.cc
     src/display.cc
+    src/display-square.cc
     src/display-keyboard.cc
     ${CMAKE_CURRENT_BINARY_DIR}/cmdline.c
 )

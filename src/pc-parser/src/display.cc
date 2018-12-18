@@ -100,20 +100,3 @@ bool Display::update()
     m_window.display();
     return true; // Program schould not close.
 }
-
-bool Display::recording()
-{
-    sf::Time elapsed = m_clock.getElapsedTime();
-
-    if (elapsed.asSeconds() >= m_time &&
-        elapsed.asSeconds() < m_time + 1.8f &&
-        m_flash_counter > 5) {
-        return true;
-    } else if (elapsed.asSeconds() >= m_time + 1.2f) {
-        m_clock = sf::Clock();
-        m_time = 3 + std::rand() % 5;
-        m_flash_counter = 0;
-    }
-
-    return false;
-}

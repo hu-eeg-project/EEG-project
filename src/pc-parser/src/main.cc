@@ -16,6 +16,7 @@
 #include "rolling-array.hh"
 #include "wave-generator.hh"
 #include "eeg-data-decoding.hh"
+#include "display-square.hh"
 #include "display-keyboard.hh"
 #include "data-threads.hh"
 
@@ -37,16 +38,20 @@
 #define NUMBER_OF_POINTS 1000
 #define FRAME_DURATION 3
 
-std::string getTimeAndDate()
+std::string getTimeAndDate(bool with_counter = true)
 {
     time_t rawtime;
     struct tm* timeinfo;
     char buffer[128];
+    static int counter = 1;
 
     time (&rawtime);
     timeinfo = localtime(&rawtime);
 
     strftime(buffer, sizeof(buffer), "%Y-%m-%d_%H:%M:%S", timeinfo);
+    if (with_counter) return std::string(buffer) +
+                          "_" +
+                          std::to_string(counter++);
     return std::string(buffer);
 }
 
@@ -85,7 +90,8 @@ int main(int argc, char* argv[])
         }
 
         for (int i = 0; i < config.frequency_given; i++) {
-            frequencies[i] = {config.amplitude_arg[i], (uint16_t) config.frequency_arg[i]};
+            frequencies[i] = {config.amplitude_arg[i],
+                              (uint16_t) config.frequency_arg[i]};
         }
 
         if(config.filter_frequency_given){
@@ -128,13 +134,25 @@ int main(int argc, char* argv[])
     EEGGraph eeg(&argc, argv, ay_min, ay_max);
     RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
-    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array, time_array);
+    ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array,
+                                                                   time_array);
 
-    std::string start_time_string = getTimeAndDate();
+    std::string start_time_string = getTimeAndDate(false);
 
-    if (config.p300_flag) {
+    if (config.p300_given) {
         if (config.verbose_flag) printf("Creating P300 display\n");
-        display = std::make_unique<DisplayKeyboard>();
+        switch (config.p300_arg)
+        {
+            case 1:
+                display = std::make_unique<DisplaySquare>();
+                break;
+            case 2:
+                display = std::make_unique<DisplayKeyboard>();
+                break;
+            default:
+                if (config.verbose_flag) printf("Invalid p300 display!\n");
+                exit(-1);
+        }
 
         DIR* d = opendir(start_time_string.c_str());
         if (d) closedir(d);
@@ -172,6 +190,7 @@ int main(int argc, char* argv[])
     double last_time;
 
     bool recording = false;
+    record_data_t record_data;
     bool looping = true;
 
     while (looping) {
@@ -185,7 +204,8 @@ int main(int argc, char* argv[])
 
         if (display) {
             looping = display->update();
-            if (display->recording()) {
+            record_data = display->recording();
+            if (record_data.recording) {
                 if (!recording) {
                     recording = true;
                     filename = start_time_string + "/"
@@ -195,6 +215,16 @@ int main(int argc, char* argv[])
                     if (!file.is_open()) {
                         printf("Failed to create file!\n");
                     }
+
+                    file << "metadata," << record_data.metadata << std::endl;
+
+                    threshold = 0;
+                    for (int i = 0; i < size; i++) {
+                        threshold += data_array_copy[i];
+                    }
+                    if (size > 0) threshold = threshold / size;
+                    if (config.verbose_flag) printf("Threshold: %i\n",
+                                                    threshold);
 
                     surface_calc = 0;
                     last_time = time_array_copy[size - 1];
