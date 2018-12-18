@@ -470,3 +470,8 @@ _autosave-*
 # Custom Excludes
 *.tex
 *.pdf
+
+src/openeeg/LICENSE
+src/openeeg/README.rst
+**/sdkconfig.old
+**/build/*
