@@ -23,11 +23,11 @@ def main():
 
     y = 2
     x = ceil(len(plots)/y)
-    fig, ax = plt.subplots(x, y, sharex=True)
+    fig, ax = plt.subplots(x, y, sharex=True, sharey=True)
 
     xbuf = 0
     ybuf = 0
-    
+
     for plot in plots:
         f = open(plot, "r")
         lines = f.read().splitlines()
@@ -45,8 +45,9 @@ def main():
                 offset = float(split_line[0])
             time_array.append(float(split_line[0]) - offset)
             data_array.append(float(split_line[1]))
-            if float(split_line[1]) > 1800 or float(split_line[1]) < -1800:
+            if float(split_line[1]) > 3800 or float(split_line[1]) < 200:
                 count += 1
+                #pass
 
         if count < len(lines) / 3:
             ax[xbuf, ybuf].plot(time_array, data_array)
