@@ -7,8 +7,6 @@
  */
 #include "display-keyboard.hh"
 
-#include <iostream>
-
 DisplayKeyboard::DisplayKeyboard(double m_time, size_t size, std::string path_to_ttf):
     m_size(size),
     m_random_c('A'),
@@ -31,15 +29,14 @@ bool DisplayKeyboard::update()
         is_recording = true;
     }
 
-    //sf::Vector2u window_size = m_window.getSize();
-    
     for (char c = 'A'; c <= 'A' + m_size; c++){
         m_text.setString(std::string(1, c));
         m_text.setPosition(((c - 'A') % 6) * 160.0f + 160.0f,
                            ((c - 'A') / 6) * 160.0f + 160.0f);
-        
-        if(c == m_random_c && elapsed.asSeconds() < m_time + 0.05f)
+
+        if(c == m_random_c && elapsed.asSeconds() < 0.6f){       
             m_text.setFillColor(sf::Color::White);
+        }
         else m_text.setFillColor(sf::Color(50, 50, 50));
         
         m_window.draw(m_text);
@@ -52,7 +49,7 @@ record_data_t DisplayKeyboard::recording()
     sf::Time elapsed = m_clock.getElapsedTime();
 
     if (is_recording &&
-        elapsed.asSeconds() > m_time + 0.6f) {
+        elapsed.asSeconds() > m_time + 0.01f) {
         m_clock = sf::Clock();
         is_recording = false;
     }
