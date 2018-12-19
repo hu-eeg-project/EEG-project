@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
         printf("Range: %i <-> %i Threshold: %i\n", ay_min, ay_max, threshold);
     }
 
-    EEGGraph eeg(&argc, argv, ay_min, ay_max);
+    EEGGraph eeg(&argc, argv, ay_min, ay_max, config.display_fft_flag);
     RollingArray<Double_t> data_array(NUMBER_OF_POINTS);
     RollingArray<Double_t> time_array(NUMBER_OF_POINTS);
     ArrayPair<RollingArray<Double_t>, RollingArray<Double_t>> data(data_array,

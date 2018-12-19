@@ -8,6 +8,7 @@ option "verbose" v "Run the program in verbose mode." flag off
 option "p300" p "Run the program with a P300 display and trigger. (1 is square, 2 is keyboard)" int optional
 option "ay_range" y "Y axis range for the graph First value is min, second is max." int optional multiple(2)
 option "threshold" t "The threshold for the p300 detection. (middle of y range is default)" int optional
+option "display_fft" F "The flag wether to display the FFT or not. Default is not" flag off
 
 section "Data Acquisition"
 option "generator" g "Use a generated signal." flag on

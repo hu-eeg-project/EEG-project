@@ -13,10 +13,12 @@
 EEGGraph::EEGGraph(int* argc,
                    char** argv,
                    const int ay_min,
-                   const int ay_max) :
+                   const int ay_max,
+                   bool display_fft) :
     m_app("EEG Visualizer", argc, argv),
     ay_min(ay_min),
-    ay_max(ay_max)
+    ay_max(ay_max),
+    m_display_fft(display_fft)
 {
     //m_app = TApplication("EEG Visualizer", argc, argv);
     if (gROOT->IsBatch()) {
@@ -27,15 +29,18 @@ EEGGraph::EEGGraph(int* argc,
     // -------------------------------------------------------------
 
     m_canvas = new TCanvas("c1","FFT Graph Canvas",0,0,1920,1080);
-    m_pad1 = new TPad("c1_1", "c1_1", 0.01, 0.67, 0.99, 0.99);
-    m_pad2 = new TPad("c1_2", "c1_2", 0.01, 0.01, 0.99, 0.66);
-
-
+    
+    if(display_fft){
+        m_pad1 = new TPad("c1_1", "c1_1", 0.01, 0.67, 0.99, 0.99);
+        m_pad2 = new TPad("c1_2", "c1_2", 0.01, 0.01, 0.99, 0.66);
+        m_pad2->SetGridx();
+        m_pad2->Draw();
+    }else{
+        m_pad1 = new TPad("c1_1", "c1_1", 0.01, 0.01 , 0.99, 0.99);
+    }    
     m_pad1->SetGrid();
-    m_pad2->SetGridx();
-
     m_pad1->Draw();
-    m_pad2->Draw();
+    
 
     const Int_t n = 1;
     Double_t x[n] = {0};
@@ -55,19 +60,18 @@ EEGGraph::EEGGraph(int* argc,
     //m_canvas->Update();
     //m_canvas->GetFrame()->SetBorderSize(12);
     //m_canvas->Modified();
-
-    m_pad2->cd();
-    m_fft = new TH1F("fft", "eeg_fft", 3, 0, 3);
-    m_fft->SetTitle("EEG FFT");
-    m_fft->SetFillStyle(3001);
-    m_fft->SetFillColor(30);
-    m_fft->Draw("B HIST");
-    m_amp_max = 100;
-    m_fft->SetMinimum(0);
-    m_fft->SetMaximum(m_amp_max);
-
-    m_fft->SetStats(false);
-
+    if(m_display_fft){        
+        m_pad2->cd();
+        m_fft = new TH1F("fft", "eeg_fft", 3, 0, 3);
+        m_fft->SetTitle("EEG FFT");
+        m_fft->SetFillStyle(3001);
+        m_fft->SetFillColor(30);
+        m_fft->Draw("B HIST");
+        m_amp_max = 100;
+        m_fft->SetMinimum(0);
+        m_fft->SetMaximum(m_amp_max);
+        m_fft->SetStats(false);
+    }
     m_app.Show();
 
     st = std::chrono::high_resolution_clock::now();
@@ -160,50 +164,35 @@ void EEGGraph::update(unsigned int points, Double_t* x, Double_t* y)
     if (!points) return;
 
     updateGraph(points, x, y);
+    if(m_display_fft){
+        timeIndexPair timepoint = findBiggestTimePoint(points, x);
 
-    timeIndexPair timepoint = findBiggestTimePoint(points, x);
+        const int num_points_frame = points - timepoint.index;
+        const int bin_size = (int) (1.0 / timepoint.timepoint);
+        const int max_frequency = num_points_frame / bin_size / 2;
 
-    const int num_points_frame = points - timepoint.index;
-    const int bin_size = (int) (1.0 / timepoint.timepoint);
-    const int max_frequency = num_points_frame / bin_size / 2;
+        if ((points - timepoint.index) /
+            ((int) (1.0 / timepoint.timepoint)) / 2
+            < 1) return;
 
-    /*
-    printf("TimePoints: %f @ %3i of %3i, bins: %i max freq: %i Hz\n",
-           timepoint.timepoint,
-           timepoint.index,
-           num_points_frame,
-           bin_size,
-           max_frequency);
-    */
+        size_t fft_size = points - timepoint.index;
+        double fft_result[2048][2];
+        double buffer[1024] = {0};
 
-    if ((points - timepoint.index) /
-        ((int) (1.0 / timepoint.timepoint)) / 2
-        < 1) return;
+        fftw_plan plan = fftw_plan_dft_r2c_1d(fft_size,
+                                              y + (points - fft_size),
+                                              fft_result,
+                                              0);
+        fftw_execute(plan);
+        fftw_destroy_plan(plan);
 
-    size_t fft_size = points - timepoint.index;
-    double fft_result[2048][2];
-    double buffer[1024] = {0};
+        for (int i = 1; i < (fft_size - 2) / 2; i++) {
+            buffer[i - 1] = sqrt(pow(fft_result[i][0], 2) +
+                                 pow(fft_result[i][1], 2));
+        }
 
-    fftw_plan plan = fftw_plan_dft_r2c_1d(fft_size,
-                                          y + (points - fft_size),
-                                          fft_result,
-                                          0);
-    fftw_execute(plan);
-    fftw_destroy_plan(plan);
-
-    for (int i = 1; i < (fft_size - 2) / 2; i++) {
-        buffer[i - 1] = sqrt(pow(fft_result[i][0], 2) +
-                             pow(fft_result[i][1], 2));
+        updateFFT(num_points_frame / bin_size / 2, buffer);
     }
-
-    /*
-    printf("Time: %f - %f = %f\n",
-           x[points - 1],
-           x[points - fft_size - 1],
-           x[points - 1] - x[points - fft_size - 1]);
-    */
-
-    updateFFT(num_points_frame / bin_size / 2, buffer);
     render();
 }
 
