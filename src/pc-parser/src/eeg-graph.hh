@@ -41,7 +41,7 @@ class EEGGraph
     int ay_min, ay_max;
 
     bool m_display_fft;
-    
+
     std::chrono::time_point<std::chrono::high_resolution_clock> st, nt;
     double last_time = 0;
 

@@ -35,7 +35,7 @@
 #include <memory>
 #include <atomic>
 
-#define NUMBER_OF_POINTS 1000
+#define NUMBER_OF_POINTS 100
 #define FRAME_DURATION 3
 
 std::string getTimeAndDate(bool with_counter = true)
@@ -149,6 +149,9 @@ int main(int argc, char* argv[])
                 break;
             case 2:
                 display = std::make_unique<DisplayKeyboard>(1.f, 10);
+                break;
+            case 3:
+                display = std::make_unique<DisplaySquare>(true);
                 break;
             default:
                 if (config.verbose_flag) printf("Invalid p300 display!\n");

@@ -10,6 +10,8 @@
 #include <fftw3.h>
 #include <iostream>
 
+#include <TGWindow.h>
+
 EEGGraph::EEGGraph(int* argc,
                    char** argv,
                    const int ay_min,
@@ -20,16 +22,14 @@ EEGGraph::EEGGraph(int* argc,
     ay_max(ay_max),
     m_display_fft(display_fft)
 {
-    //m_app = TApplication("EEG Visualizer", argc, argv);
     if (gROOT->IsBatch()) {
         printf("%s: cannot run in batch mode\n", argv[0]);
         return;
     }
 
-    // -------------------------------------------------------------
+    m_canvas = new TCanvas("c1","FFT Graph Canvas", 0, 0, 1920, 1080);
+    m_canvas->SetWindowSize(1920, 1080);
 
-    m_canvas = new TCanvas("c1","FFT Graph Canvas",0,0,1920,1080);
-    
     if(display_fft){
         m_pad1 = new TPad("c1_1", "c1_1", 0.01, 0.67, 0.99, 0.99);
         m_pad2 = new TPad("c1_2", "c1_2", 0.01, 0.01, 0.99, 0.66);
@@ -37,10 +37,10 @@ EEGGraph::EEGGraph(int* argc,
         m_pad2->Draw();
     }else{
         m_pad1 = new TPad("c1_1", "c1_1", 0.01, 0.01 , 0.99, 0.99);
-    }    
+    }
     m_pad1->SetGrid();
     m_pad1->Draw();
-    
+
 
     const Int_t n = 1;
     Double_t x[n] = {0};
@@ -56,11 +56,8 @@ EEGGraph::EEGGraph(int* argc,
     m_graph->GetXaxis()->SetTitle("Time");
     m_graph->GetYaxis()->SetTitle("Amplitude");
     m_graph->Draw("APL");
-    // TCanvas::Update() draws the frame, after which one can change it
-    //m_canvas->Update();
-    //m_canvas->GetFrame()->SetBorderSize(12);
-    //m_canvas->Modified();
-    if(m_display_fft){        
+
+    if(m_display_fft){
         m_pad2->cd();
         m_fft = new TH1F("fft", "eeg_fft", 3, 0, 3);
         m_fft->SetTitle("EEG FFT");
@@ -76,8 +73,6 @@ EEGGraph::EEGGraph(int* argc,
 
     st = std::chrono::high_resolution_clock::now();
 }
-
-int counter = 0;
 
 void EEGGraph::updateGraph(unsigned int points, Double_t* x, Double_t* y)
 {
@@ -147,7 +142,9 @@ struct EEGGraph::timeIndexPair {
     int index;
 };
 
-EEGGraph::timeIndexPair EEGGraph::findBiggestTimePoint(const unsigned int points, const Double_t* x)
+EEGGraph::timeIndexPair EEGGraph::findBiggestTimePoint(
+    const unsigned int points,
+    const Double_t* x)
 {
     timeIndexPair ret = {0, -1};
 
@@ -204,15 +201,6 @@ void EEGGraph::filter_freq(const size_t points,
                            FrequencyFilter_t filter)
 {
     if (!points) return;
-/*
-    std::chrono::time_point<std::chrono::high_resolution_clock> nt;
-    nt = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> dt = nt - filter_last_time;
-    if(dt.count() < 1.f){
-        return;
-    }
-    filter_last_time = nt;
-*/
     timeIndexPair timepoint = findBiggestTimePoint(points, time_src);
 
     if ((points - timepoint.index) /
@@ -253,7 +241,10 @@ void EEGGraph::filter_freq(const size_t points,
         }
     }
 
-    fftw_plan fft_inv_plan = fftw_plan_dft_c2r_1d(fft_size, fft_result, filtered_result, 0);
+    fftw_plan fft_inv_plan = fftw_plan_dft_c2r_1d(fft_size,
+                                                  fft_result,
+                                                  filtered_result,
+                                                  0);
     fftw_execute(fft_inv_plan);
     fftw_destroy_plan(fft_inv_plan);
 

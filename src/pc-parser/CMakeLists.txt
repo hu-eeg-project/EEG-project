@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 
-find_package(ROOT COMPONENTS Core Graf)
+find_package(ROOT COMPONENTS Core Graf Gui)
 find_package(Catch2 REQUIRED)
 find_package(SFML 2 COMPONENTS graphics window system REQUIRED)
 
