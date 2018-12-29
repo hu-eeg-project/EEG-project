@@ -343,6 +343,9 @@ Aangezien er niet veel tijd meer is voor de rest van het onderzoek en elektrotec
 * De P300 detecteren
 Dit hoofdstuk behandeld hoe pogingen zijn gedaan om de P300 te detecteren.
 
+Om te onderzoeken hoe de P300 kan worden gedetecteerd is er naar andere onderzoeken gekeken.
+Een van deze onderzoeken laat BRON! een figuur elke 400 milliseconden kort zien, er is 90% procent kans dat het een blauw vierkant is en 10% kans dat het een rode cirkel is. Deze techniek is nagemaakt en gecombineerd met en stuk zelf geschreven software dat elke keer dat er een figuur wordt laten zien 200 milliseconden tot 800 milliseconden daarna de inkomende EEG-data opslaat om later te worden geanalyseerd.
+Hetzelfde onderzoek bespreekt ook hoe de P300 geïdentificeerd wordt. Dit wordt hier gedaan door de oppervlakte onder de EEG-punten te berekenen.
 
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
