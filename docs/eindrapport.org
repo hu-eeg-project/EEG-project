@@ -341,10 +341,14 @@ Aangezien er niet veel tijd meer is voor de rest van het onderzoek en elektrotec
 
 #+LATEX: \newpage
 * De P300 detecteren
-Dit hoofdstuk behandeld hoe pogingen zijn gedaan om de P300 te detecteren.
+Dit hoofdstuk behandeld hoe pogingen zijn gedaan om de P300 te detecteren. Als eerst wordt besproken hoe de P300 kan worden geactiveerd en daarna wordt besproken hoe de P300 wordt gedetecteerd.
+** P300 Activeren
+De P300 is dus een ERP of event related potentional (zie theoretisch kader [[Hersengolven]]) welke de hersenen generen wanneer een gebeurtenis aandacht vereisen van bijvoorbeeld het geheugen.
+Om te onderzoeken hoe zo een gebeurtenis te gebruiken om de P300 te laten activeren is er naar andere onderzoeken gekeken. Een van deze onderzoeken cite:Grierson2011 laat een figuur elke 400 milliseconden kort zien, er is 90% procent kans dat het een blauw vierkant is en 10% kans dat het een rode cirkel is. Hierdoor verwachten de hersenen uiteindelijk een rode cirkel te zien, maar doordat het en kans heeft is het nog onduidelijk wanneer. Als het rode cirkel dan komt inplaats van het blauwe dan gaan de hersenen hier andere mee om. Zo een experiment heet het oddball paradigm en wordt in een onderzoek beschreven van Nancy Squires cite:Squires1975. \\
 
-Om te onderzoeken hoe de P300 kan worden gedetecteerd is er naar andere onderzoeken gekeken.
-Een van deze onderzoeken laat BRON! een figuur elke 400 milliseconden kort zien, er is 90% procent kans dat het een blauw vierkant is en 10% kans dat het een rode cirkel is. Deze techniek is nagemaakt en gecombineerd met en stuk zelf geschreven software dat elke keer dat er een figuur wordt laten zien 200 milliseconden tot 800 milliseconden daarna de inkomende EEG-data opslaat om later te worden geanalyseerd.
+Een andere techniek die gemaakt is tijdens dit onderzoek is een P300-toetsenbord. Deze laat via een virtueel toetsenbord op een scherm snel achterelkaar toetsen knipperen. Als een persoon achter dit scherm dan concentreert op een letter en wacht totdat deze knippert dan is het net zoals de techniek hierboven een oddball paradigm.  
+ 
+Deze techniek is nagemaakt en gecombineerd met en stuk zelf geschreven software dat elke keer dat er een figuur wordt laten zien 200 milliseconden tot 800 milliseconden daarna de inkomende EEG-data opslaat om later te worden geanalyseerd.
 Hetzelfde onderzoek bespreekt ook hoe de P300 geïdentificeerd wordt. Dit wordt hier gedaan door de oppervlakte onder de EEG-punten te berekenen.
 
 * Bronnen
