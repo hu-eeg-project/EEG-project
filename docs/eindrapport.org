@@ -283,7 +283,7 @@ Als eerste zal worden bepaald welke elektrodes worden gebruikt. Hieronder is een
 Gekozen is om beide de EEG-AE en de EEG-PE te bestellen en daarnaast ook nog one-time-use elektrodes te kopen met een Silver Chlorided Plastic coating. Voor de EEG-AE en de EEG-PE is gekozen om het verschil tussen een actieve en passive elektrode te kunnen meten, ook zijn deze elektrodes niet one-time-use. Voor de one-time-use elektrodes is gekozen om te meten hoe deze vergelijken met de andere twee elektrodes en ook om te kijken hoe goed deze elektrodes werken als deze vaker worden gebruikt dan een keer.
 Er is niet voor de andere elektrodes gekozen omdat deze of te duur zijn(>30 euro) of minder makkelijker leverbaar zijn in Nederland. \\
 
-Bij het kiezen van een instrumentele versterker(inamp) is het belangrijk dat deze zo ruisvrij mogelijk is. Daarnaast is het ook handig als de inamp een DIP-package (of through hole) is, dit omdat het dan makkelijker is om iets aan de pinnen van de inamp vast te maken of te solderen. Ook kan, als het nodig is, de inamp dan in een breadboard worden gestoken om het testen makkelijker te maken.\\
+Bij het kiezen van een instrumentele versterker(inamp) is het belangrijk dat deze zo ruisvrij mogelijk is, zodat het signaal duidelijk leesbaar blijft. Daarnaast is het ook handig als de inamp een DIP-package (of through hole) is, dit omdat het dan makkelijker is om iets aan de pinnen van de inamp vast te maken of te solderen. Ook kan, als het nodig is, de inamp dan in een breadboard worden gestoken om het testen makkelijker te maken.\\
 
 #+BEGIN_COMMENT
 Als naar de vergelijkingstabel voor de instrumentele versterker gekeken wordt, dan is te zien dat de AD8429 de beste prestaties levert kwa ruis. Echter zullen wij niet kiezen voor deze chip omdat deze niet als DIP-package beschikbaar is, maar is er voor de INA129P en de AD620ARZ gekozen. Voor de AD620ARZ is gekozen omdat deze veel gebruikt wordt in bestaande EEG-schakelschema's, zoals die van de OpenEEG of schakelschema's uit meerdere papers cite:Sahin2015,Badillo.
@@ -298,8 +298,25 @@ Voor de opamp hebben we gekozen om de standaard veelgebruikte en goedkope LM358 
 
 ** Ruis in het signaal
 In dit hoofdstuk zal worden besproken welke type ruis er zijn tegengekomen tijdens het maken van het prototypen EEG-systeem. Ook zal worden besproken hoe deze ruis er uitgefilterd is.
+Bij het maken van de eigen versterker voor EEG-signalen is opgevallen dat het heel lastig is om 50Hz er uit te filteren, zoals te zien is in figuur [[fig:DIY_ruis_1]]. In dit figuur is te zien de 50Hz te welke veroorzaakt wordt door het lichtnet om de werkplaats heen. \\
+Iets anders dat opviel was dat om de aantal seconden het signaal voor en seconden naar 0 volt ging, zoals in figuur [[fig:DIY_ruis_2]] te zien is. De reden waarom dit gebeurd is nog onduidelijk.
+In het volgende hoofdstuk is te lezen hoe de ruis is geprobeerd op te lossen.
 
-Als er een oscilloscoop wordt aangesloten direct op de passieve elektrode van de OpenEEG
+#+CAPTION: Het signaal op de uitput van de inamp, waarop 50Hz te zien is.
+#+NAME: fig:DIY_ruis_1
+#+ATTR_LATEX: :width 200px
+[[./images/DIY_ruis_1.jpg]]
+
+#+CAPTION: Het signaal op de uitput van de inamp, waar het op het einde naar 0 volt gaat.
+#+NAME: fig:DIY_ruis_2
+#+ATTR_LATEX: :width 200px
+[[./images/DIY_ruis_2.jpg]]
+
+** Conclusie
+In conclusie is het belangrijkste gedeelte van een EEG-systeem dus de het versterkingsgedeelte. Voor het versterkingsgedeelte is op de eerste stap waar het signaal uit de elektrodes binnenkomt een inamp. Deze inamp zorgt ervoor dat het signaal zijn eerste versterking krijgt naar een punt dat het signaal-ruis verhouding klein genoeg is. Hier wordt niet voor een opamp gekozen maar voor een inamp omdat een inamp minder ruis veroorzaakt. Vanuit de inamp komt ook de DRL (PAUL UITLEGGEN). \\
+ Na de inamp kom het filteren van het signaal. Het belangrijkste om er uit te filteren is de 50Hz, dit kan worden gedaan met een opamp  PAUL UITLEGGEN.
+
+#+LATEX: \newpage 
 
 * Werken met de hardware
 Voor het hardware gedeelte zijn er drie onderdelen. Dit zijn twee bestaande EEG's en een de gene die gemaakt wordt tijdens dit onderzoek. Hieronder wordt uitgeleged hoe elk deel gebruikt en getest is.
@@ -348,8 +365,12 @@ Om te onderzoeken hoe zo een gebeurtenis te gebruiken om de P300 te laten active
 
 Een andere techniek die gemaakt is tijdens dit onderzoek is een P300-toetsenbord. Deze laat via een virtueel toetsenbord op een scherm snel achterelkaar toetsen knipperen. Als een persoon achter dit scherm dan concentreert op een letter en wacht totdat deze knippert dan is het net zoals de techniek hierboven een oddball paradigm.  
  
-Deze techniek is nagemaakt en gecombineerd met en stuk zelf geschreven software dat elke keer dat er een figuur wordt laten zien 200 milliseconden tot 800 milliseconden daarna de inkomende EEG-data opslaat om later te worden geanalyseerd.
+Deze technieken zijn geïmplementeerd tijdens dit onderzoek en gecombineerd met en stuk zelf geschreven software dat elke keer dat er een figuur of letter wordt laten zien 200 milliseconden tot 800 milliseconden daarna de inkomende EEG-data opslaat om later te worden geanalyseerd.\\
+
 Hetzelfde onderzoek bespreekt ook hoe de P300 geïdentificeerd wordt. Dit wordt hier gedaan door de oppervlakte onder de EEG-punten te berekenen.
+
+** Resultaten
+Te zien in de resultaten is dat de techniek waarin figuren worden laten zien beter werkt dan het toetsenbord. Ook is gemerkt dat het aantal keer dat een 
 
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
@@ -424,15 +445,15 @@ Hieronder kan een schakelschema worden gevonden voor de versterking van de herse
 
  #+ATTR_LATEX: :float nil :placement [H] :align |p{2cm}|p{1,3cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2,5cm}|p{1,5cm}|p{2cm}|p{2cm}|p{2cm}|
 |-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
-| Naam      | Prijs (Euro) | Channels | Max verterking | Min voeding (V) | Voltage noise (uVpp) |              CMRR | Input noise (nV/√Hz) | Input noise (nV/√Hz) | Gain error                  |
-|           |              |          |                |                 | g=1000 f=0,1-10Hz    | (tot 60hz G=1000) |               @ 30Hz |               @ 1kHz | G=100/1000                  |
+| Naam      | Prijs (Euro) | Channels | Max verterking | Min voeding (V) | Voltage noise (uVpp) | CMRR              | Input noise (nV/√Hz) | Input noise (nV/√Hz) | Gain error                  |
+|           |              |          |                |                 | g=1000 f=0,1-10Hz    | (tot 60hz G=1000) | @ 30Hz               |               @ 1kHz | G=100/1000                  |
 |-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
-| INA12PA   | 10,00-11,42  |        1 |          10000 | 2,25            | 0,2                  |               120 |                    8 |                    9 | 0,7%/ 2%                    |
-| MCP6N16   | 2,92         |        1 |              ? | 1,8             | 19,0                 |                   |                   30 |                      | 0,03%                       |
-| AD620ARZ  | 11,03        |        1 |          10000 | 2,3             | 0,28                 |                   |                      |                    9 | 0,15%/0,14%                 |
-| AD8221    | 8,28         |        1 |           1000 | 2,3             | 0,25                 |                   |                      |                    8 | 0,3%/ 0,3%                  |
-| AD8429ARZ | 10,49        |        1 |          10000 | 4,0             | 0,1                  |               134 |                      |                    1 | 0,3 voor alles groter dan 1 |
-| INA129    | 5,95         |        1 |          10000 | 2,25            | 0,2                  |               130 |                      |                    8 | 0,05%/0,5%                  |
+| INA12PA   | 10,00-11,42  |        1 |          10000 | 2,25            | 0,2                  | 120               | 8                    |                    9 | 0,7%/ 2%                    |
+| MCP6N16   | 2,92         |        1 |              ? | 1,8             | 19,0                 | ?                 | 30                   |                    ? | 0,03%                       |
+| AD620ARZ  | 11,03        |        1 |          10000 | 2,3             | 0,28                 | ?                 | ?                    |                    9 | 0,15%/0,14%                 |
+| AD8221    | 8,28         |        1 |           1000 | 2,3             | 0,25                 | ?                 | ?                    |                    8 | 0,3%/ 0,3%                  |
+| AD8429ARZ | 10,49        |        1 |          10000 | 4,0             | 0,1                  | 134               | ?                    |                    1 | 0,3 voor alles groter dan 1 |
+| INA129    | 5,95         |        1 |          10000 | 2,25            | 0,2                  | 130               | ?                    |                    8 | 0,05%/0,5%                  |
 |-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
 #+LATEX: \FoatBarrier
 #+LATEX: \newpage
