@@ -333,6 +333,9 @@ Nadat Data uit de Force Trainer wordt uit gelezen kan de data worden geplot op e
  Als deze software gebruikt word om naar de data te kijken is te zien dat als er gefronst of met de ogen geknipperd wordt een piek te zien is in de data. Deze piek is te zien in figuur(Figuur gaat nog komen!!!!). Deze pieken zijn ruis wat ervoor kan zorgen dat het gemeten signaal niet klopt. Het is dus belangrijk dat een algoritme om de p300 te detecteren hier rekening mee houdt.
 
 ** OpenEEG
+#+CAPTION: De OpenEEG aangesloten aan twee elektrodes, een earclip en onze ESP32.
+#+NAME: fig:openeeg-breadboard
+[[./images/openeeg-connected.jpg]]
 Voor de OpenEEG bestaat er een gedeelte voor de versterking en een digitaal gedeelte, voor dit onderzoek is in eerste instantie alleen het deel voor de versterking aangeschaft, met daarnaast een earclip en een paar pasieve en actieve elektrodes. Er is alleen voor de versterking gekozen zodat er een eigen microcontroller met ADC kan worden gebruikt, wat goedkoper is dan het digitale gedeelte.
 In de eerste instantie is getest door de module aan te sluiten met de earclip aan de DRL en twee pasieve elektrodes op de + en - van de eerste channel. De ingangen van het tweede channel zijn op de grond gezet.
 Om te testen of er iets van een signaal te zien is zullen de elektroden op het voorhoofd worden geplaatst en zal het persoon dan gaan fronsen of met de ogen knipperen. Als dit gedaan wordt zal er op de oscilloscoop een duidelijke piek te zien moeten zijn. Zoals gezien is bij de Force Trainer. \\
