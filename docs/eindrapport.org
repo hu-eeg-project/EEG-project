@@ -524,7 +524,7 @@ Hieronder kan een schakelschema worden gevonden voor de versterking van de herse
 Als de Force Trainer open gemaakt wordt kan de printplaat worden gezien. Figuur [[fig:Force_Trainer_marked]] laat deze printplaat zien met een extra gedeelte gemarkeerd in een rood vierkant. In dit vierkant is een chip van Neurosky te vinden welke het meten van de hersensignalen afhandelt. De desbetreffende chip is de TGAT1-LC4.
 Volgens een handleiding van en persoon die de Force Trainer heeft aangepast is er een tx-aansluiting cite:force_trainer_hack. Uit ervaring van de onderzoekers is te weten dat tx een veelgebruikte term is voor een datalijn in het UART-protocol. Hierover zal dus de data van de Neurosky chip worden verstuurd. Volgens de datasheet van deze chip[fn:1] wordt de data over de tx-aansluitign via het ThinkGear protocol verstuurt. Volgende de handleiding van dit protocol [fn:2] verstuurt de TGAT1 500 metingen per seconden over de UART en heeft de UART een baudrate van 57600.
 
-#+CAPTION: De PCB in de Force Trainer met de Neurosky chip (TGAT1-LC4) gemarkeerd. Onderaan de chip zijn is de aansluiting met de elektrodes.
+#+CAPTION: De PCB in de Force Trainer met de Neurosky chip (TGAT1-LC4) gemarkeerd met rood. Onderaan de chip is de aansluiting met de elektrodes.
 #+NAME: fig:Force_Trainer_marked
 #+ATTR_LATEX: :width 300px :float nil
 [[./images/force-trainer-pcb-marked.jpg]]
@@ -535,11 +535,12 @@ De benodigde data uit de Neurosky chip zal dus over deze tx-aansluiting worden v
 #+CAPTION: Achterkant van de Force Trainer met het draad dat is aangesloten op de tx-aansluiting
 #+NAME: fig:Force_Trainer_pcb_back
 #+ATTR_LATEX: :width 300px :float nil
-[[./images/force-trainer-pcb-back.jpg]]
+[[./images/force-trainer-back.jpg]]
 
 
 [fn:1] http://wearcam.org/ece516/neurosky_eeg_brainwave_chip_and_board_tgam1.pdf
 [fn:2] http://developer.neurosky.com/docs/doku.php?id=thinkgear_communications_protocol
+
 ** Bijlage E: Foto met alle lijnen van resultaat
 
 #+CAPTION: Resultaten van het testen met de OpenEEG na een blauw vierkant, hier met alle lijnen.
