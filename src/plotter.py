@@ -23,7 +23,7 @@ def main():
 
     y = 2
     x = ceil(len(plots)/y)
-    fig, ax = plt.subplots(x, y, sharex=True)
+    #fig, ax = plt.subplots(x, y, sharex=True)
 
     xbuf = 0
     ybuf = 0
@@ -53,14 +53,16 @@ def main():
                 continue
             if offset < 0:
                 offset = float(split_line[0])
-            time_array.append(float(split_line[0]) - offset)
-            data_array.append(float(split_line[1]))
+            if line_color == 'blue':
+                time_array.append(float(split_line[0]) - offset)
+                data_array.append(float(split_line[1]))
             if float(split_line[1]) > 3800 or float(split_line[1]) < 200:
                 #count += 1
                 pass
 
         if count < len(lines) / 3:
-            ax[xbuf, ybuf].plot(time_array, data_array, color=line_color)
+            #ax[xbuf, ybuf].plot(time_array, data_array, color=line_color)
+            plt.plot(time_array, data_array, color=line_color)
             plot_count += 1
             xbuf += 1
             if xbuf >= x:
