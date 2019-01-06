@@ -36,6 +36,13 @@
 - *Studentennummer:* 1677247
 
 #+LATEX: \newpage
+* Management Samenvatting
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+Dit verslag gaat over de interactie van een mens naar een computer door middel van hersenactiviteit. Hierbij worden met één of meerdere elektrodes die op het hoofd geplaatst worden stroom gemeten om zo een computer te kunnen besturen. Bij het onderzoek hebben we drie verschillende systemen getest. Hierbij is een goedkope speelgoed versie getest van star wars die "Force Trainer" heet, een open source variant onder de naam "OpenEEG" =en= een versie die tijdens het onderzoek gebouwd wordt met losse standaard componenten. Uiteindelijk is er uit gekomen dat met de Force Trainer geen significant signaal waarvoor gezocht werd gevonden kon worden, met de OpenEEG is op het einde wel wat gevonden wat het zou kunnen zijn maar daar moet nog een vervolg onderzoek voor gedaan worden en tenslotte was voor de eigen hardware geen voldoende tijd meer om werkend te krijgen.
+
+#+LATEX: \newpage
 #+LATEX: \renewcommand{\contentsname}{Inhoudsopgave}
 #+LATEX: \tableofcontents
 
@@ -267,7 +274,7 @@ Als naar de schematics van de modEEGamp gekeken wordt, welke te vinden is in [[B
 Daarnaast is er hulp gevraagd van een expert in elektrotechniek, deze expert heet Franc van der Bent en is een leraar elektrotechniek aan de Hogeschool Utrecht. Deze expert is ook als bron gebruikt om uit te leggen welke hardware delen worden gebruikt in een EEG-systeem en waar deze voor zijn. \\
 
 Te zien is dat er per kanaal meerdere versterkers worden gebruikt, waarvan er één een instrumentale versterker (inamp) is en de andere operationele versterkers(opamp) zijn. Maar voorafgaand aan de inamp en de opamp is een filter tegen rf-signalen en een protectiecircuit tegen hoge voltages. Volgens de expert is de protectie tegen hoge voltages als een patient bijvoorbeeld wordt gedefibrilleerd, omdat dit niet tijdens dit onderzoek zal gebeuren kan dit alleen maar voor meer ruis zorgen. Voor dit protectiecircuit is de filter tegen RF-signalen te vinden, wat volgens de expert ook niet nodig is en alleen maar voor ruis kan zorgen.\\
-Na het protectiecicuit komt de inamp waar het signaal zijn eerste versterking van 12.2 krijgt, volgens de expert is deze stap het belangrijkste om een signaal te verkrijgen zonder veel ruis. Uit de inamp komt ook de DRL zoals uitgelegd in het Theoretisch kader [[Signaalmeting]]. Na de inamp komt een opamp welke een instelbare versterking heeft van 6 tot 100 dankzij een potentiometer. Na deze opamp komt een derde order besselworthfilter, wat een frequentiefilter is. Het voordeel van een besselworthfilter is een heel goede phase response (fase van de golf veranderd weinig) en een goede transient response (Hoe snel de filter bij zijn doelwaarde is) cite:TI_Bessel_Filter. Het derde gedeelte van de filter is niet te vinden op het versterkingsgedeelte maar op het digitale gedeelte, dit zal dus zelf moeten worden gemaakt. Het derde gedeelte is een low-pass RC-filter met een weerstand van 7,5 kilo Ohm en een condensator van 220 micro Farad. 
+Na het protectiecicuit komt de inamp waar het signaal zijn eerste versterking van 12.2 krijgt, volgens de expert is deze stap het belangrijkste om een signaal te verkrijgen zonder veel ruis. Uit de inamp komt ook de DRL zoals uitgelegd in het Theoretisch kader [[Signaalmeting]]. Na de inamp komt een opamp welke een instelbare versterking heeft van 6 tot 100 dankzij een potentiometer. Na deze opamp komt een derde order besselworthfilter, wat een frequentiefilter is. Het voordeel van een besselworthfilter is een heel goede phase response (fase van de golf veranderd weinig) en een goede transient response (Hoe snel de filter bij zijn doelwaarde is) cite:TI_Bessel_Filter. Het derde gedeelte van de filter is niet te vinden op het versterkingsgedeelte maar op het digitale gedeelte, dit zal dus zelf moeten worden gemaakt. Het derde gedeelte is een low-pass RC-filter met een weerstand van 7,5 kilo Ohm en een condensator van 220 micro Farad.
 
 In [[Bijlage B: schakelschema versterker][Bijlage B]] is nog een schakelschema te zien welke ook een inamp en een opamp gebruikt om de hersensignalen te versterken. Echter is dit schema niet het protectiecircuit en de filtering tegen rf-signalen te zien. Dit schema is eerder gebruikt in een succesvol onderzoek naar het maken van een EEG-systeem cite:Diy_EEG. Uit dit onderzoek en het advies van een expert kan dus worden afgeleid dat het protectiecircuit en de filtering tegen rf-signalen niet perse nodig.
 
@@ -428,7 +435,10 @@ Om softwarematig de P300 de detecteren is op de volgende techniek gekomen waarbi
 
 * Aanbevelingen
 Uit dit onderzoek is naar voren gekomen dat om de p300 te detecteren een beter signaal uit de hersenen moet worden ontvangen. Advies is om in een vervolg onderzoek het huidige gemaakte systeem met de OpenEEG uit te breiden. Het is te adviseren om te testen of het gebruik van speciale gel tussen de elektrodes en de hoofdhuid beter resultaat zal brengen. Ook kunnen er dry-elektrodes worden getest waarmee wellicht ook een goed contact met de hoofdhuid kan worden gemaakt zonder dat de special gel nodig is.
-Als een EEG-systeem vereist is dat volledig zelf ontworpen is, is het te adviseren om een onderzoek uit te voeren dat zich volledig richt op het ontwerpen van de hardware. 
+Als een EEG-systeem vereist is dat volledig zelf ontworpen is, is het te adviseren om een onderzoek uit te voeren dat zich volledig richt op het ontwerpen van de hardware.
+
+** Struikelblokken
+Bij het uitlezen van een ADC zoals bij onze ESP32 kan er een gek signaal ontstaan als er te snel uitgelezen wordt in de software. Bij ons kwam dat voor als een kartelende lijn die elke sample afwisselend wat omhoog en omlaag afwijkt. Dit kan worden verholpen door de delay tussen samples groter te maken.
 
 #+LATEX: \newpage
 * Bronnen
