@@ -433,7 +433,8 @@ Om softwarematig de P300 de detecteren is op de volgende techniek gekomen: PAUL 
 #+LATEX: \newpage
 
 * Aanbevelingen
-
+Uit dit onderzoek is naar voren gekomen dat om de p300 te detecteren een beter signaal uit de hersenen moet worden ontvangen. Advies is om in een vervolg onderzoek het huidige gemaakte systeem met de OpenEEG uit te breiden. Het is te adviseren om te testen of het gebruikt van speciale gel tussen de elektrodes en de hoofdhuid beter resultaat zal brengen. Ook kunnen er dry-elektrodes wordne getest waarmee wellicht ook een goed contact met de hoofdhuid kan worden gemaakt zonder dat de special gel nodig is.
+Als een EEG-systeem vereist is dat volledig zelf ontworpen is, is het te adviseren om een onderzoek uit te voeren dat zich volledig richt op het ontwerpen van de hardware. 
 
 #+LATEX: \newpage
 * Bronnen
