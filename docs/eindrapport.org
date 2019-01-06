@@ -313,10 +313,10 @@ In het volgende hoofdstuk is te lezen hoe de ruis is geprobeerd op te lossen.
 [[./images/DIY_ruis_2.jpg]]
 
 ** Conclusie
-In conclusie is het belangrijkste gedeelte van een EEG-systeem dus de het versterkingsgedeelte. Voor het versterkingsgedeelte is op de eerste stap waar het signaal uit de elektrodes binnenkomt een inamp. Deze inamp zorgt ervoor dat het signaal zijn eerste versterking krijgt naar een punt dat het signaal-ruis verhouding klein genoeg is. Hier wordt niet voor een opamp gekozen maar voor een inamp omdat een inamp minder ruis veroorzaakt. Vanuit de inamp komt ook de DRL (PAUL UITLEGGEN). \\
- Na de inamp kom het filteren van het signaal. Het belangrijkste om er uit te filteren is de 50Hz, dit kan worden gedaan met een opamp  PAUL UITLEGGEN.
+In conclusie is het belangrijkste gedeelte van een EEG-systeem dus het versterkingsgedeelte. Voor het versterkingsgedeelte is op de eerste stap waar het signaal uit de elektrodes binnenkomt een inamp. Deze inamp zorgt ervoor dat het signaal zijn eerste versterking krijgt naar een punt dat het signaal-ruis verhouding klein genoeg is. Hier wordt niet voor een opamp gekozen maar voor een inamp omdat een inamp minder ruis veroorzaakt en het verschil tussen de twee inputs versterkt. Vanuit de inamp komt ook de DRL vanuit de weerstand die de versterking bepaald. \\
+ Na de inamp kom het filteren van het signaal. Het belangrijkste om er uit te filteren is de 50Hz, dit kan deels worden gedaan met de common mode van de inamp. Het common mode voltage staat in het midden van de versterking weerstand, hierdoor is gekozen om twee dezelfde waarde weerstanden te gebruiken voor de versterkingsbepaling en dan in het midden tussen de weerstanden met een opamp als buffer het common mode voltage af te nemen om dit weer terug naar de persoon te sturen nadat het signaal nog geïnverteerd wordt.
 
-#+LATEX: \newpage 
+#+LATEX: \newpage
 
 * Werken met de hardware
 Voor het hardware gedeelte zijn er drie onderdelen. Dit zijn twee bestaande EEG's en een de gene die gemaakt wordt tijdens dit onderzoek. Hieronder wordt uitgeleged hoe elk deel gebruikt en getest is.
@@ -338,9 +338,9 @@ In het schakelschema van het digitale gedeelte is te zien dat dit derde deel een
 \[f= \frac{1}{2 \pi R C}\]
 Waarbij "f" de cutoff frequentie is, "R" de waarde van de weerstand in Ohms is en C de waarde van de condensator in Farad is. Als bovenstaande waardes worden ingevuld komt er een f van 96,46 Hz uit. Voor het meten van de P300 is kan echter meer worden weg gefilterd, omdat de P300 maar tussen de 0,5 en 15 Hz voorkomt (zie theoretisch kader [[Hersengolven]]). Om dit te bereiken kan volgens de formule met een "f" van 15 een "C" van 1,415 \micro Farad gebruikt worden. De dichtstbijzijnde 1,5 \micro Farad condensator wordt hier gebruikt. Door deze afronding wordt er inplaats is de f inplaats 14,147 Hz
 Tijdens het testen van de OpenEEG met de ESP32 viel op dat er nog steeds veel ruis in het signaal zat, wat op 50Hz leek. Echter na het proberen van verschillende R/C filters bleef het signaal aanwezig. Wat bleek was dat de software in de ESP32 te snel de ADC uitlas. Dit is opgelost door 20 milliseconden te wachten tussen elke meting. \\
-In figuur [[fig:openeeg-esp32-schematic]] is te zien hoe de OpenEEG en de ESP32 verbonden zijn inclusief de filters. 
+In figuur [[fig:openeeg-esp32-schematic]] is te zien hoe de OpenEEG en de ESP32 verbonden zijn inclusief de filters.
 
-#+CAPTION: Aansuitschema van de openEEG versterker en de ESP32
+#+CAPTION: Aansluitschema van de openEEG versterker en de ESP32
 #+NAME: fig:openeeg-esp32-schematic
 [[./images/openeeg-schematic.png]]
 
@@ -363,15 +363,16 @@ Dit hoofdstuk behandeld hoe pogingen zijn gedaan om de P300 te detecteren. Als e
 De P300 is dus een ERP of event related potentional (zie theoretisch kader [[Hersengolven]]) welke de hersenen generen wanneer een gebeurtenis aandacht vereisen van bijvoorbeeld het geheugen.
 Om te onderzoeken hoe zo een gebeurtenis te gebruiken om de P300 te laten activeren is er naar andere onderzoeken gekeken. Een van deze onderzoeken cite:Grierson2011 laat een figuur elke 400 milliseconden kort zien, er is 90% procent kans dat het een blauw vierkant is en 10% kans dat het een rode cirkel is. Hierdoor verwachten de hersenen uiteindelijk een rode cirkel te zien, maar doordat het en kans heeft is het nog onduidelijk wanneer. Als het rode cirkel dan komt inplaats van het blauwe dan gaan de hersenen hier andere mee om. Zo een experiment heet het oddball paradigm en wordt in een onderzoek beschreven van Nancy Squires cite:Squires1975. \\
 
-Een andere techniek die gemaakt is tijdens dit onderzoek is een P300-toetsenbord. Deze laat via een virtueel toetsenbord op een scherm snel achterelkaar toetsen knipperen. Als een persoon achter dit scherm dan concentreert op een letter en wacht totdat deze knippert dan is het net zoals de techniek hierboven een oddball paradigm.  
- 
+Een andere techniek die gemaakt is tijdens dit onderzoek is een P300-toetsenbord. Deze laat via een virtueel toetsenbord op een scherm snel achterelkaar toetsen knipperen. Als een persoon achter dit scherm dan concentreert op een letter en wacht totdat deze knippert dan is het net zoals de techniek hierboven een oddball paradigm.
+
 Deze technieken zijn geïmplementeerd tijdens dit onderzoek en gecombineerd met en stuk zelf geschreven software dat elke keer dat er een figuur of letter wordt laten zien 200 milliseconden tot 800 milliseconden daarna de inkomende EEG-data opslaat om later te worden geanalyseerd.\\
 
 Hetzelfde onderzoek bespreekt ook hoe de P300 geïdentificeerd wordt. Dit wordt hier gedaan door de oppervlakte onder de EEG-punten te berekenen.
 
 ** Resultaten
-Te zien in de resultaten is dat de techniek waarin figuren worden laten zien beter werkt dan het toetsenbord. Ook is gemerkt dat het aantal keer dat een 
+Te zien in de resultaten is dat de techniek waarin figuren worden laten zien beter werkt dan het toetsenbord. Ook is gemerkt dat het aantal keer dat een
 
+#+LATEX: \newpage
 * Bronnen
 #+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 bibliographystyle:apalike
