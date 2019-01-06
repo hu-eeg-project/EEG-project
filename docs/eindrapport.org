@@ -21,7 +21,7 @@
 *Opleiding*: Technische Informatica \\
 *Organisatie*: Hogeschool Utrecht \\
 *Begeleider*: J. Bunk \\
-*Document status*: concept \\
+*Document status*: definitief \\
 *Datum*: \today
 \\
 *auteur 1:*
