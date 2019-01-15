@@ -2,8 +2,9 @@
 
 import sys
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import os
-from math import ceil
+from math import ceil, floor
 
 def main():
     if len(sys.argv) < 2:
@@ -30,11 +31,18 @@ def main():
 
     plot_count = 0
 
+    all_lines = []
+
+    longest_len = 0
+    longest_time_array = []
+    max_value = 0
+    min_value = 0
+    
     for plot in plots:
         f = open(plot, "r")
         lines = f.read().splitlines()
         f.close()
-
+        
         time_array = []
         data_array = []
 
@@ -56,9 +64,24 @@ def main():
             if line_color == 'blue':
                 time_array.append(float(split_line[0]) - offset)
                 data_array.append(float(split_line[1]))
+                
             if float(split_line[1]) > 3800 or float(split_line[1]) < 200:
-                #count += 1
                 pass
+                #count += 1
+        all_lines.append(data_array)
+
+        if(len(data_array)):
+            max_val = max(data_array)
+            if max_val > max_value:
+                max_value = max_val
+
+            min_val = min(data_array)
+            if min_val < min_value:
+                min_value = min_val
+            
+        if len(data_array) > longest_len:
+            longest_len = len(data_array)
+            longest_time_array = time_array
 
         if count < len(lines) / 3:
             #ax[xbuf, ybuf].plot(time_array, data_array, color=line_color)
@@ -69,6 +92,57 @@ def main():
                 xbuf = 0
                 ybuf += 1
 
+    print(max_value, min_value)
+                
+    points_list = []
+    
+    totals = []
+    index = 0
+    buffer = []
+    for num in range(longest_len):
+        buffer = []
+        for line in all_lines:
+            if len(line) > num:
+                buffer.append(line[num])
+        points_list.append(buffer)
+
+    averages = []
+    medians = []
+    q3 = []
+    for points in points_list:
+        averages.append(sum(points)/len(points))
+
+    for points in points_list:
+        points.sort()
+        length = len(points)
+        
+        left = points[floor(length / 2)]
+        right = points[ceil(length / 2)]
+        medians.append((left + right)/2)
+
+        lower = length * 3 / 4
+        left = points[floor(lower)]
+
+        if ceil(lower) >= length:
+            right = points[length-1]
+        else:
+            right = points[ceil(lower)]
+        
+        
+        
+        q3.append((left + right)/2)
+        
+            
+    plt.plot(longest_time_array, averages, color="red", linewidth = 3)
+    plt.plot(longest_time_array, medians, color="orange", linewidth = 3)
+    plt.plot(longest_time_array, q3, color="#18E800", linewidth = 3)
+
+    legend_elements = [Line2D([0], [0], color="red", lw=3, label="gemiddelde"),
+                       Line2D([0], [0], color="orange", lw=3, label="mediaan"),
+                       Line2D([0], [0], color="#18E800", lw=3, label="q3")]
+    
+    plt.legend(handles=legend_elements, loc='lower right')
+    plt.ylim(min_value, max_value)
     plt.xlabel("Time")
     plt.ylabel("Amplitude")
     plt.show()
