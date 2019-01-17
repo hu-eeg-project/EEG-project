@@ -1,3 +1,8 @@
+/**
+ * \file data-threads.hh
+ * \brief Contains the different threads for data collection / generation
+ */
+
 #pragma once
 
 #include <atomic>
@@ -6,6 +11,14 @@
 #include "rolling-array.hh"
 #include "eeg-graph.hh"
 
+/**
+ * \brief Generates a wave with the given frequencies and amplitudes
+ * \param array The Data and Time array to put the generated data in
+ * \param sample_rate The rate at which data is sampled (generated in this case)
+ * \param frequencies An array of frequencies with amplitudes to put in the signal
+ * \param size The ammount of frequencies in the array
+ * \param close_thread A flag to signal when the thread needs to close
+ */
 void testThread(ArrayPair<RollingArray<Double_t>,
                 RollingArray<Double_t>>* array,
                 uint32_t sample_rate,
@@ -26,7 +39,11 @@ void testThread(ArrayPair<RollingArray<Double_t>,
     }
 }
 
-
+/**
+ * \brief Reads data from the serial port and puts it in the arrays
+ * \param array The Data and Time array to put the read data in
+ * \param close_thread A flag to signal when the thread needs to close
+ */
 void serialThread(ArrayPair<RollingArray<Double_t>,
                   RollingArray<Double_t>>* array,
                   std::atomic<bool>* close_thread)

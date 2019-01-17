@@ -14,6 +14,9 @@
 
 #define DEFAULT_FONT "/usr/share/fonts/noto/NotoSans-Regular.ttf"
 
+/**
+ * \brief The display class for a keyboard
+ */
 class DisplayKeyboard : public Display
 {
     sf::Font m_font;
@@ -24,6 +27,12 @@ class DisplayKeyboard : public Display
     bool is_recording = false;
 
 public:
+    /**
+     * \brief Creates the display for the keyboard
+     * \param time The time to flash letters
+     * \param size The ammount of letters shown on the screen
+     * \param path_to_ttf The path to the TTF font to use for the font rendering
+     */
     DisplayKeyboard(double time, size_t size=26, std::string path_to_ttf = DEFAULT_FONT);
 
     bool update() override;

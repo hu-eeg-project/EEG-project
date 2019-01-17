@@ -38,6 +38,10 @@
 #define NUMBER_OF_POINTS 100
 #define FRAME_DURATION 3
 
+/**
+ * \brief Gets the time and date as string
+ * \param with_counter Append a counter at the end of the string or not
+ */
 std::string getTimeAndDate(bool with_counter = true)
 {
     time_t rawtime;
@@ -55,7 +59,11 @@ std::string getTimeAndDate(bool with_counter = true)
     return std::string(buffer);
 }
 
-
+/**
+ * \brief The main entry point of the program
+ * \param argc The amount of arguments
+ * \param argv The arguments of the program
+ */
 int main(int argc, char* argv[])
 {
     gengetopt_args_info config;

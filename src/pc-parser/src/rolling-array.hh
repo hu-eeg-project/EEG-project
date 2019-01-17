@@ -9,6 +9,11 @@
 
 #include <mutex>
 
+/**
+ * \brief Pairs two arrays with one mutex to lock both
+ * \tparam A The first array
+ * \tparam B The second array
+ */
 template<class A, class B>
 class ArrayPair
 {
@@ -18,6 +23,11 @@ public:
     A& array1;
     B& array2;
 
+    /**
+     * \brief Creates an array pair
+     * \param a1 The first array
+     * \param a2 The second array
+     */
     ArrayPair(A& a1, B& a2) :
     array1(a1),
     array2(a2)
@@ -25,17 +35,27 @@ public:
 
     }
 
+    /**
+     * \brief Locks the arrays for use
+     */
     inline void lock()
     {
         m_mutex.lock();
     }
 
+    /**
+     * \brief Unlocks the arrays again
+     */
     inline void unlock()
     {
         m_mutex.unlock();
     }
 };
 
+/**
+ * \brief Creates a rolling array where when the size is hit it will remove the oldest value and append the new value
+ * \tparam T The data type to create a rolling array off
+ */
 template<class T>
 class RollingArray
 {
@@ -46,6 +66,10 @@ class RollingArray
     size_t m_length;
 
 public:
+    /**
+     * \brief Creates a rolling array
+     * \param length The ammount of data that fits in the array
+     */
     RollingArray(size_t length):
     m_index(0),
     m_size(0),
@@ -57,7 +81,11 @@ public:
     ~RollingArray(){
 	delete[] m_data;
     }
-    
+
+    /**
+     * \brief Appends an item to the array and removes the oldest one if the array is at it's max size
+     * \param item The item to add
+     */
     inline void append(T item)
     {
         m_mutex.lock();
@@ -77,31 +105,49 @@ public:
         m_mutex.unlock();
     }
 
+    /**
+     * Gets the ammount of items in the array
+     */
     inline int getSize()
     {
         return m_size;
     }
 
+    /**
+     * \brief Gets a pointer to the data points in the array as a normal array (ordered from old to newest added)
+     * \return The pointer to the data
+     */
     inline T* getData()
     {
         return m_data + m_index;
     }
 
+    /**
+     * \brief Locks the mutex of the array
+     */
     inline void lock()
     {
         m_mutex.lock();
     }
 
+    /**
+     * \brief Unlocks the mutex of the array
+     */
     inline void unlock()
     {
         m_mutex.unlock();
     }
 
+    /**
+     * \brief Gets an item at a certain index from the array
+     * \param index The index to get the item from
+     * \return The item at the given index
+     */
     inline T operator[](size_t index){
         T* array_begin = getData();
         return array_begin[index];
     }
-    
+
     /*
     inline T* getActualData()
     {
