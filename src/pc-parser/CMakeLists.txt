@@ -45,10 +45,10 @@ target_link_libraries(pc-parser sfml-graphics sfml-window sfml-system)
 target_link_libraries(tests Catch2::Catch2)
 
 if(DOXYGEN_FOUND)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.in @ONLY)
+configure_file(${PROJECT_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.in @ONLY)
 
 add_custom_target(
-docs ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+docs ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.in
 WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../
 COMMENT "Generating API documentation with Doxygen" VERBATIM
 )
