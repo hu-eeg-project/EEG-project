@@ -29,11 +29,10 @@ class Display
     sf::Event event;
 
 protected:
-    sf::RenderWindow m_window;
-    sf::Clock m_clock;
-    bool m_flash;
-    int m_flash_counter;
-    double m_flash_stop;
+    sf::RenderWindow m_window; /*!< A window that can be drawn to */
+    sf::Clock m_clock; /*!< A clock (milliseconds since sfml init) for time keeping */
+    //int m_flash_counter;
+    //double m_flash_stop;
 
 public:
     Display();

@@ -137,9 +137,12 @@ int EEGGraph::findTimePoint(const double timepoint,
     return index;
 }
 
+/**
+ * A pair of a timepoint to be used and the index in the data matching the timepoint.
+ */
 struct EEGGraph::timeIndexPair {
-    double timepoint;
-    int index;
+    double timepoint; /*!< The timepoint used */
+    int index; /*! The index in the data that is timepoint seconds ago */
 };
 
 EEGGraph::timeIndexPair EEGGraph::findBiggestTimePoint(

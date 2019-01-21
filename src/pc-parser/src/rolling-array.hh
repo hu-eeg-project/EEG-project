@@ -20,8 +20,8 @@ class ArrayPair
     std::mutex m_mutex;
 
 public:
-    A& array1;
-    B& array2;
+    A& array1; /*!< First array of the pair */
+    B& array2; /*!< Second array of the pair */
 
     /**
      * \brief Creates an array pair

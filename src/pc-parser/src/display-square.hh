@@ -28,6 +28,8 @@ class DisplaySquare : public Display
     bool m_initial_flash;
     bool m_text;
 
+    bool m_flash;
+
 public:
     /**
      * \brief Creates the display for the square + circle

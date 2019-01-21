@@ -12,12 +12,15 @@
 #include <stdio.h>
 #include <random>
 
+/**
+ * \brief A struct representing a physical monitor.
+ */
 typedef struct monitor {
-    int id;
-    int width;
-    int height;
-    int x;
-    int y;
+    int id; /*!< The Id of the monitor */
+    int width; /*!< Width of the monitor */
+    int height; /*!< Height of the monitor */
+    int x; /*!< X offset of monitor */
+    int y; /*!< Y offset of monitor */
 } monitor_t;
 
 std::string exec(const char* cmd) {
@@ -33,10 +36,7 @@ std::string exec(const char* cmd) {
 }
 
 Display::Display() :
-m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None),
-m_flash(false),
-m_flash_counter(0),
-m_flash_stop(0)
+m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None)
 {
     m_window.clear();
 
