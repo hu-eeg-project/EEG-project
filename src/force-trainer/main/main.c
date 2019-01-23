@@ -23,7 +23,7 @@ void app_main(void)
         .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
         .rx_flow_ctrl_thresh = 122,
     };
-    // UART_NUM_2 is connected to usb output
+    // Init UART_NUM_2 for recieving data from force_trainer.
     ESP_ERROR_CHECK(uart_param_config(UART_NUM_2, &uart_config));
     ESP_ERROR_CHECK(uart_set_pin(UART_NUM_2, TX_PIN, RX_PIN, RTS_PIN, CTS_PIN));
     ESP_ERROR_CHECK(uart_driver_install(UART_NUM_2, 1024 * 2, 0, 0, NULL, 0));

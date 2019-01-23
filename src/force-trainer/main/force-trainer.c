@@ -1,12 +1,5 @@
 #include "force-trainer.h"
 
-#define ERROR_UNKOWN_CMD    0x01
-#define ERROR_BAD_SIGNAL    0x02
-#define ERROR_BAD_CHECKSUM  0x03
-#define ERROR_PACKET_LEN    0x04
-#define ERROR_CREATING_TASK 0x05
-
-// The documentation for the protocol can be found here: 
 
 void handle_force_trainer(){
     uint8_t data = 0;
@@ -22,7 +15,7 @@ void handle_force_trainer(){
     uint64_t frame_dur = 0;
     while(1){
         if((timer_get_us()-batch_timer)>1000000){ // every second
-            write_bytes_pc("b:1\n");
+            write_bytes_pc("b:1\n"); // Batch specifier is 1, so pc should interpret data as batches.
             batch_timer = timer_get_us();
         }
         read_bytes_from_ft(&data, 1);
