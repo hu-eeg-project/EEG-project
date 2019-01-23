@@ -20,7 +20,7 @@ void app_main(void)
     adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
 
     uint64_t last_specifier = esp_timer_get_time();
-    printf("b:0\n"); // Data to the PC is nod batched, but a continuous stream.
+    printf("b:0\n"); // Data to the PC is not batched, but a continuous stream.
 
     while (true) {
 
