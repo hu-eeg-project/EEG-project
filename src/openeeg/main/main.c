@@ -20,7 +20,7 @@ void app_main(void)
     adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
 
     uint64_t last_specifier = esp_timer_get_time();
-    printf("b:0\n");
+    printf("b:0\n"); // Data to the PC is nod batched, but a continuous stream.
 
     while (true) {
 
@@ -30,9 +30,9 @@ void app_main(void)
 
         if (esp_timer_get_time() - last_specifier > 1000000) {
             last_specifier = esp_timer_get_time();
-            printf("b:0\n");
+            printf("b:0\n"); // Resend batch specifier every second.
         }
-
+        // Sample every 20 ms. Sampling more often than this will introduce noise in data.
         vTaskDelay(20 / portTICK_PERIOD_MS);
     }
 }
