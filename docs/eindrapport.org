@@ -1,0 +1,568 @@
+#+TITLE: Mens-machine interactie door middel van EEG
+#+LANGUAGE: nl-nl
+#+OPTIONS: title:nil toc:nil H:4
+#+LATEX_HEADER: \pagenumbering{gobble}
+#+LATEX_HEADER: \usepackage[margin=3cm]{geometry}
+#+LATEX_HEADER: \usepackage{pdfpages}
+#+LATEX_HEADER: \usepackage[dutch]{babel}
+#+LATEX_HEADER: \usepackage{placeins}
+#+LATEX_HEADER: \setlength{\parindent}{0em}
+#+LATEX_HEADER: \usepackage{etoolbox}
+
+#+INCLUDE: title-eindrapport.org
+
+#+LATEX: \newpage
+#+LATEX: \pagenumbering{roman}
+
+* Algemene informatie
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+*Opleiding*: Technische Informatica \\
+*Organisatie*: Hogeschool Utrecht \\
+*Begeleider*: J. Bunk \\
+*Document status*: definitief \\
+*Datum*: \today
+\\
+*auteur 1:*
+- *Naam:* Stefan de Beer
+- *Telefoonnummer:* 0611873666
+- *E-mail:* stefan.debeer@student.hu.nl
+- *Studentennummer:* 1684137
+*auteur 2:*
+- *Naam:* Paul Ettema
+- *Telefoonnummer:* 0630763224
+- *E-mail:* paul.ettema@student.hu.nl
+- *Studentennummer:* 1677247
+
+#+LATEX: \newpage
+* Management Samenvatting
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+Het doel van dit onderzoek om te achterhalen wat er aan hardware en software nodig is om een goedkoop EEG-systeem te maken. Hiervoor is literatuur bestudeerd, experts om hulp gevraagd en is er geëxperimenteerd. Hiervoor is de volgende onderzoeksvraag gesteld: *'Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?'*. Het doel van dit EEG-systeem was om een brain computer interface te zijn, wat betekend dat een computer kan worden bestuurd met de hersenen. \\
+
+Om de onderzoeksvraag te beantwoorden zijn drie verschillende systemen getest. Het doel was om met deze systemen de P300 golf te kunnen detecteren. Deze golf treed op wanneer iets de aandacht van de hersenen trekt, zoals afwijking in een patroon.
+Hierbij is een goedkope speelgoed versie getest van Star Wars die "Force Trainer" heet, een open source variant onder de naam "OpenEEG" =en= een versie die tijdens het onderzoek gebouwd wordt met losse standaard componenten. Uiteindelijk is helaas met geen van de systemen softwarematig de P300 gedetecteerd, maar is via de OpenEEG door het analyseren van opgeslagen data aanwijzingen voor de golf gevonden. \\
+
+Door het onderzoek van deze systemen is wel tot een lijst van benodigde hardware gekomen. er is bijvoorbeeld achter gekomen dat het versterken van het signaal het belangrijkste maar ook het moeilijkste is. Zo is voor de eerste stap een instrumentele versterker (inamp) nodig, zodat de eerste stap van de versterking zo ruisvrij mogelijk is. Uit deze stap komt ook de driven right leg, wat een gedeelte van de ruis omkeert en terug stuurt naar het lichaam om zo een gedeelte van de ruis op te heffen. Na deze stap komt het filteren van het signaal, vooral 50Hz, en de grootste stap voor de versterking wat door operationele versterkers (opamps) wordt gedaan. Na deze stap is het signaal versterkt tot een niveau zodat de volgende stap, een analoog-digitaal converter (ADC), dit kan uitlezen. Hierna komt een microcontroller die de ADC uitleest en deze data doorstuurt naar een PC. \\
+
+Met de bovenstaande hardware is software matig dus nog geen P300 kunnen worden gedetecteerd. Verwacht is dat dit komt doordat nog geen goed genoeg signaal uit de elektrodes komt. Daarom is het te adviseren om in een vervolg onderzoek verbeteringen voor elektrodes te onderzoeken. Er kan bijvoorbeeld worden onderzocht of een speciale geleidende gel tussen de elektrode en de hoofdhuid het signaal kan verbeteren. Een ander voorbeeld en een alternatief voor de gel zijn dry-elektrodes, deze elektrodes zijn zo gemaakt dat ze door het haar heen steken en dus geen gel nodig hebben. In dit vervolg onderzoek kan ook verder worden gewerkt aan een techniek om software matig de P300 te detecteren.
+
+#+LATEX: \newpage
+#+LATEX: \renewcommand{\contentsname}{Inhoudsopgave}
+#+LATEX: \tableofcontents
+
+#+LATEX: \newpage
+#+LATEX: \pagenumbering{arabic}
+
+* Begrippen
+#+ATTR_LATEX: :environment longtable :align |l|p{10cm}|
+|-------------------+---------------------------------------------------------------------|
+| Begrip            | Betekenis                                                           |
+|-------------------+---------------------------------------------------------------------|
+|                   | <67>                                                                |
+| ADC               | Analog Digital Converter. Zet een analoge stroom om in een digitale waarde. |
+| BCI               | Brein Computer Interface.                                           |
+| Channel           | In context met elektrode: een enkele elektrode met daarbij behorende hardware om hersenactiviteit te meten op een plek. In context met ADC: een input van de ADC waarop het de stroom kan omzetten in een digitale waarde. |
+| EEG               | Elektro-encefalografie is een methode om hersenactiviteit te meten door de kleine elektrische stromen die de hersenen maken te meten. |
+| Elektrode         | Component wat elektronisch contact maakt met het lichaam om stroom van hersenen te meten. |
+| Hardwaredeel      | Een categorie van hardwarecomponenten zoals bijvoorbeeld een ADC of Op-Amp. |
+| Hardwarecomponent | Meer specifiek dan hardware deel bijvoorbeeld een specifieke chip.  |
+| Op-Amp            | Operationele Amplifier. Een chip die een analoog signaal kan versterken. |
+| PoC               | Proof of Concept.                                                   |
+|-------------------+---------------------------------------------------------------------|
+#+LATEX: \newpage
+* Inleiding
+Volgens de Hype Cycle van Gartner uit 2018 is een Brein-Computer-Interface (BCI) op dit moment bij de "Peak of Inflated Expectation" cite:Gartner_hype. Dit houdt in dat er voor dit onderwerp een aantal succesvolle implementatie zijn gemaakt, maar deze implementaties zijn nog wel erg duur. Hierdoor is het dus een interessant onderwerp om te onderzoek of een BCI ook goedkoop geïmplementeerd kan worden. Daarnaast is het Turing Lab op de Hogeschool Utrecht hierin geïnteresseerd omdat dit een goede kans is om huidige en toekomstige studenten veel aan te kunnen leren over BCI-systemen en programmeren. \\
+Tijdens dit onderzoek zal specifiek op EEG-systemen worden gericht wat de hersengolven meet, dit omdat EEG de basis van BCI betreft. \\
+Een EEG werkt door middel van elektrodes die op het hoofd worden geplaatst. Deze electrodus meten de kleine electische stroom die van de hersenen komen, welke daarna door een computer kan worden verwerkt tot een handeling, zoals een robotarm bewegen. \\
+Dit onderzoek wordt gedaan door twee studenten van Technische Informatica aan de Hogeschool Utrecht, voor het onderzoekssemester.
+#+CAPTION: De EEG-headset van OpenBCI cite:BCI_headset
+#+NAME: fig:bci_headset
+#+ATTR_LATEX: :width 250px
+#+ATTR_LATEX: :height 250px
+[[./images/bci_headset.jpg]]
+
+#+LATEX: \newpage
+* Aanleiding en Context
+Omdat EEG-technologie een zeer interessante technologie is en veel use cases kent, wilt de opleiding Technische Informatica aan de Hogeschool Utrecht een eigen EEG. Maar omdat nieuwe EEG-systemen die goed zijn zeer duur kunnen zijn is het goedkoper zelf een te maken. Er zijn wel goedkopere EEG-systemen alleen is de kwaliteit hiervan slechter. Een voorbeeld van een goedkoop EEG-systeem is die van NeuroSky cite:Neuro_mind welke maar 99,99 dollar kost, maar het nadeel van dit systeem is dat deze niet direct op de huid meet en maar één meetpunt heeft. Aan de andere kant zijn de EEG-systemen die meerdere duizenden euro's kosten, voorbeelden hiervan is zijn de systemen van Cognionics welke van 4.500 tot 50.000 euro kunnen kosten cite:Cognionics_headset. Het voordeel van deze systemen is dat ze meerdere channels hebben, zo heeft de dev-kit van Cognionics welke 4.500 euro kost 8 channels. Met het maken van een eigen EEG kan daarnaast ook veel geleerd worden in het ontwerpen van de hardware en in het programmeren hiervan. Ook kan het voor toekomstige studenten leerzaam zijn om hier op voort te bouwen. Daarnaast is het een leuke toevoeging aan het Turing Lab van de Hogeschool Utrecht om nieuwe studenten te laten zien wat er allemaal mogelijk is te doen op de opleiding Technische Informatica.
+
+** Use case
+Een voorbeeld van een use case waar een EEG-systeem als deze voor gebruikt kan worden is een P300-speller. Via een P300-speller kan door naar een toets op een scherm te kijken deze toets getypt worden. Dit werkt doordat als deze toets flitst met een andere kleur (zwart naar wit bijvoorbeeld) terwijl er naar gekeken wordt in het brein een P300-golf maakt, deze kan worden gedetecteerd door de EEG en zo weet de computer dat deze letter bedoeld wordt.\\
+Zo een P300-speller kan goed gebruikt worden door ALS-patiënten die problemen hebben om te praten of te typen doordat ze weinig tot geen controle hebben over de benodigde spieren, maar nog wel de ogen kunnen bewegen. Als een P300-speller wordt aangesloten aan tekst-naar-spraak computer zou zo een ALS-patient weer een soort van kunnen praten en zo dus weer makkelijker kunnen communiceren met andere mensen.
+
+** De Organisatie
+De Organisatie waar dit onderzoek voor gedaan wordt is de Hogeschool Utrecht. De Hogeschool Utrecht is een onderwijsinstelling. Hierbij wordt het onderzoek uitgevoerd aan het instituut HBO-ICT. Dit instituut heeft vier verschillende richtingen: Business IT & Management (BIM), Software & Information Engineering (SIE), System and Network Engineering (SNE) en Technische Informatica (TI). Bij de richting Technische Informatica wordt op embedded devices geprogrammeerd waaronder het EEG-systeem zal vallen. \\
+Specifiek wordt het onderzoek gedaan voor het Turing Lab. Het Turing Lab is vooral een werkplek voor studenten en docenten van de opleiding Technische Informatica op de Hogeschool Utrecht.
+
+** Opdrachtgever
+De opdrachtgever is Jorn Bunk van de Hogeschool Utrecht. Hij is hogeschooldocent bij HBO-ICT en verzorgd onderwijs voor Technische Informatica en Applied AI. Hij zal de begeleider zijn voor dit onderzoek.
+
+#+LATEX: \newpage
+* Theoretisch kader
+In dit hoofdstuk wordt het theoretisch kader van dit project beschreven. Als eerste worden er een aantal centrale begrippen over het onderwerp toegelicht. Daarna worden er een aantal belangrijke bronnen neergezet. En als laatste worden gerelateerde werken genoemd.
+** Core Concepts
+*** Brain Computer Interfacing
+Een Brain Computer Interface is een alternatieve manier om een computer te besturen ten opzichte van bijvoorbeeld de veelgebruikte muis en toetsenbord. Bij een Brain Computer Interface wordt de computer door middel van neuronen activiteit in de hersenen bestuurt. Bij deze techniek bestaan er invasive en noninvasive manieren. Bij invasive manieren moet er iets in het lichaam geplaatst worden om de activiteit te meten en bij de noninvasive manier wordt de hersen activiteit van de buitenkant van het lichaam gemeten door bijvoorbeeld gebruik te maken van elektroden cite:vallabhaneni2005brain. Een voorbeeld van een noninvasive-BCI welke gebruik maakt van de elektrodes is de EEG. Een voorbeeld van een invasive-BCI is door zogenoemde "Depth electrodes" =in= de hersenen te steken.
+
+*** Hersenen regio's
+Voor dit onderzoek is het belangrijk om te weten waar in de hersenen wat gebeurd. Dit is omdat dit belangrijke informatie is voor de plaatsing van de elektrodes. Er zijn vier belangrijke regio's in de grote hersenen, namelijk cite:Brain_and_Behavior:
+ - Frontale kwab: Dit is de regio aan de voorkant van het brein. Het is verantwoordelijk voor de volgende functies:
+  - Aandacht hebben voor dingen of zich goed kunnen concentreren
+  - Het maken van plannen
+  - Oplossen van problemen
+  - Precieze bewegingen maken van bijvoorbeeld: handen, voeten, tong en het gezicht
+  - Hoe een persoon zich gedraagt
+  - Reageren op emoties
+ - Occipitale kwab: Deze kwab is verantwoordelijk voor het kijken en speelt ook een rol in het herkennen van wat gezien wordt
+ - Temporale kwab: Deze regio verantwoordelijk is voor horen, taal, smaken en speelt ook een rol in het herkennen van wat gezien wordt
+ - Pariëtale kwab: Deze regio is vooral verantwoordelijk voor het voelen, bijvoorbeeld iets aanraken met de vingers
+*** Hersengolven
+Hans Berger was in 1924 de eerste persoon die de hersengolven van een persoon heeft afgenomen, hiermee is hij ook de persoon die als eerste een EEG-systeem gemaakt heeft cite:Haas2003. Hersengolven zijn sinusoïde golven die worden gegenereerd door de neuronen in de hersenen. Deze golven kunnen gemeten worden aan de buitenkant van de schedel. Hier is de stroom die gemeten wordt wel klein, namelijk 0,5 tot 100 µV cite:EEG_fundamenental.
+Hersengolven zijn verdeelt in meerdere categorieën met hun eigen frequenties. Tijdens het zoeken naar deze frequenties is tot de conclusie gekomen dat veel bronnen andere frequenties zeggen.
+  Bij dit onderzoek worden de volgende frequenties gebruikt, welke gevonden zijn is een artikel van William O. cite:Extraordinary_EEG:
+#+ATTR_LATEX: :environment longtable :align |l|p{4cm}|p{5cm}|p{4cm}|
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| *Golf* | *Frequentiebereik (Hz)* | *Komt voor tijdens*                                       | *Pathologisch*                                               |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Delta  |                 0,5-3,5 | Slapen, hyperventilatie, baby's, ouderen                  | Hersenaandoeningen, laesie in de witte stof van de hersenen  |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Theta  |                   3,5-8 | Slaperigheid, kinderen, ouderen                           | Hersenaandoeningen, laesie (minder correlatie dan bij Delta) |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Alpha  |                    8-13 | Ontspanning, sluiten van ogen                             | Coma, beroerte                                               |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Beta   |                   13-30 | Ogen open cite:EEG_fundamenental, wakker/actief           | Drugs overdosis                                              |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+| Gamma  |                   30-80 | Bewegen van spieren, iets leren of het geheugen gebruiken | Beroerte                                                     |
+|--------+-------------------------+-----------------------------------------------------------+--------------------------------------------------------------|
+
+Een van de meest bekende hersengolven is de P300-hersengolf. De P300 is een event-related-potetial (ERP) cite:polich07_updat_p300, wat wil zeggen dat het een elektrofysiologische reactie is van de hersennen. De P300 komt voor tussen de Theta en Alpha banden voor cite:polich07_updat_p300. De P300 ontstaat wanneer de hersenen een gebeurtenis detecteert welke aandacht trekt, zoals een lichtflits. Daarnaast kent de P300 twee vormen, namelijk de P3a en de P3b. De P3a komt voor als er een gebeurtenis is welke nog nieuwe is voor de hersenen. Als deze gebeurtenis vaker voorkomt zal de P300 golf steeds meer op een P3b gaan lijken waarbij de hersenen meer data uit de het geheugen gaan verwerken dan bij de P3a cite:polich07_updat_p300. Het verschil in uiterlijk tussen de P3a en de P3b is dat de P3a een hogere piek in amplitude heeft dan de P3b. Ook is de herkomst uit de hersenen anders, zo onstaat de P3a meer in de frontale kwab en de P3b meer uit de temporale/pariëtale kwab. Omdat de P300 vaak voorkomt en relatief makkelijk te meten is, zal het bij dit onderzoek worden gebruikt als minimale eis aan het EEG-systeem dat wordt gemaakt.
+
+#+CAPTION: p3a en p3b golf cite:EEG_synthesis
+#+NAME: fig:P300GOLF
+#+ATTR_LATEX: :width 200px
+[[./images/p3ab.png]]
+
+*** Signaalmeting
+In dit onderzoek wordt met signaalmeting het meten van het signaal bedoeld om deze later te kunnen verwerking. In dit project zal dit worden gebruikt om hersengolven van een persoon te meten. Uit onderzoek is gebleken dat voor het meten van hersengolven een elektrode en een analoog-digitaal converter (ADC) nodig is cite:xu2011160. Echter is nog niet duidelijk wat de precieze eisen zijn aan deze hardwaredelen, daarom zal dit worden onderzocht in dit onderzoek. Hieronder zal elektrode en ADC kort worden uitgelegd:
+**** Elektrode
+Een elektrode is een analoge sensor die de EEG gebruikt om contact te maken met het hoofd. Doordat elektroden contact maken met het hoofd kunnen hersengolven gemeten worden door de schedel heen. Hierbij is het nodig een goede elektrische verbinding te maken tussen de elektrode en het hoofd om potentiële ruis te verminderen. Voor het verbeteren van dit contact kan een gel gebruikt worden cite:usakli2010improvement. Elektrodes verschillen onder elkaar ook nog op meerdere attributen. Zo zijn ze verkrijgbaar in verschillende maten. Sommige elektrodes zijn herbruikbaar en anderen zijn maar één keer te gebruiken.
+
+#+CAPTION: Elektrode cite:EEG_Elektrode
+#+NAME: fig:ELEKTRODE
+#+ATTR_LATEX: :width 200px
+[[./images/grass_silver_cup_electrodes_single.jpg]]
+
+*Plaatsing* \\
+Er zijn standaarden voor de plaatsingen van elektrodes op de schedel cite:Electrode_placement. Een voorbeeld hiervan is het 10-20 systeem, zoals te zien is in figuur [[fig:10-20]]. Bij dit systeem wordt de schedel in vijf verschillende delen verdeeld, deze delen hebben een grote van 10% of 20% van het totaal. In figuur [[fig:10-20-side]] is te zien hoe de verdeling is van deze regio's. In dit figuur is alleen verdeling vanaf de zijkant te zien, maar dezelfde deling geld ook vanaf de voorkant en de bovenkant.\\
+Te zien is dat de regio's een naam krijgen als "F5", "Cz" =of= "T4". Hierbij is de eerste letter de hersenregio die de elektrode zal meten, zoals "F" voor Frontale kwab, "T" voor Temporale, "P" voor Pariëtale en "O" voor Occipitale. De tweede letter of cijfer is toegevoegd om verschillende plekken in een regio aan te kunnen geven. De even getallen voor de rechter helft van de schedel en de oneven getallen zijn voor de linker helft. De "z" =in= bijvoorbeeld "Cz" staat voor zero.
+Er zijn ook varianten met een deling van maar 10% of zelfs 5% cite:Oostenveld2001.
+#+CAPTION: De vijf verschillende delen cite:Electrode_placement
+#+NAME: fig:10-20-side
+#+ATTR_LATEX: :width 200px
+[[./images/10-20-side.png]]
+
+#+CAPTION: 10-20 systeem cite:10-20-img
+#+NAME: 10_20_placement
+#+LABEL: fig:10-20
+#+ATTR_LATEX: :width 200px
+[[./images/10-20-sys.png]]
+
+**** Versterking
+Omdat de stroom uit de elektrodes zeer klein is zal dit eerst moeten worden versterkt om tot een meetbaar niveau te komen voor de ADC. Voor deze versterking wordt een versterker IC gebruikt welke in het engels ook wel een "=amp=" wordt genoemd. Er zijn twee soorten versterking IC's, welke hieronder kort worden uitgelegd.
+
+*Operationele versterker*
+De operationele versterker of opamp is een IC die veel gebruikt wordt om signalen te versterken cite:opamp_handbook. Een opamp heeft twee inputs en een output. De twee inputs zijn de inverting- en de non-invertinginputs. De opamp is zo ontworpen dat op de output het voltage verschil van de inputs gezet wordt keer de versterking, wat standaard hoog is (rond de 100000). De output kan echter niet hoger worden dan de voltage van de voeding.
+
+*Instrumentele versterker*
+Een ander soort versterker is de instrumentele versterker of inamp. De inamp lijkt sterk op de opamp dat het een verschil tussen de twee inputs keer een versterking op de output zet. Maar een inamp heeft een nog hogere input impedantie waardoor het te meten signaal nog minder wordt verstoord. Ook kan de versterking van een inamp worden gezet door een enkele weerstand, terwijl bij een opamp twee weerstanden nodig zijn cite:inamp_uitleg.
+
+**** Bemonsteringstheorema van Nyquist-Shannon
+Bij het meten van het signaal is het belangrijk dat er met de juiste frequentie gemeten word. het Bemonsteringstheorema van Nyquist-Shannon zegt dat het aantal keren per seconden dat het signaal gemeten wordt (sps) twee keer zo hoog moet zijn dan de frequentie in het signaal cite:Nyquist. Als minder vaak gemeten wordt dan de frequentie in het signaal kan het gemeten signaal foutief zijn. Als de sps gelijk is aan de frequentie dan zal er een constant voltage worden gemeten, zoals te zien in figuur [[fig:nyquist]].
+#+CAPTION: Onjuiste en juiste meet frequentie
+#+NAME: fig:nyquist
+#+LABEL: fig:nyquist
+#+ATTR_LATEX: :width 300px
+[[./images/n-sample.jpg]]
+
+**** ADC
+De ADC vertaalt het analoge signaal vanuit de elektrodes naar een digitaal signaal. Dit is zodat deze op de computer met gebruik van algoritmes kunnen worden verwerkt naar bijvoorbeeld een frequentieanalyse. Met de frequentieanalyse kan dan bijvoorbeeld de P300-hersengolf worden gedetecteerd. Doordat de elektrische stroom uit de hersenen klein is, 0,5 tot 100 µV, zal deze eerst nog versterkt moeten worden tot een waarde die gemeten kan worden door de ADC. De sampling frequentie van de ADC hoeft niet heel snel zijn omdat de frequentie van de hersengolven niet hoog zijn, maximaal 80Hz voor gamma golven.
+
+**** DRL
+Voor het tegengaan van noise in het EEG-systeem is een DRL (Driven Right Leg) circuit een goede toevoeging cite:venkatesh_2011. Een DRL werkt op het principe dat bij de instrumentele amplifier het Common-Mode voltage op de versterkingsweerstand staat. Het Common-Mode voltage is de stroom die door het hele lichaam verdeeld is en ontstaat door elektriciteit om het persoon heen, bijvoorbeeld TL buizen of het lichtnet om ons heen.
+Een DRL verlaagd die Common-Mode noise door de Common-Mode van de instrumentele amplifiers te nemen en hier het geïnverteerde signaal terug te leiden naar het persoon. Hierdoor heffen beide stromen elkaar op, echter is dit nooit perfect.
+Om de Common-Mode van de instrumentele amplifier te nemen moet het worden gebufferd om geen invloed op de werking van de instrumentele amplifier te hebben. Hiervoor wordt het in een opamp gevoerd wat als buffer zal dienen, die vervolgens het signaal aan de DRL zelf geeft. De DRL heeft de input van één of meerdere aangesloten op de inverting input van de opamp. De non-inverting input wordt dan op de grond aangesloten om zo de inverse van het signaal te creëren. De output van dit circuit is dan aangesloten aan bijvoorbeeld een earclip om zo de inverse Common-Mode signaal terug te brengen naar de gebruiker van de EEG om de invloed daarvan te verminderen.
+
+*** Signaalverwerking
+Signaalverwerking is het analyseren of verwerken van signalen om nuttige operaties op deze signalen uit te voeren. Bij dit project zal het gaan over het verwerken en analyseren van signalen uit de hersenen, oftewel hersengolven. Hierbij zal vooral worden gefocust op het vinden van het P300-signaal uit de hersenen, waarvoor het signaal eerst van ruis moeten worden vrij gemaakt.
+
+**** Signaalruis
+Bij een EEG-systeem zijn er verschillende soorten ruis. Voor het meten van het signaal kan dit worden verdeeld in Thermal Noise, Channel Noise, Synaptic Noise en overige. Bij Thermal Noise wat ook bekend is als /Johnson noise/ gaat het om voltage veranderingen door de invloed van temperatuur. Dit kan worden verminderd door de temperatuur of de frequentie te verminderen. Channel Noise wordt veroorzaakt door stochastic ionic channels op de membraan van cellen. Deze channels openen en sluiten toevallig en hebben invloed op het geleiden van stroom. Dit is dus ook een mogelijke bron van ruis. Naast channels die openen en sluiten gaat het bij Synaptic Noise om neurotransmitter moleculen die vrijgelaten worden door cellen. Dit beïnvloed ook de geleiding van stroom waardoor het ruis kan veroorzaken cite:manwani1999detecting. Als laatste zijn er ook nog overige vormen van ruis. Zo kunnen signalen voor spieren van bijvoorbeeld de ogen ruis genereren cite:woestenburg1983removal.
+
+** Belangrijke bronnen
+Voor dit onderzoek zijn er een aantal bronnen die belangrijk zijn.\\
+Onderstaande zijn de bronnen die kunnen worden gebruikt om het juiste algoritme te vinden voor het detecteren van het P300-signaal uit het EEG-signaal. De keywords die gebruikt zijn voor het vinden van deze bronnen zijn: EEG, P300, en Algorithm.
+- /A review of classification algorithms for EEG-based brain–computer interfaces: a 10 year update/ cite:lotte18_review_class_algor_eeg_inter: Dit is een artikel uit het "Journal of Neural Engineering". Volgens ResearchGate heeft dit journal heeft een impact factor van 4,84 in 2015. Dit artikel is relevant voor dit onderzoek omdat het verschillende recent gevonden (2007-2017) algoritmes voor het detecteren van features uit het EEG-signaal bespreekt. Ook is dit artikel uit 2017, dus nog recent. In dit artikel worden ook bronnen gegeven naar andere onderzoeken waar deze algoritmes worden voorgesteld, deze kunnen goed van pas komen voor het onderzoek.
+- /Adaptive Methods in BCI Research - An Introductory Tutorial/ cite:Schlgl2009: Het eerste artikel beschrijft dat adaptieve classificatie algoritmes goed zijn en geeft dit artikel als referentie hiervoor, daarom is artikel dus ook relevant voor het onderzoek.
+- /Updating P300: An integrative theory of P3a and P3b/ cite:polich07_updat_p300 uit "Clinical Neurophysiology". Volgens Elsevier heeft dit journal een impact factor van 3,614. Dit is relevant doordat in dit onderzoek erop ingaat wat het P300 signaal is en hoe deze eruitziet, wat benodigde informatie is voor het detecteren van een P300-signaal.
+- /P300 brainwave extraction from EEG signals: An unsupervised approach/ cite:Lafuente2017: Dit artikel legt uit wat het P300 signaal is en hoe deze kan worden gedetecteerd, dit is dus ook weer relevant voor het onderzoek naar P300. Dit is een artikel uit het journal "Expert Systems with Applications". Dit journal heeft volgens Elsevier een impact factor van 3,7. Het artikel komt 2017, wat dus nog recent is.
+
+Hier onder volgt een bron die kan worden gebruikt voor het onderzoeken naar de benodigde hardware:
+- /A 160 \textmu{}W 8-Channel Active Electrode System for EEG Monitoring/ cite:xu2011160 uit "IEEE TRANSACTIONS ON BIOMEDICAL CIRCUITS AND SYSTEMS". Volgens IEEE heeft dit journal een impact factor van 3,5. Dit is relevant want hier gaat het om de hardware setup van een EEG om signalen te meten, wat nodig is voor de eerste deelvraag. Ook komt deze bron uit 2011 wat het nog redelijk recent maakt.
+** Gerelateerde werk
+Hieronder volgen bronnen die gerelateerd zijn aan dit onderzoek:
+- Bergen, H. (1929, 2 april). Uber das Elektrenkephalogramm des Menschen. Geraadpleegd op 21 september 2018, van http://pubman.mpdl.mpg.de/pubman/item/escidoc:2281721:3/component/escidoc:2281720/Berger_1929_Ueber_Elektroenkephalogramm.pdf \\
+  Dit is het eerste onderzoek naar EEG-metingen op de mens van Hans Berger.
+- Bang, J. W., Choi, J. S., & Park, K. R. (2013). Noise reduction in brainwaves by using both EEG signals and frontal viewing camera images. Sensors, 13(5), 6272-6294.\\
+  Bij dit onderzoek gebruiken ze een EEG in combinatie met een camera voor een P300-speller.
+- Abootaleb, V., Moradi, M. H., & Khalilzadeh, M. A. (2009, april). A new approach for EEG feature extraction in P300-based lie detection. Geraadpleegd op 28 september 2018, van https://linkinghub.elsevier.com/retrieve/pii/S0169260708002484\\
+  Hier wordt het P300-signaal gebruikt om leugens te detecteren.
+#+LATEX: \newpage
+
+* Doelstelling
+De uiteindelijke doelstelling van dit project is het maken van een EEG-systeem waar andere studenten op voort kunnen bouwen. Dit EEG-systeem zou tenminste een P300-signaal bij de onderzoekers kunnen detecteren. Het EEG-systeem is bedoeld om te kunnen worden gebruikt voor studenten. Hiervoor moet het prototype dus goed gedocumenteerd worden en uitbreidbaar zijn. Aangezien het systeem voor het onderwijs is bedoeld mag het niet te duur zijn dus wordt de prijs gelimiteerd tot onder de 250 euro.
+* Vraagstelling
+Dit hoofdstuk benoemd en omschrijft de vragen die tijdens dit onderzoek zullen worden beantwoord. Als eerst wordt de hoofdvraag toegelicht en daarna zullen de deelvragen aan de pas komen. Na het stellen van het probleem is er de volgende hoofdvraag opgesteld: *Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?* De minimale eisen voor de EEG zijn:
++ Het kan het P300 signaal beter detecteren bij de onderzoekers dan een goedkope speelgoed EEG. Als goedkoop speelgoed-EEG wordt de Star Wars EEG als vergelijk gebruikt.
++ De kosten voor de hardware die nodig zijn voor de EEG zijn niet meer dan 250 euro. Dit maximale budget is ontvangen van de opdrachtgever
++ Het is makkelijk uitbreidbaar en kan makkelijk worden gebruikt voor bij andere projecten. Het idee is dat de EEG door andere studenten kan worden gebruikt voor andere projecten, daarom is het dus nodig dat er een duidelijke API en documentatie is.
+
+Voor dit onderzoek zijn er een aantal deelvragen opgesteld welke moeten leiden tot een antwoord op de hoofdvraag. Elke deelvraag heeft weer enkele onder-deelvragen welke moeten leiden tot antwoord op de deelvraag.
+De deelvragen zijn:
+1. Welke hardware is nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
+   1. Welke hardware delen zijn nodig om een EEG te maken welke tenminste voldoet aan de gestelde eisen?
+   2. Wat is de meest geschikte hardware component per hardware deel, denkend aan de minimale eisen en de kosten (totaal maximaal 250 euro)?
+   3. Wat voor typen ruis zijn er in het ontvangen signaal?
+   4. Kan deze ruis hardware matig gefilterd worden? Zo ja, hoe?
+2. Hoe kan de gekozen hardware geprogrammeerd worden om een EEG te maken, waarbij hersengolven herkend kunnen worden op een PC (bijv. P300)?
+   1. Welk algoritme is het beste voor de signaalverwerking van de analoge data uit de elektroden?
+   2. Kan het ruis in inkomende signaal verder gefilterd worden zodat er een zo ruisvrij mogelijk signaal is? Zo ja, hoe?
+   3. Welke algoritmes zijn nodig om de benodigde hersengolven te detecteren?
+   4. Welke C++/Python library is het beste om deze algoritmes toe te passen, denkend aan performance?
+   5. Moet het EEG gekalibreerd worden om de p300 golf bij verschillende mensen te herkennen? Zo ja, hoe?
+3. Hoe vergelijkt onze EEG met de Star Wars EEG?
+   1. Op hoeveel procent van de geselecteerde proefpersonen kan het P300-signaal gedetecteerd worden?
+   2. Doet onze EEG het significant beter dan de Star Wars EEG?
+#+LATEX: \newpage
+
+* Methode en Aanpak
+Dit hoofdstuk beschrijft de aanpak en welke methodes gebruikt gaan worden om de onderzoeksvragen
+te beantwoorden. Een globale aanpak van hoe dit onderzoek wordt aangepakt en welke methodes
+gebruikt gaan worden staat in een tabel in bijlage B ([[#BijlageB]]). Dit hoofdstuk beschrijft deze tabel in meer detail.
+
+** Benodigde Hardware EEG
+Als eerste zullen de vragen die betrekking hebben tot de hardware worden onderzocht. Om tot de benodigde kennis te komen welke hardwaredelen nodig zijn zal literatuur studie worden toegepast. Zo zal naar publicaties worden gezocht waarin onderzoeken worden gedaan naar EEG’s en de werking van het brein. Ook zullen andere EEG’s als voorbeeld worden gebruikt. Het resultaat van dit onderzoek zal een MoSCoW-lijst zijn met de verschillende benodigde en optionele hardware functionaliteiten van de EEG en wat daarvoor nodig is. \\
+
+Als bekend is welke hardwaredelen benodigd zijn zal worden onderzocht welke specifieke hardwarecomponenten het meest geschikt zijn voor de EEG. Om hierachter te komen zal voor elke benodigd hardwaredeel een vergelijkingstabel worden gemaakt waarin de specificaties van de componenten zullen worden vergeleken. Uit deze lijsten komen selecties van de meest belovende componenten. Deze componenten zullen dan worden getest via “benchmarking tests”. Op deze manier wordt er gekomen op het resultaat, wat een componentenlijst zal zijn voor de EEG.\\
+\\
+Bij het uitzoeken van de hardwaredelen en componenten zal aandacht worden besteed aan het zo min mogelijk hebben van ruis. Bij het uitzoeken van de hardwaredelen zal bijvoorbeeld extra delen kunnen worden toegevoegd (hardwarefilters bijvoorbeeld) om de ruis te verminderen. Bij de hardwarecomponenten zal ruis meespelen als wegingsfactor bij het vergelijken van hardwarecomponenten. Hier al aandacht besteden aan de ruis wordt gedaan om preventief de ruis tegen te gaan.
+
+** Ruisfiltering
+Uit vooronderzoek is gebleken dat bij het maken van een EEG ruisfiltering een belangrijk onderdeel is cite:EEG_nois_canc. Als eerste zal er gekeken worden hoe de ruis kan worden verminderd. Daarna zal worden onderzocht welke typen ruis er in het gemeten signaal over zijn en hoe deze eruit kunnen worden gefilterd. De eerste deelvraag die hierover gaat zal onderzoeken welke ruis er is. Hier wordt als methode Data analytics gebruikt, er zal namelijk naar het frequentiespectrum worden gekeken van het signaal uit de EEG. Dit frequentiespectrum kan worden gegenereerd door een oscilloscoop welke aanwezig zijn in de werkplaats waar dit onderzoek wordt uitgevoerd. Met dit frequentiespectrum kunnen we ruis wat vaste frequenties heeft, zoals 50/60 Hz ruis van de netvoeding, detecteren cite:xu2011160. Als bekend is welke ruis er in het signaal is zal de tweede deelvraag gaan onderzoeken hoe deze ruis preventief hardwarematig kan worden gefilterd voordat de software dit moet doen. Om achter de oplossing te komen zal literatuur studie worden gebruikt om te kijken hoe andere mensen dit gedaan hebben.
+
+** De EEG-firmware
+Als de gekozen hardware gecombineerd is tot een EEG moet er voor deze hardware nog firmware worden geschreven. Deze deelvraag zal vooral gaan over de firmware die op een PC gaat draaien. Dit omdat het plan is om de signaalverwerking op de PC te doen. Dit doen wij omdat er meer Python/C++ libraries beschikbaar zijn op de PC dan voor de embedded hardware, hierdoor is het programmeren sneller en makkelijker. De eerste deelvraag over de firmware gaat over welke ruis er nog over is na de hardwarefiltering en hoe deze softwarematig weg kan worden gefilterd. Ook hier wordt naar het frequentiespectrum van het signaal uit de EEG gekeken. Als bekend is welke ruis er in het signaal aanwezig is zal worden onderzocht hoe dit softwarematig kan worden weg gefilterd. Om te weten hoe dit kan zal literatuur studie worden gebruikt.
+
+** Kwantitatief onderzoek
+Nadat het EEG-systeem af is zal deze worden getest door een vergelijking te maken met een goedkopere EEG. De goedkopere EEG is een EEG uit een speelgoed set welke verkrijgbaar is voor consumenten. Tijdens dit onderzoek zal deze EEG de Star Wars EEG worden genoemd. Deze EEG kan worden gevonden via de volgende link: https://www.amazon.com/Science-Trainer-Brain-Sensing-Hologram-Electronic/dp/B00X5CCDYQ
+
+Het doel van deze tests is om te kijken of de gemaakte EEG beter is dan de Star Wars EEG. Dit zal worden getest met gebruik van de methodiek Benchmark test. Beide EEG's zullen worden getest op proefpersonen door P300-speller als benchmark te gebruiken. De proefpersonen zullen mensen zijn uit het Turing Lab of familie/vrienden van de onderzoekers.
+
+#+LATEX: \newpage
+* Benodigde hardware EEG
+In dit hoofdstuk zullen de resultaten worden weergegeven uit het literatuuronderzoek naar de hardwaredelen en componenten die nodig zijn om een EEG-systeem te maken. Als eerste zal worden beschreven welke hardware delen nodig zijn en daarna zal worden beschreven welke componenten binnen deze delen kunnen worden gebruikt.
+
+** Benodigde hardwaredelen
+In het hoofdstuk over signaalmeting is al verteld dan uit vooronderzoek is gebleken dat tenminste een elektrode en een ADC benodigd is om een EEG-systeem te maken. Echter zal met alleen deze twee hardwaredelen geen succesvol EEG-systeem kunnen worden gemaakt, doordat de signalen uit de elektroden te klein zijn voor een normale ADC. Dit hoofdstuk zal beschrijven welke hardware delen nog meer nodig zijn. De informatie voor het onderzoeken hiernaar is verkregen door literatuurstudie te doen naar andere EEG-systemen. Enkele van deze systemen zijn opensource waardoor goed te zien is hoe het bij deze systemen gedaan is. Ook is hulp van een expert gevraagd\\
+
+Een van deze opensource EEG-systemen is genaamd OpenEEG. OpenEEG is een project met als doel om goedkope EEG-systemen en de software hiervoor te maken cite:OpenEEG. Via de webshop Olimex zijn twee verschillende type PCB's te koop van OpenEEG, de ene is een versterker genaamd modEEGamp en de andere bevat een ADC en een microcontroller om de gemeten data te kunnen versturen naar een computer.
+Als naar de schematics van de modEEGamp gekeken wordt, welke te vinden is in [[Bijlage A: schakelschema modEEGamp][Bijlage A]], is goed te zien welke hardware delen gebruikt zijn.\\
+Daarnaast is er hulp gevraagd van een expert in elektrotechniek, deze expert heet Franc van der Bent en is een leraar elektrotechniek aan de Hogeschool Utrecht. Deze expert is ook als bron gebruikt om uit te leggen welke hardware delen worden gebruikt in een EEG-systeem en waar deze voor zijn. \\
+
+Te zien is dat er per kanaal meerdere versterkers worden gebruikt, waarvan er één een instrumentale versterker (inamp) is en de andere operationele versterkers(opamp) zijn. Maar voorafgaand aan de inamp en de opamp is een filter tegen rf-signalen en een protectiecircuit tegen hoge voltages. Volgens de expert is de protectie tegen hoge voltages als een patient bijvoorbeeld wordt gedefibrilleerd, omdat dit niet tijdens dit onderzoek zal gebeuren kan dit alleen maar voor meer ruis zorgen. Voor dit protectiecircuit is de filter tegen RF-signalen te vinden, wat volgens de expert ook niet nodig is en alleen maar voor ruis kan zorgen.\\
+Na het protectiecicuit komt de inamp waar het signaal zijn eerste versterking van 12.2 krijgt, volgens de expert is deze stap het belangrijkste om een signaal te verkrijgen zonder veel ruis. Uit de inamp komt ook de DRL zoals uitgelegd in het Theoretisch kader [[Signaalmeting]]. Na de inamp komt een opamp welke een instelbare versterking heeft van 6 tot 100 dankzij een potentiometer. Na deze opamp komt een derde order besselworthfilter, wat een frequentiefilter is. Het voordeel van een besselworthfilter is een heel goede phase response (fase van de golf veranderd weinig) en een goede transient response (Hoe snel de filter bij zijn doelwaarde is) cite:TI_Bessel_Filter. Het derde gedeelte van de filter is niet te vinden op het versterkingsgedeelte maar op het digitale gedeelte, dit zal dus zelf moeten worden gemaakt. Het derde gedeelte is een low-pass RC-filter met een weerstand van 7,5 kilo Ohm en een condensator van 220 micro Farad.
+
+In [[Bijlage B: schakelschema versterker][Bijlage B]] is nog een schakelschema te zien welke ook een inamp en een opamp gebruikt om de hersensignalen te versterken. Echter is dit schema niet het protectiecircuit en de filtering tegen rf-signalen te zien. Dit schema is eerder gebruikt in een succesvol onderzoek naar het maken van een EEG-systeem cite:Diy_EEG. Uit dit onderzoek en het advies van een expert kan dus worden afgeleid dat het protectiecircuit en de filtering tegen rf-signalen niet perse nodig.
+
+Dankzij de bestudeerde bronnen is de volgende lijst van benodigde onderdelen opgesteld:
+- *Elektrode*: om signalen uit de hersenen van een persoon te meten moet contact worden gemaakt met de hoofdhuid, hiervoor worden elektrodes gebruikt.
+- *Instrumentele versterker (inamp)*: een inamp wordt gebruikt om het verschil tussen de elektrode op het oor en een andere elektrode als output te krijgen en deze ook de versterken.
+- *Operationele versterker (opamp)*: een opamp wordt gebruikt om de output uit de inamp voor het grootste gedeelte te versterken tot een voltagebereik wat kan worden gemeten door een analoog-digitaal converter.
+- *Signaalfiltering*: verwacht wordt dat er in het signaal veel ruis zal bevinden en dat signaalfilter nodig zijn, zoals een lowpas filter die alles boven de 50Hz van het lichtnet verwijderd. Hiervoor kan een opamp worden gebruikt, maar ook weerstand in combinatie met een condensator. Ook kan de ruisfiltering in de comuter worden gedaan.
+- *Analoog-digitaal converter (ADC)*: om het analoge signaal uit de opamp om te zetten naar een digitaal signaal is een ADC nodig. De ADC moet tenminste 30 metingen per seconden kunnen doen. Er is hier voor 30 gekozen omdat de maximale frequentie die moet kunnen worden gemeten 15Hz is, wat de maximale frequentie van de P300 is. Dit dubbele is nodig om aan Nyquist-frequentie te voldoen.
+- *Microcontroller*: de microcontroller zal de data uit de ADC uitlezen en doorsturen naar een computer. De enige eisen aan de microcontroller zijn dat het USB verbinding kan hebben met een computer zodat de data kan worden verstuurd. Als er gekozen wordt om de ADC van een microcontroller te gebruiken zullen de eisen van de ADC bij die van de microcontroller komen.
+
+** De hardware componenten
+In [[Benodigde hardwaredelen]] zijn er een aantal eisen gesteld waar de componenten aan moeten voldoen. Aan het einde van dit hoofdstuk wordt er een lijst opgesteld met de verschillende hardwarecomponenten die nodig zijn voor het EEG-systeem. Voor elke hardwaredeel zal er een tabel worden gemaakt waarin meerdere componenten in dit deel worden vergeleken om zo tot een selectie te komen van componenten. De selectie wordt dan getest om te kijken welke het best is. \\
+
+Als eerste zal worden bepaald welke elektrodes worden gebruikt. In Bijlage C ([[Bijlage C: Vergelijkingstabellen voor benodigde hardware]]) is een tabel te zien van de elektrodes welke worden vergeleken.
+Gekozen is om beide de EEG-AE en de EEG-PE te bestellen en daarnaast ook nog one-time-use elektrodes te kopen met een Silver Chlorided Plastic coating. Voor de EEG-AE en de EEG-PE is gekozen om het verschil tussen een actieve en passive elektrode te kunnen meten, ook zijn deze elektrodes niet one-time-use. Voor de one-time-use elektrodes is gekozen om te meten hoe deze vergelijken met de andere twee elektrodes en ook om te kijken hoe goed deze elektrodes werken als deze vaker worden gebruikt dan een keer.
+Er is niet voor de andere elektrodes gekozen omdat deze of te duur zijn(>30 euro) of minder makkelijker leverbaar zijn in Nederland. \\
+
+Voor instrumente amplifiers (inamp) is het belangrijk dat er weinig noise is. Dit komt doordat het de eerste chip is waar het signaal van een elektrode binnenkomt waar de kleinste ruis het meeste verschil uitmaakt. Bij de inamp is er gekozen om de AD620ANZ en INA129P te gebruiken. Hiervoor is gekozen omdat er niet veel verschil tussen de input noise zit van de verschillende inamps in de lijst. Ook zijn deze inamps verkrijgbaar als DIP-package wat het solderen makkelijker maakt. Deze twee zijn ook vaker gebruikt in andere zelfgemaakte EEG systemen, zoals OpenEEG en schakelschema's uit meerdere papers \\ cite:Sahin2015,Badillo.
+
+Voor de opamp hebben we gekozen om de standaard veelgebruikte en goedkope LM358 te testen en een duurdere OP27GPZ. De OP27GPZ is een opamp gespecialiseerd op low noise en is ook vaker in andere EEG schakelschema's tegen gekomen. Hieruit is besloten om deze twee met elkaar te vergelijken of het een significant verschil maakt om een gespecialiseerde opamp te gebruiken op het gebied van ruis.
+
+Onze tabel met de vergelijkingen van de hardware is te vinden in [[Bijlage C: Vergelijkingstabellen voor benodigde hardware][Bijlage C]].
+
+#+LATEX: \newpage
+
+** Ruis in het signaal
+In dit hoofdstuk zal worden besproken welke type ruis er zijn tegengekomen tijdens het maken van het prototypen EEG-systeem. Ook zal worden besproken hoe deze ruis er uitgefilterd is.
+Bij het maken van de eigen versterker voor EEG-signalen is opgevallen dat het heel lastig is om 50Hz er uit te filteren, zoals te zien is in figuur [[fig:DIY_ruis_1]]. In dit figuur is de 50Hz te zien welke zeer waarschijnlijk veroorzaakt wordt door het lichtnet om de werkplaats heen. \\
+Iets anders dat opviel was dat om de aantal seconden het signaal voor een seconden naar 0 volt ging, zoals in figuur [[fig:DIY_ruis_2]] te zien is. De reden waarom dit gebeurd is nog onduidelijk.
+In het volgende hoofdstuk is te lezen hoe de ruis is geprobeerd op te lossen.
+
+#+CAPTION: Het signaal op de uitput van de inamp, waarop 50Hz te zien is.
+#+NAME: fig:DIY_ruis_1
+#+ATTR_LATEX: :width 200px
+[[./images/DIY_ruis_1.jpg]]
+
+#+CAPTION: Het signaal op de uitput van de inamp, waar het op het einde naar 0 volt gaat.
+#+NAME: fig:DIY_ruis_2
+#+ATTR_LATEX: :width 200px
+[[./images/DIY_ruis_2.jpg]]
+
+** Conclusie
+In conclusie is het belangrijkste gedeelte van een EEG-systeem dus het versterkingsgedeelte. Voor het versterkingsgedeelte is op de eerste stap waar het signaal uit de elektrodes binnenkomt een inamp. Deze inamp zorgt ervoor dat het signaal zijn eerste versterking krijgt naar een punt dat het signaal-ruis verhouding klein genoeg is. Hier wordt niet voor een opamp gekozen maar voor een inamp omdat een inamp minder ruis veroorzaakt en het verschil tussen de twee inputs versterkt. Vanuit de inamp komt ook de DRL vanuit de weerstand die de versterking bepaald. \\
+Na de inamp komt het filteren van het signaal. Het belangrijkste om er uit te filteren is de 50Hz, dit kan deels worden gedaan met de common mode van de inamp. Het common mode voltage staat in het midden van de versterkingsweerstand, hiervoor is gekozen om twee dezelfde waarde weerstanden te gebruiken voor de versterkingsbepaling. Dan in het midden tussen de weerstanden met een opamp als buffer het common mode voltage af te nemen, om dit weer terug naar de persoon te sturen nadat het signaal nog geïnverteerd wordt. Na de inamp komt dus ook nog de versterking naar een voltage wat kan worden gemeten door de ADC. Deze versterking wordt gedaan door opamps. Na de opamps komt dus de ADC welke het analoge signaal omzet naar een digitaal signaal, wat een microcontroller weer door kan sturen naar een computer.
+
+
+#+LATEX: \newpage
+
+* Werken met de hardware
+Voor het hardware gedeelte zijn er drie onderdelen. Dit zijn twee bestaande EEG's en de gene die gemaakt wordt tijdens dit onderzoek. Hieronder wordt uitgeleged hoe elk deel gebruikt en getest is.
+
+De eerste is een speelgoed EEG genaamd Force Trainer. Dit is een goedkope speelgoed EEG die gebruikt wordt om concentratie van een persoon te meten. Daarna is de OpenEEG, wat een open source project om een modulaire EEG te maken. Tenslotte ons eigen EEG is het circuit dat tijden dit onderzoek zelf geprobeerd wordt te maken om signalen te versterken en te meten.
+
+** Force Trainer
+Als eerste is er een goedkope (40 euro) speelgoed EEG getest. Deze EEG heet de Force Trainer en is bedoelt voor een spel waarbij een persoon via zijn concentratie "holografische" =objecten= kan laten stijgen of dalen. Deze EEG is voor dit onderzoek aangeschaft omdat online andere mensen deze hebben aangepast om de waardes uit te lezen en voor eigen doeleinde te gebruiken. Ditzelfde doel is er bij dit onderzoek voor de Force Trainer. Hoe de data uitgelezen wordt uit de de Force Trainer is te vinden in de bijlage van [[Bijlage D: Force Trainer uitlezen]].\\
+
+Nadat data uit de Force Trainer wordt uit gelezen kan de data worden geplot op een grafiek om deze te bekijken, Hiervoor is eigen software geschreven. Deze software kan het beeld van een computer laten knipperen waardoor er een P300 zou moeten worden gegenereerd bij een persoon die naar het beeld kijkt cite:polich07_updat_p300. Als het beeld geknipperd is zal de software een bepaald aantal tijd (bijv. 500 milliseconden) de inkomende EEG-data uit het EEG-systeem opslaan in een bestand om later te worden geanalyseerd.
+ Als deze software gebruikt word om naar de data te kijken is te zien dat als er gefronst of met de ogen geknipperd wordt een piek te zien is in de data. Deze pieken zijn ruis wat ervoor kan zorgen dat het gemeten signaal niet klopt. Het is dus belangrijk dat een algoritme om de p300 te detecteren hier rekening mee houdt.
+
+** OpenEEG
+#+CAPTION: De OpenEEG aangesloten aan twee elektrodes, een earclip en een ESP32.
+#+NAME: fig:openeeg-breadboard
+[[./images/openeeg-connected.jpg]]
+Voor de OpenEEG bestaat er een gedeelte voor de versterking en een digitaal gedeelte, voor dit onderzoek is in eerste instantie alleen het deel voor de versterking aangeschaft, met daarnaast een earclip en een paar pasieve en actieve elektrodes. Er is alleen voor de versterking gekozen zodat er een eigen microcontroller met ADC kan worden gebruikt, wat goedkoper is dan het digitale gedeelte.
+In de eerste instantie is getest door de module aan te sluiten met de earclip aan de DRL en twee pasieve elektrodes op de + en - van de eerste channel. De ingangen van het tweede channel zijn op de grond gezet.
+Om te testen of er iets van een signaal te zien is zullen de elektroden op het voorhoofd worden geplaatst en zal het persoon dan gaan fronsen of met de ogen knipperen. Als dit gedaan wordt zal er op een oscilloscoop een duidelijke piek te zien moeten zijn. Zoals gezien is bij de Force Trainer. \\
+Bij het uitlezen van deze data is gezien dat er veel 50Hz int het signaal te vinden is en dat fronzen of knipperen geen pieken genereert, hieruit was dus te concluderen dat het signaal niet klopte. Hierna is het derde order deel van de besselworth filter aan de output toegevoegd van de amplifier (Wat een extra R/C filter aan het einde is). Dit deel zit normaal op het digitale gedeelte van de OpenEEG, maar omdat deze niet is aangeschaft moet dit nog worden toegevoegd. Deze aanpassing heeft een duidelijk herkenbaar signaal gemaakt waarin merkbaar minder 50 Hz te vinden is. Daaruit is dus te concluderen dat het nodig is om deze filter te hebben om een werkend signaal te krijgen uit de OpenEEG. Tevens zijn er bij het fronsen nu pieken op de oscilloscoop en onze eigen software te zien. Door een grote capacitor te gebruiken wordt de 50 Hz minder te zien doordat de filter frequentie van de lowpass filter omlaag gaat. \\
+In het schakelschema van het digitale gedeelte is te zien dat dit derde deel van de besselworth filter een R/C filter is waarbij de weerstand 7,5K Ohm is en de condensator 220n Farad is. Als de formule van een R/C filter gebruikt wordt:
+\[f= \frac{1}{2 \pi R C}\]
+Waarbij /f/ de cutoff frequentie is, /R/ de waarde van de weerstand in Ohms is en /C/ de waarde van de condensator in Farad is. Als bovenstaande waardes worden ingevuld komt er een f van 96,46 Hz uit. Voor het meten van de P300 kan echter meer worden weg gefilterd, omdat de P300 maar tussen de 0,5 en 15 Hz voorkomt (zie theoretisch kader [[Hersengolven]]). Om dit te bereiken kan volgens de formule met een /f/ van 15 een /C/ van 1,415 \micro Farad gebruikt worden. De dichtstbijzijnde 1,5 \micro Farad condensator wordt hier gebruikt. Door deze afronding wordt de /f/ inplaats 14,147 Hz. \\
+
+Tijdens het testen van de OpenEEG met de ESP32 viel op dat er nog steeds veel ruis in het signaal zat, wat op 50Hz leek. Echter na het proberen van verschillende R/C filters bleef de ruis aanwezig. Wat bleek was dat de software in de ESP32 te snel de ADC uitlas. Dit is opgelost door 20 milliseconden te wachten tussen elke meting. \\
+In figuur [[fig:openeeg-esp32-schematic]] is te zien hoe de OpenEEG en de ESP32 verbonden zijn inclusief de filters.
+
+#+CAPTION: Aansluitschema van de openEEG versterker en de ESP32
+#+NAME: fig:openeeg-esp32-schematic
+[[./images/openeeg-schematic.png]]
+
+In het rood omlijnde gebied is de hierboven uitgelegde filter te zien met een 7,5K Ohm en een 1\micro Farad en een 0,5\micro farad condensator. Deze filter is om alle frequenties boven 15Hz weg te filteren.
+In het blauw omlijnde gebied is een voltage deler te zien die van 3,3 volt 2 volt maakt wat de versterker nodig heeft. Dit is nodig omdat de versterker deze 2 volt bij het signaal optelt zodat signalen die eigenlijk onder de 0 volt zijn nu boven de 0 volt zijn.
+
+** DIY EEG
+Voor dit onderzoek is ook geprobeerd een EEG te maken met eigen componenten. In het begin is simpel begonnen door een elektrode te bevestigen op een amplifier en de output van de amplifier te bekijken op een oscilloscoop, hier waren de verwachtingen laag. Het doel was om de elektrode op het voorhoofd te plaatsen en een duidelijke verandering op de oscilloscoop te zien als er gefronst of geknipperd word met de ogen, wat te zien is bij de Force Trainer. Zoals verwacht was deze verandering niet te zien, maar was er alleen een 50Hz signaal te zien wat waarschijnlijk van het lichtnet komt.
+
+Hierna is hetzelfde geprobeerd met een instrumentele amplifier, wat beter tegen ruis zou moeten zijn.
+
+Hierbij hebben wij niet veel succes gehad doordat er bij de output hetzelfde signaal als aan de input uitkwam. Hierna is het ook geprobeerd met een instrumentele amplifier. Daarbij is één input op de earclip gezet om een zo goed mogelijke common mode referentie te krijgen. De andere input is aan een elektrode vastgezet om zo het verschil tussen de common mode en de elektrode te krijgen en eventueel te versterken. Bij de output was hier teveel 50 Hz noise te zien waardoor er geen echt signaal herkenbaar was. Om dit te verminderen hebben we twee verschillende filters gebruikt, een simpele RC filter en een RC filter met opamp om de 50 Hz weg te filteren. Bij beide gevallen was de 50 Hz nog teveel aanwezig om het eigenlijke signaal eruit te meten. \\
+
+Aangezien er niet veel tijd meer is voor de rest van het onderzoek en elektrotechniek niet de sterkste kant is van de onderzoekers, is er voor gekozen de eigen EEG hierbij te laten en focus te leggen op de Force Trainer en OpenEEG. Hierbij wordt nog wel een eigen deel gemaakt op de output van de OpenEEG met eventuele extra filtering en het ADC gedeelte om het signaal op de computer voor processing te krijgen.
+
+#+LATEX: \newpage
+* De P300 detecteren
+Dit hoofdstuk behandeld hoe pogingen zijn gedaan om de P300 te detecteren. Als eerst wordt besproken hoe de P300 kan worden geactiveerd en daarna wordt besproken hoe de P300 wordt gedetecteerd.
+** P300 Activeren
+De P300 is dus een ERP of event related potentional (zie theoretisch kader [[Hersengolven]]) welke de hersenen generen wanneer een gebeurtenis aandacht vereist van bijvoorbeeld het geheugen.
+Om te onderzoeken hoe zo een gebeurtenis kan worden gebruikt om de P300 te laten activeren is er naar andere onderzoeken gekeken. \\
+Een van deze onderzoeken cite:Grierson2011 laat een figuur elke 400 milliseconden kort zien, er is 90% kans dat het een blauw vierkant is en 10% kans dat het een rode cirkel is. Hierdoor verwachten de hersenen uiteindelijk een rode cirkel te zien, maar doordat het een kans heeft is het nog onduidelijk wanneer. Als het rode cirkel dan komt inplaats van het blauwe dan gaan de hersenen hier andere mee om. Zo een experiment heet het oddball paradigm en wordt in een onderzoek beschreven van Nancy Squires cite:Squires1975. \\
+
+Een andere techniek die gemaakt is tijdens dit onderzoek is een P300-toetsenbord. Deze laat via een virtueel toetsenbord op een scherm snel achterelkaar toetsen knipperen. Als een persoon achter dit scherm dan concentreert op een letter en wacht totdat deze knippert dan is het net zoals de techniek hierboven een oddball paradigm.
+
+Deze technieken zijn geïmplementeerd tijdens dit onderzoek en gecombineerd met en stuk zelf geschreven software dat elke keer dat er een figuur of letter wordt laten zien 200 milliseconden tot 800 milliseconden daarna de inkomende EEG-data opslaat om later te worden geanalyseerd.\\
+
+Hetzelfde onderzoek cite:Grierson2011 bespreekt ook hoe de P300 geïdentificeerd wordt. Dit wordt hier gedaan door de oppervlakte onder de EEG-punten te berekenen.
+
+** Resultaten
+Hieronder zullen de resultaten worden laten zien van de testen met de OpenEEG en de Force Trainer.
+In figuur [[fig:p300_plot_red]] is een resultaat te zien van het testen van de OpenEEG. Tijdens het verkrijgen van deze resultaten is geprobeerd de P300 te activeren door middels van de techniek met of de blauwe vierkant of het rode cirkel (zoals hierboven beschreven). De lijnen in dit figuur zijn telkens 100 milliseconden nadat een rode cirkel is laten zien, hierdoor is het 0,0 seconden in dit figuur eigenlijk 100 milliseconden. In figuur [[fig:p300_plot_blue]] zijn de gegevens te zien wanneer een blauw vierkant wordt laten zien. Tijdens het onderzoek was er 8 keer een rode cirkel te zien en 63 keer een blauw vierkant. Echter zijn er in figuur [[fig:p300_plot_blue]] maar 29 te zien om het overzicht te bewaren. In figuur [[fig:p300_plot_blue_mess]] in de bijlage is een foto te zien met alle lijnen.\\
+Voor deze tests is de DRL op het rechter oor geplaatst, is de -elektrode op de rechter mastoid (achter het oor) geplaatst en is de +elektrode op plek P4 van het 10-20 systeem geplaatst (zie [[Signaalmeting]]). \\
+Als beide figuren worden vergeleken is te zien dat rond 0,2 seconden (dus 300 milliseconden na het laten zien van het figuur) grotere pieken te zien zijn als er een rode cirkel is laten zien dan bij een blauw vierkant. Dit kan een indicatie zijn van de P300, welke 300 milliseconden na de stimulus verschijnt. Te zien is dat de blauwe lijnen vlak lopen of minder grote pieken hebben. Of de pieken rond de 0,2 seconden ook een p300 zijn is nog onduidelijk en zou verder moeten worden onderzocht. \\
+In figuur [[fig:p300_plot_red]] is ook te zien dat maar 3 van de 8 lijnen deze piek hebben. Hieruit is te concluderen dat de huidige techniek nog niet stabiel genoeg is. Verwacht is dat de signalen die de elektroden ontvangen vanuit de hersenen nog niet duidelijk genoeg zijn.
+
+
+#+CAPTION: Resultaten van het testen met de OpenEEG na een rode cirkel.
+#+NAME: fig:p300_plot_red
+#+ATTR_LATEX: :width 400px
+[[./images/p300_plot_red.png]]
+
+#+CAPTION: Resultaten van het testen met de OpenEEG na een blauw vierkant.
+#+NAME: fig:p300_plot_blue
+#+ATTR_LATEX: :width 400px
+[[./images/p300_plot_blue.png]]
+
+** Verbeteringen
+In veel onderzoeken wordt om de elektrode een beter contact te laten maken met de hoofdhuid een gel gebruikt, deze gel wordt tussen de elektrode en de hoofdhuid geplaatst. Dankzij deze gel maakt de elektrode ook beter contact door haar heen. Tijdens dit onderzoek is echter geen gel gebruikt. Het is aan te adviseren om in een vervolg onderzoek te onderzoeken hoeveel beter de gel werkt, en of zo de p300 beter kan worden gedetecteerd. \\
+in een onderzoek uit 2010 cite:Usakli2010 zegt dat EEG gel een belangrijke stap is bij het voorbereiden van de huid. Echter zegt dit onderzoek dat droge elektrodes (zonder gel) ook een methode is. Deze elektrodes zijn dan voor een deel van rubber gemaakt. Als op internet gezocht wordt naar dry-elektrodes is te zien dat deze elektrodes ook gemaakt zijn om door het haar heen te steken. Het is ook te adviseren om dit soort elektrodes in een vervolg onderzoek te testen.
+
+** Conclusie
+In conclusie is het dus nog niet gelukt om softwarematig de P300 te detecteren, echter is door het analyseren door de onderzoekers van de opgenomen data van de OpenEEG wel aanwijzingen van de p300 waargenomen. Hierdoor is te verwachten dat de hardware in combinatie met de OpenEEG wel in staat is om de P300 te detecteren. Te adviseren is om bij een vervolgonderzoek een speciale gel tussen de elektrode en het hoofdhuid te plaatsen voor een beter contact en om speciale elektrodes waarvoor geen gel nodig is te testen.
+
+
+#+CAPTION: Een dry-elektrode (OpenBCI).
+#+NAME: fig:dry-elektrode
+#+ATTR_LATEX: :width 100px
+[[./images/dry-elektrode.png]]
+
+#+LATEX: \newpage
+
+* Conclusie
+In dit onderzoek is gezocht naar het antwoord op de vraag: *'Welke hardware en firmware is nodig om een EEG te maken welke voldoet aan de gestelde eisen?'*. Hiervoor is literatuur studie gedaan, is geëxperimenteerd en is uitleg van een expert gevraagd naar EEG-systemen. Dit EEG-systeem had als doel de P300 te kunnen detecteren. \\
+
+Uit het onderzoek naar welke hardware delen nodig is voor een EEG-systeem is gebleken dat als eerste een elektrode nodig is om de signalen uit de hersenen op te vangen. Daarna moet dit signaal worden versterkt, dit kan worden gedaan door een inamp in combinatie met een opamp. De inamp doet de eerste vertrekking stap, zodat het signaal-ruisverhouding klein is. Daarna doet de opamp de laatste versterking stap, zodat het signaal kan worden gemeten door een ADC. Maar voor de ADC zal het signaal eerst nog moeten gefilterd. Dit kan worden gedaan door een laagdoorlaatfilter toe te passen, bij openEEG is een derde order Besselworth filter gebruikt. Na deze filter komt de ADC, Hiervoor is de ADC van een ESP32 gebruikt. Dit zodat de ESP32 gelijk de data door kan sturen naar een PC waar het verder kan worden verwerkt. \\
+
+Tijdens het onderzoek naar welke precieze hardware componenten nodig zijn is een lijst opgesteld met geschikte kandidaten, echter is nooit kunnen worden bevestigd welke kandidaat uit de lijst het beste is door gebrek aan tijd en kennis. De kandidaten voor de elektrodes zijn de EEG-PE, EEG-AE en een set one-time-use elektrodes, voor de inamp zijn het de AD620ARZ en de INA129P, voor de opamp de LM358 en de OP27GPZ en voor de ADC de ESP32. \\
+
+Tijdens het onderzoek is ook onderzocht welke ruis er in het signaal is te vinden en of dit hardware matig kan worden weggefilterd. Het resultaat is dat er zeer veel 50Hz te vinden was. Deze ruis kan worden weggefilterd met een laagdoorlaatfilter. Bij de OpenEEG is de derde pool van de Besselworthfilter op een kantelfrequentie van 15 Hz gezet, dit omdat de benodigde signalen alleen onder de 15Hz zijn. \\
+Daarnaast is er ook nog ruis van het bewegen vanuit het lichaam van het te meten persoon. Dit kunnen bewegingen zijn met de arm maar ook het knipperen van de ogen of het fronsen. Tijdens dit onderzoek is er op de conclusie gekomen dat dit niet hardwarematig kan worden weg gefilterd maar softwarematig moet gebeuren. \\
+
+Uit de resultaten naar het onderzoek hoe de gekozen hardware kan worden geprogrammeerd om een EEG-systeem te maken, dat de P300 kan detecteren, is onder andere gekomen dat de ESP32 moet worden geprogrammeerd om de ADC uit te lezen. Daarna moet de ESP32 de data verzamelen en dan via een USB-verbinding naar een computer doorsturen. \\
+Ook is er software nodig om met de Force Trainer te communiceren. Om met de Force Trainer te communiceren is het nodig om de Tx pin op de PCB van de Force Trainer uit te lezen. Uit deze Tx pin komt UART data wat kan worden uitgelezen via een ESP32. De data is gecodeerd via het ThinkGear Serial Stream (SDK) protocol. Als de data gedecodeerd is kan deze worden verstuurd over een USB-verbinding naar een computer. \\
+
+Er is tot de conclusie gekomen dat wanneer de data op de computer is het alleen nog nodig is om de ruis uit de bewegingen van het lichaam van het te meten persoon weg te filteren. Helaas zij er geen resultaten uit het onderzoek hoe dit kan. \\
+
+Tijden het onderzoek naar hoe de benodigde hersengolven kunnen worden gedetecteerd is tot de conclusie gekomen dat er een goede manier nodig is om de hersenen eerst deze hersengolven te laten genereren. Hierbij zijn op 2 technieken gekomen welke beide op het Oddball paradigm zijn gebaseerd. Hierbij worden veel voorkomende stimuli onderbroken door een afwijkend stimulus. De eerste techniek is waarbij het veel voorkomende stimuli een knipperend blauw vierkant is en het afwijkende stimuli een rood cirkel is in plaats van een blauw vierkant. De tweede techniek is een P300 toetsenbord. \\
+Beide technieken zijn getest en uit de resultaten is gekomen dat de eerste techniek het best werkt, zelfs nog beter als het aantal rode cirkels geteld word. \\
+
+Om softwarematig de P300 de detecteren is op de volgende techniek gekomen waarbij de opervlakte onder de hersengolf berekent wordt. Echter is het software matig detecteren van de P300 nooit gelukt en zijn er alleen aanwijzingen gevonden van de P300 door terug te kijken naar opgenomen data. \\
+
+* Aanbevelingen
+Uit dit onderzoek is naar voren gekomen dat om de p300 te detecteren een beter signaal uit de hersenen moet worden ontvangen. Advies is om in een vervolg onderzoek het huidige gemaakte systeem met de OpenEEG uit te breiden. Het is te adviseren om te testen of het gebruik van speciale gel tussen de elektrodes en de hoofdhuid beter resultaat zal brengen. Ook kunnen er dry-elektrodes worden getest waarmee wellicht ook een goed contact met de hoofdhuid kan worden gemaakt zonder dat de special gel nodig is.
+Als een EEG-systeem vereist is dat volledig zelf ontworpen is, is het te adviseren om een onderzoek uit te voeren dat zich volledig richt op het ontwerpen van de hardware.
+
+** Struikelblokken
+Bij het uitlezen van een ADC zoals bij onze ESP32 kan er een gek signaal ontstaan als er te snel uitgelezen wordt in de software. Bij ons kwam dat voor als een kartelende lijn die elke sample afwisselend wat omhoog en omlaag afwijkt. Dit kan worden verholpen door de delay tussen samples groter te maken.
+
+#+LATEX: \newpage
+* Bronnen
+#+LATEX: \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+bibliographystyle:apalike
+bibliography:sources.bib
+#+LATEX: \newpage
+* Bijlage
+** Bijlage A: schakelschema modEEGamp
+:PROPERTIES:
+:CUSTOM_ID: BijlageA
+:END:
+Hieronder kan het schakelschema voor de modEEGamp worden gevonden. Dit schema is gedownload vanaf de volgende link: https://www.olimex.com/Products/EEG/OpenEEG/EEG-ANALOG-ASM/resources/modEEGamp_v1.1.pdf
+#+LATEX_ATTR:
+[[./images/modEEGamp_v1.1.png]]
+#+LATEX: \newpage
+
+** Bijlage B: schakelschema versterker
+:PROPERTIES:
+:CUSTOM_ID: BijlageB
+:END:
+Hieronder kan een schakelschema worden gevonden voor de versterking van de hersensignalen uit de elektrodes. Dit schema is gedownload vanaf de volgende link: https://sites.google.com/site/chipstein/_/rsrc/1257001084516/home-page/eeg-with-an-arduino/assembling-the-arduino-eeg-circult/Arduino%20PreampNG.jpg?height=327&width=420
+
+#+CAPTION: Versterker schema voor EEG cite:chipstein
+[[./images/Arduino_PreampNG.jpg]]
+#+LATEX: \newpage
+
+** Bijlage C: Vergelijkingstabellen voor benodigde hardware
+:PROPERTIES:
+:CUSTOM_ID: BijlageC
+:END:
+#+ATTR_LATEX: :environment longtable :align |p{3cm}|p{1,2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Naam                                                     | Stuks | Prijs   | Herbruikbaar | Materiaal in contact met huid | Diameter van pad | Extra                       |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Biomedical Sensor Pad                                    |    10 | €9,62   | nee          | ?                             | 24 mm            | Al voorbereid met gel       |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Genuine Grass Reusable 10mm Silver Cup Surface Electrode |    10 | $179,95 | ja           | zilver                        | 10 mm            |                             |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Technomed Silver Cup EEG Electrodes                      |    12 | $125,-  | ja           | zilver                        | 10 mm            |                             |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| IMA Silver EEG Flat Electrode                            |     1 | $16,16  | ja           | zilver                        | 8 mm             |                             |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| GS29 Solid Gel - Square Cloth Electrode                  |   600 | $125,99 | nee          | zilver                        | 22 x 22 mm       |                             |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Dry EEG Comb Electrodes                                  |    30 | $29,99  | ja           | zilver chloride coating       | 6,35 mm          | Kan door haar heen meten    |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Disposable EEG Cup Electrode                             |    25 | €27,50  | ja           | zilver chloride coating       | 10 mm            |                             |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| EEG-AE                                                   |     1 | €9,00   | ja           | goud                          | ?                | Bevat een signaalversterker |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| EEG-PE                                                   |     1 | €5,00   | ja           | goud                          | ?                |                             |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+| Oorelectrode                                             |     2 | €26.25  | ja           | tin                           | ?                | Oor referentie voor EEG     |
+|----------------------------------------------------------+-------+---------+--------------+-------------------------------+------------------+-----------------------------|
+
+#+ATTR_LATEX: :environment longtable :align |p{1,5cm}|p{1cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2,4cm}|p{1,5cm}|p{1,5cm}|
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| Naam            | Prijs (Euro) | Precisie | metingen per seconden | input/ output ruis uV(RMS) | signaal-ruisverhouding en distortie (dB) | niet lineariteit | kanalen |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| MCP3021         | 0,94         | 10-bit   | 22k                   | ?                          | 60                                       | +/- 0,25 LSB     |       1 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| TLC1543         | 12,95        | 10-bit   | 32k                   | ?                          | ?                                        | +/- 1 LSB        |      11 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| MCP3008         | 3,50         | 10-bit   | 75k-200k              | ?                          | 51                                       | +/- 0,25 LSB     |       8 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| ad7705          | 2,60         | 16-bit   | 38,4K                 | ?/110                      | ?                                        | 0,003%           |       2 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| ads1115         | 2,50         | 16-bit   | 860                   | 32,25                      | ?                                        |                  |       2 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| ESP32 ADC       | 13,99        | 12-bit   | 6K                    | ?                          | ?                                        |                  |     2x8 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+| Arduino Uno adc |              | 8-bit    | 9,615K                | ?                          | ?                                        |                  |       8 |
+|-----------------+--------------+----------+-----------------------+----------------------------+------------------------------------------+------------------+---------|
+
+ #+ATTR_LATEX: :float sidewaystable :placement [H] :align |p{2cm}|p{1,3cm}|p{1,5cm}|p{1,5cm}|p{1,5cm}|p{2,5cm}|p{1,5cm}|p{2cm}|p{2cm}|p{2cm}|
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+| Naam      | Prijs (Euro) | Channels | Max verterking | Min voeding (V) | Voltage noise (uVpp) | CMRR              | Input noise (nV/√Hz) | Input noise (nV/√Hz) | Gain error                  |
+|           |              |          |                |                 | g=1000 f=0,1-10Hz    | (tot 60hz G=1000) | @ 30Hz               |               @ 1kHz | G=100/1000                  |
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+| INA12PA   | 10,00-11,42  |        1 |          10000 | 2,25            | 0,2                  | 120               | 8                    |                    9 | 0,7%/ 2%                    |
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+| MCP6N16   | 2,92         |        1 |              ? | 1,8             | 19,0                 | ?                 | 30                   |                    ? | 0,03%                       |
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+| AD620ARZ  | 11,03        |        1 |          10000 | 2,3             | 0,28                 | ?                 | ?                    |                    9 | 0,15%/0,14%                 |
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+| AD8221    | 8,28         |        1 |           1000 | 2,3             | 0,25                 | ?                 | ?                    |                    8 | 0,3%/ 0,3%                  |
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+| AD8429ARZ | 10,49        |        1 |          10000 | 4,0             | 0,1                  | 134               | ?                    |                    1 | 0,3 voor alles groter dan 1 |
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+| INA129    | 5,95         |        1 |          10000 | 2,25            | 0,2                  | 130               | ?                    |                    8 | 0,05%/0,5%                  |
+|-----------+--------------+----------+----------------+-----------------+----------------------+-------------------+----------------------+----------------------+-----------------------------|
+#+LATEX: \FoatBarrier
+#+LATEX: \newpage
+** Bijlage D: Force Trainer uitlezen
+Als de Force Trainer open gemaakt wordt kan de printplaat worden gezien. Figuur [[fig:Force_Trainer_marked]] laat deze printplaat zien met een extra gedeelte gemarkeerd in een rood vierkant. In dit vierkant is een chip van Neurosky te vinden welke het meten van de hersensignalen afhandelt. De desbetreffende chip is de TGAT1-LC4.
+Volgens een handleiding van en persoon die de Force Trainer heeft aangepast is er een tx-aansluiting cite:force_trainer_hack. Uit ervaring van de onderzoekers is te weten dat tx een veelgebruikte term is voor een datalijn in het UART-protocol. Hierover zal dus de data van de Neurosky chip worden verstuurd. Volgens de datasheet van deze chip[fn:1] wordt de data over de tx-aansluitign via het ThinkGear protocol verstuurt. Volgende de handleiding van dit protocol [fn:2] verstuurt de TGAT1 500 metingen per seconden over de UART en heeft de UART een baudrate van 57600.
+
+#+CAPTION: De PCB in de Force Trainer met de Neurosky chip (TGAT1-LC4) gemarkeerd met rood. Onderaan de chip is de aansluiting met de elektrodes.
+#+NAME: fig:Force_Trainer_marked
+#+ATTR_LATEX: :width 300px :float nil
+[[./images/force-trainer-pcb-marked.jpg]]
+
+De benodigde data uit de Neurosky chip zal dus over deze tx-aansluiting worden verstuurd. Om dit uit te lezen is een draad gesoldeerd op de tx-aansluiting welke kan worden gevonden op de achterkant van de printplaat, zoals te zien is in figuur [[fig:Force_Trainer_pcb_back]]. Aan de andere kant van dit draad is een microcontroller om de data uit te lezen. Er zijn geen strenge eisen aan de microcontroller, zolang het maar UART op 57600 baud kan uitlezen, deze data kan verwerken en dan de data naar een PC kan sturen. Hier is gekozen voor een ESP32 omdat de onderzoekers veel ervaring hebben met deze microcontroller en het bijbehorende framework. Een tweede draad dat moet worden gesoldeerd is een tussen de grond van de microcontroller en van de Froce Trainer, er is gekozen om dit draad bij de Force Trainer op de negatieve kant van de batterijhouder te solderen.\\
+
+
+#+CAPTION: Achterkant van de Force Trainer met het draad dat is aangesloten op de tx-aansluiting
+#+NAME: fig:Force_Trainer_pcb_back
+#+ATTR_LATEX: :width 300px :float nil
+[[./images/force-trainer-back.jpg]]
+
+
+[fn:1] http://wearcam.org/ece516/neurosky_eeg_brainwave_chip_and_board_tgam1.pdf
+[fn:2] http://developer.neurosky.com/docs/doku.php?id=thinkgear_communications_protocol
+** Bijlage E: Foto met alle lijnen van resultaat
+
+#+CAPTION: Resultaten van het testen met de OpenEEG na een blauw vierkant, hier met alle lijnen.
+#+NAME: fig:p300_plot_blue_mess
+#+ATTR_LATEX: :width 400px
+[[./images/p300_plot_blue_mess.png]]

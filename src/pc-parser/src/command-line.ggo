@@ -1,0 +1,25 @@
+package "pc-parser"
+version "0.1.0"
+usage "pc-parser"
+description "The PC parser and visualizer for the EEG research."
+versiontext "First version with commandline options"
+
+option "verbose" v "Run the program in verbose mode." flag off
+option "p300" p "Run the program with a P300 display and trigger. (1 is square, 2 is keyboard, 3 is odds and evens)" int optional
+option "ay_range" y "Y axis range for the graph First value is min, second is max." int optional multiple(2)
+option "threshold" t "The threshold for the p300 detection. (middle of y range is default)" int optional
+option "display_fft" F "The flag wether to display the FFT or not. Default is not" flag off
+
+section "Data Acquisition"
+option "generator" g "Use a generated signal." flag on
+option "serial" s "Use the serial interface for data acquisition." flag off
+option  "interface" i "Serial Interface to listen on." string optional default="/dev/ttyUSB0"
+
+section "Generator"
+option "frequency" f "Frequency to use for the generator. For multiple frequencies, use a comma separated list for the frequency and amplitude." int optional multiple(1-)
+option "amplitude" a "Amplitude matching the frequency given for the generator." float optional multiple(1-)
+
+section "Filtering"
+option "filter_frequency" r "Frequencies to filter out, use a comma separated list for multiple frequencies." int multiple optional default="50"
+option "hp_cutoff" H "Everything below this frequency wil be filtered out." int optional
+option "lp_cutoff" l "Everything above this frequency wil be filtered out." int optional

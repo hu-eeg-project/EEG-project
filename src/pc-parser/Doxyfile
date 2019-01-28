@@ -1,0 +1,7 @@
+DOXYFILE_ENCODING = UTF-8
+PROJECT_NAME = "pc-parser"
+PROJECT_BRIEF = "The pc parser and visualizer of the EEG project"
+OUTPUT_LANGUAGE = English
+OUTPUT_DIRECTORY = docs
+RECURSIVE = YES
+INPUT = @CMAKE_CURRENT_SOURCE_DIR@/src/
