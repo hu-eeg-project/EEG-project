@@ -42,10 +42,12 @@ m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None)
 
     m_window.display();
 
+    // Get a list of connected monitors and their resolution + position
     std::istringstream res =
         std::istringstream(exec("xrandr | grep ' connected' "
                                 "| tr ' ' '\n' | grep '+'"));
 
+    // Save the list in a list that is easy to work with
     std::list<monitor_t> monitors;
     std::string line;
     int id = 1;
@@ -57,6 +59,7 @@ m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None)
         monitors.push_back(m);
     }
 
+    // Check what monitor we're currently on
     int current_monitor = -1;
     for (monitor_t& i : monitors) {
         int x = m_window.getPosition().x;
@@ -66,6 +69,8 @@ m_window(sf::VideoMode(1920, 1080), "P300 Display", sf::Style::None)
             break;
         }
     }
+
+    // Put window on the monitor that is not the current one if possible
     for (monitor_t& i : monitors) {
         if (i.id != current_monitor) {
             m_window.setPosition(sf::Vector2i(i.x, i.y));

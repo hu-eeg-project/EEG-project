@@ -215,10 +215,14 @@ int main(int argc, char* argv[])
         data.unlock();
 
         if (display) {
+            // If the display is running check if close was requested and check
+            // if needed to record the data currently being measured.
             looping = display->update();
             record_data = display->recording();
             if (record_data.recording) {
                 if (!recording) {
+                    // Create a file if a new recording is started with time and
+                    // date
                     recording = true;
                     filename = start_time_string + "/"
                              + getTimeAndDate() + ".eeg";
@@ -228,8 +232,10 @@ int main(int argc, char* argv[])
                         printf("Failed to create file!\n");
                     }
 
+                    // Store metadata of the recording into the new file
                     file << "metadata," << record_data.metadata << std::endl;
 
+                    // Calculate threshold for surface calculation
                     threshold = 0;
                     for (int i = 0; i < size; i++) {
                         threshold += data_array_copy[i];
@@ -242,17 +248,21 @@ int main(int argc, char* argv[])
                     last_time = time_array_copy[size - 1];
                 }
 
+                // Put the current data and time into the file if recording
                 for (int i = 0; i < size; i++) {
                     if (time_array_copy[i] > last_time) {
                         last_time = time_array_copy[i];
                         file << time_array_copy[i] << ","
                              << data_array_copy[i] << std::endl;
+
+                        // Calculate surface in relation to the threshold
                         surface_calc += data_array_copy[i] - threshold;
                     }
                 }
 
             } else {
                 if (recording) {
+                    // Close file if not recording anymore
                     recording = false;
                     file.close();
                     if (config.verbose_flag) {
@@ -263,6 +273,7 @@ int main(int argc, char* argv[])
             }
         }
         if(filtering){
+            // Filter data and then update the EEG Graph
             eeg.filter_freq(size,
                             time_array_copy,
                             data_array_copy,
@@ -271,13 +282,19 @@ int main(int argc, char* argv[])
                             filter);
             eeg.update(size, filtered_time.getData(), filtered_data.getData());
         }else{
+            // Update the EEG Graph
             eeg.update(size, time_array_copy, data_array_copy);
         }
+
+        // Sleep for 16 ms to get around 60 fps max
         usleep(1000 * 16);
     }
+    // Request close_thread from the other threads that are spawned and join
+    // back with them
     close_thread = true;
     data_thread.join();
 
+    // Delete frequencies and p300 display if they were created
     if (frequencies) delete[] frequencies;
     if (display) display.reset(nullptr);
 

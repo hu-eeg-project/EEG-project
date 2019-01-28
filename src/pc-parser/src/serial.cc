@@ -32,12 +32,14 @@ SerialInterface::~SerialInterface()
 
 int SerialInterface::setAttributes(speed_t baudrate)
 {
+    // Initialize configuration struct with current configuration
     struct termios tty;
     memset(&tty, 0, sizeof(tty));
     if (tcgetattr(m_serial, &tty) != 0) {
         return -1;
     }
 
+    // Set the baudspeed of the serial port
     cfsetospeed(&tty, baudrate);
     cfsetispeed(&tty, baudrate);
 
@@ -50,11 +52,13 @@ int SerialInterface::setAttributes(speed_t baudrate)
     tty.c_iflag &= ~(IXON | IXOFF | IXANY);
     tty.c_cflag |= (CLOCAL | CREAD);
 
+    // Set Stopbyte / byte size of serial port
     tty.c_cflag &= ~PARENB;
     tty.c_cflag &= ~CSTOPB;
     tty.c_cflag &= ~CSIZE;
     tty.c_cflag |= CS8;
 
+    // Apply configuration
     if (tcsetattr(m_serial, TCSANOW, &tty) != 0) {
         return -1;
     }
@@ -64,6 +68,7 @@ int SerialInterface::setAttributes(speed_t baudrate)
         return -1;
     }
 
+    // Make serial port non-blocking
     tty.c_cc[VMIN] = 0;
     tty.c_cc[VTIME] = 5;
 
