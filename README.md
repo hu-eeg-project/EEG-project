@@ -39,6 +39,13 @@ cmake ..
 make
 ```
 
+# Documentation
+Run the following commant in pc-parser build directory to generate Doxygen documentation.
+```
+make docs
+```
+The generated files will be placed in the docs directory of the pc-parser directory
+
 # Running the pc-parser
 From within the build directory the pc-parser can be run with `./pc-parser <arguments>`. To get a list of available arguments to change the data input / display output / filtering of the program the argument `-h` or `--help` can be used.
 
